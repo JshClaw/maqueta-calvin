@@ -516,5 +516,8 @@ dl.glos { margin: 0; display: grid; gap: 10px; }
   .mk { position: absolute; }
   .mk::after { content: ""; position: absolute; inset: -7px; border-radius: 50%; }
   /* los puntitos de la barra de abajo: se ven igual, pero el área para tocarlos es más alta */
-  .prog button { height: 28px; padding: 10px 0; background-clip: content-box; }
+  .prog button { height: 28px; padding: 10px 0; }
+  .prog button, .prog button.seen, .prog button.cur { background-clip: content-box; }
 }
+/* los números sobre el modelo (z-index hasta 1000, según la distancia) nunca tapan los controles */
+.hud, .v3d-nav, .v3d-help, #v3d-card { z-index: 1100; }

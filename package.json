@@ -8,7 +8,8 @@
     "build": "node scripts/build.mjs",
     "serve": "node scripts/serve.mjs",
     "dev": "node scripts/build.mjs && node scripts/serve.mjs",
-    "test": "node scripts/test-offline.mjs"
+    "test": "node scripts/test-offline.mjs",
+    "test:tactil": "node scripts/test-tactil.mjs"
   },
   "devDependencies": {
     "esbuild": "0.25.12",
