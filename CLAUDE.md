@@ -115,6 +115,7 @@ python contenido/drawings.py    # solo si cambias 3d/layout.json (regenera los p
   - `CHROME_PATH=...`: usa un Chrome instalado.
   - `CHROME_ARGS="--use-angle=gl-egl"`: da WebGL en Linux sin GPU.
 - Si el navegador de prueba no tiene WebGL, la prueba lo avisa y no cuenta como falla.
+- Si ya tienes un Chromium de Playwright descargado (en `%LOCALAPPDATA%\ms-playwright\`), pásalo con `CHROME_PATH` y no hace falta `npx playwright install`.
 - `npm run test:tactil` acepta las mismas variables (`DEVICES`, `CHROME_PATH`, `CHROME_ARGS`).
 - **Flujo normal después de cualquier cambio:** `npm run build` → `npm test`. Luego abre la app en un celular real en **modo avión** para confirmar.
 
