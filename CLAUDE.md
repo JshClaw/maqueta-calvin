@@ -264,6 +264,12 @@ El proyecto se hizo con Claude, con un sistema más grande en Python (skia para 
   En pantallas táctiles todo lo que se toca mide 40 px o más. Materiales sale en tarjetas en el teléfono.
   `npm test` y `npm run test:tactil` pasan en iPhone 13, Pixel 7, iPad (gen 11) e iPad Pro 11 en horizontal.
 - `dist/` está construida y lista para subir.
+- **Publicada** el 2026-11-12 en GitHub Pages: **https://jshclaw.github.io/maqueta-calvin/** (repo público `JshClaw/maqueta-calvin`).
+  - Cada push a `main` que cambie `dist/` la vuelve a publicar. El primer push, el que creó la rama, no disparó el flujo: se lanzó a mano con `gh workflow run pages.yml`.
+  - La prueba sin internet pasó contra el link real en los 4 equipos simulados.
+  - Si el sitio desaparece (todo da 404), la app ya guardada sigue abriendo: el service worker no se borra cuando falla su actualización. Probado en Chromium, no en Safari.
+  - No usar Netlify Drop sin cuenta: borra el sitio a la hora, le pone contraseña y Malwarebytes bloqueó el link por phishing.
+  - Los commits van firmados como `JshClaw` con el correo noreply de GitHub, sin nombres reales.
 
 ## 11. Ideas posibles (nada de esto está hecho)
 
