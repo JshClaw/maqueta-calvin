@@ -90,6 +90,7 @@ scripts/
   build.mjs           npm run build → dist/
   serve.mjs           npm run serve → http://localhost:8080 (con Range; https opcional)
   test-offline.mjs    npm test → prueba sin internet en iPhone, Android y iPad simulados
+  test-tactil.mjs     npm run test:tactil → gestos de dedo en el visor 3D
 dist/                 LA APP LISTA PARA SUBIR (generada; no se edita a mano)
 .github/workflows/pages.yml   Publica dist/ en GitHub Pages (opcional)
 ```
@@ -105,6 +106,7 @@ npm run serve                   # http://localhost:8080
 npm run dev                     # build + serve
 npx playwright install chromium # una vez, para las pruebas
 npm test                        # prueba sin internet (iPhone 13, Pixel 7, iPad gen 11)
+npm run test:tactil             # prueba el 3D con gestos de dedo (girar, pellizcar, doble toque, botones)
 python contenido/drawings.py    # solo si cambias 3d/layout.json (regenera los planos)
 ```
 
@@ -113,6 +115,7 @@ python contenido/drawings.py    # solo si cambias 3d/layout.json (regenera los p
   - `CHROME_PATH=...`: usa un Chrome instalado.
   - `CHROME_ARGS="--use-angle=gl-egl"`: da WebGL en Linux sin GPU.
 - Si el navegador de prueba no tiene WebGL, la prueba lo avisa y no cuenta como falla.
+- `npm run test:tactil` acepta las mismas variables (`DEVICES`, `CHROME_PATH`, `CHROME_ARGS`).
 - **Flujo normal después de cualquier cambio:** `npm run build` → `npm test`. Luego abre la app en un celular real en **modo avión** para confirmar.
 
 ## 5. Cómo está hecha
@@ -255,6 +258,10 @@ El proyecto se hizo con Claude, con un sistema más grande en Python (skia para 
   - El video responde por pedazos (206).
   - La reproducción y el salto en el video se verificaron con una copia en WebM. El Chrome de prueba no traía H.264.
 - **No se ha probado en Safari real de iPhone ni de iPad.** Es lo primero que conviene confirmar, en modo avión.
+- 2026-11-12: corregido que el 3D no cargaba al abrir o recargar la página ya en `#maqueta3d` (`app.js` corría antes que el script del visor).
+  El visor ahora pinta solo cuando algo cambia (antes 60 cuadros/s sin parar). Los controles del 3D quedan encima de los números.
+  En pantallas táctiles todo lo que se toca mide 40 px o más. Materiales sale en tarjetas en el teléfono.
+  `npm test` y `npm run test:tactil` pasan en iPhone 13, Pixel 7, iPad (gen 11) e iPad Pro 11 en horizontal.
 - `dist/` está construida y lista para subir.
 
 ## 11. Ideas posibles (nada de esto está hecho)
