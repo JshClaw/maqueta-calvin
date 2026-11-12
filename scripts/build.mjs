@@ -55,7 +55,7 @@ const datos = 'window.__LAYOUT=' + layout.trim() + ';\nwindow.__TEX=' + pyDict(t
 // ------------------------------------------------------------------ 4. carpeta dist
 fs.rmSync(DIST, { recursive: true, force: true });
 fs.cpSync(r('public'), DIST, { recursive: true });
-const BG = '#EEF2EC';
+const BG = '#EDF1F7';
 const manifest = {
   name: 'Maqueta del ciclo de Calvin',
   short_name: 'Ciclo Calvin',
@@ -85,8 +85,8 @@ const HEAD = '<title>Ciclo de Calvin · maqueta</title>\n' + DESC
   + '<link rel="manifest" href="manifest.webmanifest">\n'
   + '<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">\n'
   + '<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">\n'
-  + '<meta name="theme-color" content="#EEF2EC" media="(prefers-color-scheme: light)">\n'
-  + '<meta name="theme-color" content="#111714" media="(prefers-color-scheme: dark)">\n'
+  + '<meta name="theme-color" content="#EDF1F7" media="(prefers-color-scheme: light)">\n'
+  + '<meta name="theme-color" content="#0F141B" media="(prefers-color-scheme: dark)">\n'
   + '<meta name="mobile-web-app-capable" content="yes">\n'
   + '<meta name="apple-mobile-web-app-capable" content="yes">\n'
   + '<meta name="apple-mobile-web-app-title" content="Ciclo Calvin">\n'

@@ -21,7 +21,7 @@ let sucio = true;          // hay que volver a pintar
 const marcadores = [];
 
 function colorFondo() {
-  return getComputedStyle(document.documentElement).getPropertyValue('--stage').trim() || '#D7E5D4';
+  return getComputedStyle(document.documentElement).getPropertyValue('--stage').trim() || '#DAE3EE';
 }
 
 export async function iniciar() {

@@ -149,8 +149,12 @@ b.append(item('glucosa', rect_cm(*g, 'gluc') + T((g[0] + g[2]) / 2 * S, (g[1] + 
 b.append(item('titulo', rect_cm(*L['signTitle'], 'sign') + T(10.5 * S, 5 * S + 4, 'Letrero del título', 'tl', size=13)))
 b.append(item('fase', rect_cm(*L['signSun'], 'sign') + T(49.5 * S, 5 * S + 4, 'Fase luminosa', 'tl', size=13)))
 for i, fl in enumerate(L['flaps']):
-    b.append(item(f'solapa{i + 1}', rect_cm(*fl, 'flap') + T((fl[0] + fl[2]) / 2 * S, (fl[1] + fl[3]) / 2 * S + 4,
-                                                             '¿Dónde ocurre?' if i == 0 else '¿De noche?', 'tl', size=13)))
+    cx_, cy_ = (fl[0] + fl[2]) / 2 * S, (fl[1] + fl[3]) / 2 * S
+    if i == 0:
+        txt = T(cx_, cy_ + 4, '¿Dónde ocurre?', 'tl', size=13)
+    else:   # la solapa mide 10 cm: el texto va en dos renglones
+        txt = T(cx_, cy_ - 3, '¿Por qué le dicen', 'tl', size=11) + T(cx_, cy_ + 11, 'fase oscura?', 'tl', size=11)
+    b.append(item(f'solapa{i + 1}', rect_cm(*fl, 'flap') + txt))
 b.append(dim_h(0, 60 * S, -22, '60 cm', size=14))
 b.append(dim_v(0, 60 * S, -24, '60 cm', size=14))
 b.append(dim_h(0, 30 * S, 60 * S + 26, 'x = 30', above=False, size=12))

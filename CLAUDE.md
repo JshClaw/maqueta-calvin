@@ -134,7 +134,7 @@ python contenido/drawings.py    # solo si cambias 3d/layout.json (regenera los p
   - Pestañas de imágenes (`.tab` / `.pane`).
   - Botones `data-ver3d` que abren el 3D en un estado dado, por ejemplo `{"armado": 2}`.
 - **Temas claro y oscuro:**
-  - Todos los colores son tokens en `:root`: `--bg`, `--surface`, `--ink`, `--accent #2A7663`, `--stage` y otros.
+  - Todos los colores son tokens en `:root`: `--bg`, `--surface`, `--ink`, `--accent #2D5DA6` (azul; hasta 2026-11-12 era verde #2A7663), `--stage` y otros.
   - Se redefinen en `@media (prefers-color-scheme: dark)` (con `:root:not([data-theme="light"])`) y en `:root[data-theme="dark"]`.
   - **Mantén siempre los dos temas.**
 - **Diseño responsive:** debe verse bien desde 390 px (teléfono) hasta un iPad en horizontal.
@@ -161,7 +161,7 @@ python contenido/drawings.py    # solo si cambias 3d/layout.json (regenera los p
 - **`manifest.webmanifest`:**
   - Nombre "Maqueta del ciclo de Calvin" y nombre corto "Ciclo Calvin".
   - `start_url` y `scope` son `./`, para que funcione en una subcarpeta.
-  - `display: standalone` y color `#EEF2EC`.
+  - `display: standalone` y color `#EDF1F7`.
 - **`sw.js`** (sale de `sw.template.js`):
   - **Precarga TODOS los archivos** de `dist/` al instalarse: uno por uno, con reintentos, y si se corta sigue donde se quedó.
   - Responde **primero desde la caché**. Si alguien navega a una ruta desconocida, entrega `index.html`.
