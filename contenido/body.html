@@ -1,0 +1,293 @@
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" id="defs-ah"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z"/></marker></defs></svg>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="10" fill="none" stroke="var(--st1)" stroke-width="4" stroke-dasharray="15.7 47.1" transform="rotate(-90 13 13)"/><circle cx="13" cy="13" r="10" fill="none" stroke="var(--st2)" stroke-width="4" stroke-dasharray="20.9 41.9" stroke-dashoffset="-15.7" transform="rotate(-90 13 13)"/><circle cx="13" cy="13" r="10" fill="none" stroke="var(--st3)" stroke-width="4" stroke-dasharray="26.2 36.6" stroke-dashoffset="-36.6" transform="rotate(-90 13 13)"/></svg>
+      <span class="bt"><em>Ciclo de Calvin</em> · manual</span>
+    </div>
+    <div class="top-title" id="topTitle"></div>
+    <span class="count" id="count"></span>
+    <button class="btn sm" id="openIdx" type="button" aria-haspopup="dialog">Índice</button>
+  </div>
+</header>
+
+<main id="deck">
+
+<!-- ============================================================ PORTADA -->
+<section class="slide" id="portada" data-title="Portada" data-grupo="Empezar">
+  <div class="cover">
+    <div>
+      <p class="eyebrow">Fase oscura de la fotosíntesis · manual de construcción</p>
+      <h1 style="margin-top:12px">Maqueta del ciclo de Calvin, con perilla</h1>
+      <p class="sub">Giras una perilla y un vagón con CO₂ recorre el ciclo sin que se vea qué lo mueve. En cada parada alguien del equipo hace su parte con la mano: la pinza RuBisCO atrapa el CO₂, las tarjetas de ATP y NADPH se gastan, sale un G3P por la rampa y al final se recarga todo.</p>
+      <div class="stages" aria-hidden="true"><i style="background:var(--st1)"></i><i style="background:var(--st2)"></i><i style="background:var(--st3)"></i><i style="background:var(--sun)"></i></div>
+      <div class="stats">
+        <div class="stat"><b>60×60</b><span>cm de base, 6.2 de alto</span></div>
+        <div class="stat"><b>8</b><span>paradas numeradas</span></div>
+        <div class="stat"><b>8</b><span>pasos de armado</span></div>
+        <div class="stat"><b>0</b><span>cables, pilas o motores</span></div>
+        <div class="stat"><b>4</b><span>papeles para presentar</span></div>
+        <div class="stat"><b>≈ 8 h</b><span>de trabajo en equipo</span></div>
+      </div>
+      <div class="cta">
+        <button class="btn pri" type="button" data-go="funciona">Empezar el manual</button>
+        <button class="btn" type="button" data-go="maqueta3d">Abrir la maqueta en 3D</button>
+      </div>
+    </div>
+    <figure><img src="img/hero.jpg" alt="Render de la maqueta terminada: tablero de 60 por 60 centímetros con la pista del ciclo, la perilla al centro, estaciones de bloques, tarjetas giratorias, pinza amarilla, rampa y caja de glucosa" width="1600" height="1000"></figure>
+  </div>
+  <div class="incluye">
+    <div class="card"><b>Videos y renders</b><span>Cada paso desde varios ángulos y una vuelta completa en video.</span></div>
+    <div class="card"><b>Planos y plantillas</b><span>Medidas en centímetros, plantillas a tamaño real y mapas de cada bloque.</span></div>
+    <div class="card"><b>Paso a paso</b><span>Casillas para ir marcando lo que ya hicieron, con el porqué de cada cosa.</span></div>
+    <div class="card"><b>Guion para la clase</b><span>4 papeles y lo que dice cada quien en cada parada.</span></div>
+    <div class="card"><b>Maqueta 3D y 4D</b><span>Gírala, quítale la tapa, ármala pieza por pieza y corre una vuelta.</span></div>
+  </div>
+</section>
+
+<!-- ============================================================ ASÍ FUNCIONA -->
+<section class="slide" id="funciona" data-title="Así funciona" data-grupo="Empezar" hidden>
+  <div class="head">
+    <p class="eyebrow">Antes de empezar</p>
+    <h2>Así funciona</h2>
+    <p class="lead">El truco está escondido: bajo la tapa hay un brazo con imanes unido a la perilla. Al girarla, los imanes jalan al vagón a través de la madera. Las moléculas se quedan fijas en sus estaciones; cuando el vagón llega a una parada, alguien del equipo hace lo que toca.</p>
+  </div>
+  <div class="grid2">
+    <div class="media">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" data-pane="f1">Una vuelta · 36 s</button>
+        <button class="tab" role="tab" aria-selected="false" data-pane="f3">El ciclo explicado</button>
+      </div>
+      <div class="pane" data-id="f1"><video src="vid/mecanismo.mp4" poster="vid/mecanismo.jpg" controls playsinline preload="none"></video></div>
+      <div class="pane" data-id="f3" hidden><video src="vid/ciclo_2d.mp4" poster="vid/ciclo_2d.jpg" controls playsinline preload="none"></video></div>
+      <p class="cap-t">El primer video es esta maqueta en 3D: el anillo amarillo marca qué se mueve con la mano en cada momento. El segundo explica el ciclo con piezas planas y sirve para proyectar en clase; sus puntitos de luz son solo decoración.</p>
+    </div>
+    <div class="stack">
+      <div>
+        <h3>Una vuelta, en orden</h3>
+        <ol class="ciclo">{{FUNCIONA}}</ol>
+      </div>
+      <div class="ideas">
+        <div class="card"><b>Lo que viaja</b><p>Un vagón con el bloque verde del CO₂, jalado por imanes.</p></div>
+        <div class="card"><b>Lo que se transforma</b><p>Moléculas de bloques fijas en estaciones: cada bloque es un carbono.</p></div>
+        <div class="card"><b>Lo que se mueve a mano</b><p>La perilla, la pinza, 3 tarjetas giratorias y la compuerta.</p></div>
+        <div class="card"><b>El truco</b><p>Los imanes de neodimio se jalan a través de 6 mm de madera.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ POR DENTRO -->
+<section class="slide" id="dentro" data-title="Por dentro" data-grupo="Empezar" hidden>
+  <div class="head">
+    <p class="eyebrow">Antes de empezar</p>
+    <h2>Por dentro: una sola pieza que gira</h2>
+    <p class="lead">La perilla, el palo y el brazo están pegados entre sí: son una sola pieza que atraviesa la tapa. Arriba queda la perilla; abajo, el brazo con imanes roza la tapa con dos fieltros y arrastra al vagón por encima.</p>
+  </div>
+  <div class="card pad" style="margin-bottom:22px">
+    <div class="plano-wrap">{{SVG:corte}}</div>
+    <ol class="nlist"><li><span>1</span><div>Perilla: 2 discos de MDF de 4.5 cm, pegados al palo.</div></li><li><span>2</span><div>Rondana de ½″: la perilla gira suave sobre ella.</div></li><li><span>3</span><div>Tapa de MDF de 6 mm con el vinil; agujero de ⅝″ al centro.</div></li><li><span>4</span><div>Palo redondo de ½″ y 4 cm: une la perilla con el brazo.</div></li><li><span>5</span><div>Brazo: tira de MDF de 30 × 2.5 cm.</div></li><li><span>6</span><div>2 imanes de 12 × 3 mm encimados, a 14.4 cm del centro, justo bajo el vagón.</div></li><li><span>7</span><div>Fieltro de 2 mm en las dos puntas del brazo: roza la tapa sin rayarla.</div></li><li><span>8</span><div>Vagón: disco de MDF con 2 imanes de 10 × 3 mm, placa 4 × 4 y el bloque verde.</div></li><li><span>9</span><div>Tarjeta ATP sobre su torre de 3 cm, con un palito de brocheta como eje.</div></li><li><span>10</span><div>Postes de apoyo de 2 × 2 × 5 cm, fuera del giro del brazo (proyectados).</div></li><li><span>11</span><div>Fondo de MDF de 6 mm; las paredes miden 5 cm de alto.</div></li></ol>
+    <p class="cap-t">Corte por el centro, a escala. Medidas en centímetros. Los postes no están en el plano del corte: se dibujan proyectados.</p>
+  </div>
+  <div class="grid2 even">
+    <div class="media">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" data-pane="d1">Tapa transparente</button>
+        <button class="tab" role="tab" aria-selected="false" data-pane="d2">Sin tapa</button>
+        <button class="tab" role="tab" aria-selected="false" data-pane="d3">Despiece</button>
+      </div>
+      <div class="pane" data-id="d1"><img src="img/transparente.jpg" alt="Maqueta con la tapa transparente: se ve el brazo justo debajo del vagón" loading="lazy" width="1600" height="1000"></div>
+      <div class="pane" data-id="d2" hidden><img src="img/interior.jpg" alt="Interior de la caja sin tapa: el brazo con imanes, la perilla y los postes de apoyo" loading="lazy" width="1600" height="1000"></div>
+      <div class="pane" data-id="d3" hidden><img src="img/despiece.jpg" alt="Despiece: paredes separadas, brazo, tapa levantada y perilla" loading="lazy" width="1600" height="1000"></div>
+    </div>
+    <div class="stack">
+      <div class="callout warn"><p><b>Regla 1 · sobre la tapa:</b> nada encima de la pista (el anillo de 12.4 a 16.4 cm de radio), o el vagón chocará.</p></div>
+      <div class="callout warn"><p><b>Regla 2 · bajo la tapa:</b> dentro de un radio de 16 cm desde el centro no puede haber nada: por ahí gira el brazo. Por eso los postes de apoyo van más lejos.</p></div>
+      <div class="callout"><p><b>Coordenadas.</b> Todas las medidas se toman desde la esquina trasera izquierda de la tapa: <b>x</b> hacia la derecha, <b>y</b> hacia el frente, en centímetros. El centro del ciclo está en (30, 30) y el público mira desde el frente.</p></div>
+      <div class="callout idea"><p><b>Paradas.</b> El vagón se detiene en 8 paradas numeradas en la orilla de la pista: 0 RuBP, 1 fijación, 2 3-PGA, 3 ATP, 4 NADPH, 5 G3P, 6 regeneración y 7 ATP de regeneración.</p></div>
+    </div>
+  </div>
+</section>
+
+{{ANTES}}
+{{MATERIALES}}
+<!-- ============================================================ PLANO -->
+<section class="slide" id="plano" data-title="Plano de la tapa" data-grupo="Empezar" hidden>
+  <div class="head">
+    <p class="eyebrow">Medidas</p>
+    <h2>Plano de la tapa</h2>
+    <p class="lead">Toca cualquier pieza del plano para ver su posición exacta. Lo punteado va bajo la tapa. La impresión de 60 × 60 cm ya trae estas marcas.</p>
+  </div>
+  <div class="grid2">
+    <div class="card pad"><div class="plano-wrap" id="planoSvg">{{SVG:plano}}</div></div>
+    <div class="stack">
+      <div class="card pad info" id="planoInfo" aria-live="polite">
+        <h4>Toca una pieza</h4>
+        <p class="muted">Verás su centro (x, y), su tamaño y qué va ahí.</p>
+      </div>
+      <div class="legend">
+        <span><i style="background:var(--st1)"></i>Fijación</span>
+        <span><i style="background:var(--st2)"></i>Reducción</span>
+        <span><i style="background:var(--st3)"></i>Regeneración</span>
+        <span><i class="dash"></i>Bajo la tapa</span>
+        <span><i style="background:var(--pine)"></i>Torre de listón</span>
+      </div>
+      <div class="card pad">
+        <h3>Imprime el tablero</h3>
+        <p class="small">PDF de 7 páginas: el tablero a tamaño real (60 × 60 cm, con regla de 10 cm para verificar la escala), las tarjetas, los letreros y solapas, las plantillas, la rampa y los mapas de bloques.</p>
+        <div class="row" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+          <button class="btn pri sm" type="button" data-dl="dl/tablero_60x60.pdf" data-name="tablero_60x60.pdf">Descargar PDF del tablero</button>
+        </div>
+        <p class="toast" data-toast></p>
+      </div>
+      <details class="card pad">
+        <summary><b>Tabla de coordenadas</b></summary>
+        <div class="tw" style="margin-top:12px"><table>
+          <thead><tr><th>Elemento</th><th>Centro (x, y)</th><th>Tamaño y notas</th></tr></thead>
+          <tbody>{{COORDS}}</tbody>
+        </table></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+{{PASOS}}
+<!-- ============================================================ CLASE -->
+<section class="slide" id="clase" data-title="Presentarla en clase" data-grupo="Final" hidden>
+  <div class="head">
+    <p class="eyebrow">Guion</p>
+    <h2>Presentarla en clase</h2>
+    <p class="lead">Cada quien tiene un papel y mueve su parte cuando el vagón llega a su parada. Con explicación, una vuelta dura de 2 a 3 minutos. Las solapas responden las dos preguntas que casi siempre hacen.</p>
+  </div>
+  <div class="roles">{{PAPELES}}</div>
+  <div class="grid2" style="margin-top:22px">
+    <div class="stack">
+      <ol class="ciclo">{{GUION}}</ol>
+      <div class="callout idea"><p>{{BALANCE}}</p></div>
+    </div>
+    <div class="stack">
+      {{SOLAPAS}}
+      <div class="callout"><p>{{SIMPLIFICACION}}</p></div>
+      <div class="media" style="position:static">
+        <div class="pane"><video src="vid/ciclo_2d.mp4" poster="vid/ciclo_2d.jpg" controls playsinline preload="none"></video></div>
+        <p class="cap-t">Animación del ciclo para proyectar mientras presentan la maqueta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ PROBLEMAS -->
+<section class="slide" id="problemas" data-title="Problemas comunes" data-grupo="Final" hidden>
+  <div class="head">
+    <p class="eyebrow">Si algo falla</p>
+    <h2>Problemas comunes</h2>
+    <p class="lead">Casi todo se arregla con una de estas revisiones. Empieza por lo más simple: que la tapa apoye en sus 4 postes y que cada tornillo de eje gire sin estar flojo.</p>
+  </div>
+  {{PROBLEMAS}}
+  <div class="grid2 even" style="margin-top:22px">
+    <div class="callout idea"><p><b>Versión todavía más sencilla.</b> Si no tienen taladro ni imanes, quiten la perilla y el brazo: el conductor empuja el vagón con el dedo por la pista, de parada en parada. Todo lo demás funciona igual.</p></div>
+    <div class="callout warn"><p><b>Seguridad.</b> Los imanes de neodimio pellizcan y se rompen si chocan: guárdalos separados y lejos de celulares y tarjetas.</p></div>
+  </div>
+</section>
+
+<!-- ============================================================ MAQUETA 3D -->
+<section class="slide" id="maqueta3d" data-title="Maqueta 3D / 4D" data-grupo="Final" hidden>
+  <div class="head">
+    <p class="eyebrow">Verificación</p>
+    <h2>La maqueta en 3D y 4D</h2>
+    <p class="lead">Gírala, muévela y acércate a cualquier parte (doble clic o doble toque en lo que quieras ver), quítale la tapa, ármala pieza por pieza o corre una vuelta en el tiempo. El anillo amarillo marca qué se mueve con la mano en cada momento. Los números son puntos para comparar con tu maqueta real: tócalos y márcalos cuando estén bien.</p>
+  </div>
+  <div class="v3d" id="v3d">
+    <div>
+      <div class="v3d-stage" id="v3d-stage">
+        <div id="v3d-status">Cargando la maqueta…</div>
+        <div id="v3d-marks"></div>
+        <div class="hud">
+          <span class="hchip" id="v3d-etapa" data-s="">—</span>
+          <span class="hchip" id="v3d-fase">Lista</span>
+        </div>
+        <div class="v3d-nav" role="group" aria-label="Navegación">
+          <button type="button" id="v3d-girar" aria-pressed="true" title="Arrastrar para girar">Girar</button>
+          <button type="button" id="v3d-mover" aria-pressed="false" title="Arrastrar para mover">Mover</button>
+          <span class="sep"></span>
+          <button type="button" id="v3d-mas" aria-label="Acercar" title="Acercar">+</button>
+          <button type="button" id="v3d-menos" aria-label="Alejar" title="Alejar">−</button>
+          <button type="button" id="v3d-centro" aria-label="Volver a la vista inicial" title="Vista inicial">⌂</button>
+        </div>
+        <p class="v3d-help" id="v3d-help"></p>
+        <div id="v3d-card" hidden>
+          <h4><span id="v3d-card-n"></span><span id="v3d-card-t"></span></h4>
+          <p id="v3d-card-p"></p>
+          <button id="v3d-card-x" type="button" aria-label="Cerrar">×</button>
+        </div>
+      </div>
+      <div class="card pad" style="margin-top:12px">
+        <div class="ctl">
+          <button class="btn pri sm" id="v3d-play" type="button" aria-pressed="false">Reproducir</button>
+          <button class="btn sm" id="v3d-vel" type="button" title="Velocidad">1×</button>
+          <div style="flex:1;min-width:180px">
+            <input type="range" id="v3d-t" min="0" max="34" value="0" step="0.01" aria-label="Tiempo de la vuelta">
+            <div class="rl"><span>Tiempo (la cuarta dimensión)</span><b id="v3d-tl">0.0 s</b></div>
+          </div>
+        </div>
+        <div class="jumps">
+          <button type="button" data-saltar="0.95" style="background:var(--st1)">Fijación</button>
+          <button type="button" data-saltar="9.6" style="background:var(--st2)">Reducción</button>
+          <button type="button" data-saltar="17.8" style="background:var(--st2)">Sale G3P</button>
+          <button type="button" data-saltar="21.0" style="background:var(--st3)">Regeneración</button>
+          <button type="button" data-saltar="29.6" style="background:var(--sun)">Recarga</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="card">
+        <h3>Vista</h3>
+        <div class="seg" role="radiogroup" aria-label="Tapa">
+          <label><input type="radio" name="v3d-modo" value="completa" checked>Completa</label>
+          <label><input type="radio" name="v3d-modo" value="transparente">Transparente</label>
+          <label><input type="radio" name="v3d-modo" value="sinTapa">Sin tapa</label>
+        </div>
+        <div style="margin-top:14px">
+          <input type="range" id="v3d-desp" min="0" max="1" step="0.01" value="0" aria-label="Despiece">
+          <div class="rl"><span>Despiece</span><span>armada → separada</span></div>
+        </div>
+        <div class="ctl" style="margin-top:12px;justify-content:space-between">
+          <label class="sw"><input type="checkbox" id="v3d-solapas">Abrir solapas</label>
+          <label class="sw"><input type="checkbox" id="v3d-resalte" checked>Anillo</label>
+          <label class="sw"><input type="checkbox" id="v3d-puntos" checked>Números</label>
+          <button class="btn sm" id="v3d-reset" type="button">Centrar</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Armado</h3>
+        <input type="range" id="v3d-arm" min="0" max="11" step="0.01" value="11" aria-label="Piezas armadas">
+        <div class="rl"><b id="v3d-arml">Completa</b></div>
+        <button class="btn sm" id="v3d-armar" type="button" style="margin-top:10px">Armar pieza por pieza</button>
+      </div>
+      <div class="card">
+        <h3>Puntos para verificar</h3>
+        <ul id="v3d-lista"></ul>
+        <p id="v3d-ok"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<nav class="nav" aria-label="Diapositivas">
+  <div class="nav-in">
+    <button class="btn" id="prev" type="button">◀ <span class="lbl">Anterior</span></button>
+    <div class="prog" id="prog"></div>
+    <button class="btn pri" id="next" type="button"><span class="lbl">Siguiente</span> ▶</button>
+  </div>
+</nav>
+
+<div class="idx" id="idx" hidden role="dialog" aria-modal="true" aria-label="Índice">
+  <div class="idx-in">
+    <div class="idx-h"><b>Índice</b><button class="btn sm" type="button" id="closeIdx">Cerrar</button></div>
+    <div id="idxList"></div>
+    <button class="btn sm pwa-idx" type="button" id="pwaIdx">Usar sin internet en el celular</button>
+  </div>
+</div>

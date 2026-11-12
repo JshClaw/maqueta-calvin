@@ -1,0 +1,21 @@
+{
+  "name": "ciclo-calvin-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Manual de la maqueta del ciclo de Calvin (fase oscura) como app web instalable que funciona sin internet.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "dev": "node scripts/build.mjs && node scripts/serve.mjs",
+    "test": "node scripts/test-offline.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "playwright": "1.56.0",
+    "three": "0.170.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

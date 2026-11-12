@@ -1,0 +1,152 @@
+<style>
+.pwa{position:fixed;z-index:9000;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:80px;max-width:440px;margin:0 auto;
+  background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 40px rgba(10,30,20,.22);
+  padding:14px 16px 15px;font:14px/1.5 var(--sans);display:grid;gap:9px}
+.pwa-h{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;line-height:1.3}
+.pwa-h img{width:34px;height:34px;border-radius:9px;flex:none}
+.pwa-x{margin-left:auto;flex:none;background:none;border:0;color:var(--muted);font:400 22px/1 var(--sans);padding:0;min-width:40px;min-height:40px;margin-block:-8px;margin-right:-8px;cursor:pointer;border-radius:8px}
+.pwa-x:focus-visible,.pwa-go:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pwa-bar{height:7px;border-radius:4px;background:var(--line);overflow:hidden}
+.pwa-bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:4px;transition:width .35s ease}
+.pwa p{margin:0;color:var(--ink-2)}
+.pwa ol{margin:0;padding-left:21px;color:var(--ink-2);display:grid;gap:4px}
+.pwa b{color:var(--ink);font-weight:600}
+.pwa-go{justify-self:start;background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:10px 16px;font:600 14px/1 var(--sans);cursor:pointer}
+.pwa-ok{display:flex;align-items:center;gap:10px;font-weight:600}
+.pwa-ok svg{flex:none}
+.pwa-idx{margin-top:14px;width:100%}
+</style>
+<div class="pwa" id="pwa" role="status" aria-live="polite" hidden></div>
+<script>
+(function () {
+  var CACHE = '__CACHE__', FILES = __FILES__, SIZES = __SIZES__, MB = '__MB__';
+  var box = document.getElementById('pwa'), idxBtn = document.getElementById('pwaIdx');
+  if (!('serviceWorker' in navigator) || !window.caches || !window.isSecureContext) { if (idxBtn) idxBtn.hidden = true; return; }
+
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+  var mq = window.matchMedia('(display-mode: standalone)');
+  function instalada() { return mq.matches || navigator.standalone === true; }
+  var ua = navigator.userAgent;
+  var ios = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var android = /Android/i.test(ua);
+  var ipad = /iPad/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var tablet = ipad || (android && !/Mobile/i.test(ua));
+  var aqui = ipad ? 'este iPad' : (tablet ? 'esta tableta' : 'este teléfono');
+  var tuEquipo = ipad ? 'tu iPad' : (tablet ? 'tu tableta' : 'tu celular');
+  var prompt = null, frac = 0, listo = false, nueva = false, abierto = false, okVisto = false;
+  var cerrado = store.get('pwa-cerrado') === '1';
+  var want = FILES.map(function (f) { return new URL(f, location.href).href; });
+  var total = SIZES.reduce(function (a, b) { return a + b; }, 0);
+
+  navigator.serviceWorker.register('sw.js').catch(function (err) { console.warn('No se pudo registrar el service worker', err); });
+  var habia = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', function () { if (habia) { nueva = true; render(); } habia = true; });
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); prompt = e; render(); });
+  window.addEventListener('appinstalled', function () { prompt = null; render(); });
+  if (mq.addEventListener) mq.addEventListener('change', render);
+
+  // el aviso para instalar sale en la portada (o cuando lo piden desde el índice), para no tapar los pasos ni el 3D
+  var portada = document.getElementById('portada');
+  function enPortada() { return !portada || !portada.hidden; }
+  if (portada && window.MutationObserver) new MutationObserver(function () { abierto = false; render(); }).observe(portada, { attributes: true, attributeFilter: ['hidden'] });
+
+  function medir() {
+    return caches.has(CACHE).then(function (si) {
+      if (!si) return 0;
+      return caches.open(CACHE).then(function (c) { return c.keys(); }).then(function (keys) {
+        var have = {}, n = 0;
+        keys.forEach(function (r) { have[r.url] = 1; });
+        want.forEach(function (u, i) { if (have[u]) n += SIZES[i]; });
+        return n / total;
+      });
+    });
+  }
+  function vigilar() {
+    medir().then(function (f) {
+      frac = f;
+      if (f >= 1) {
+        listo = true;
+        if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(function () {});
+      }
+      render();
+      if (!listo) setTimeout(vigilar, 700);
+    }).catch(function () { setTimeout(vigilar, 1500); });
+  }
+
+  var ICON = '<img src="icons/icon-192.png" alt="">';
+  var X = '<button class="pwa-x" type="button" data-x aria-label="Cerrar">×</button>';
+  var CHECK = '<svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="11" fill="var(--accent)"/><path d="M6.5 11.3l3 3 6-6.4" fill="none" stroke="var(--accent-ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function pasos() {
+    if (ios) return '<p>Ya quedó guardada en ' + aqui + '. Para abrirla sin internet, ponla en tu pantalla de inicio:</p><ol>' +
+      '<li>Toca <b>Compartir</b> (el cuadro con una flecha hacia arriba). Si no lo ves, está en el menú <b>⋯</b>.</li>' +
+      '<li>Elige <b>Agregar a inicio</b> y luego <b>Agregar</b>.</li>' +
+      '<li>Abre la app desde el ícono nuevo <b>una vez con internet</b> y espera el aviso <b>«Lista»</b>. Desde ahí ya no necesita internet.</li></ol>';
+    if (android && prompt) return '<p>Ya quedó guardada en ' + aqui + '. Instálala para abrirla desde su ícono, aunque no haya internet.</p>' +
+      '<button class="pwa-go" type="button" data-go>Instalar app</button>';
+    if (android) return '<p>Ya quedó guardada en ' + aqui + '. Para abrirla sin internet, ponla en tu pantalla de inicio:</p><ol>' +
+      '<li>Abre el menú <b>⋮</b> de Chrome (arriba a la derecha).</li>' +
+      '<li>Toca <b>Instalar app</b> o <b>Agregar a la pantalla principal</b>.</li>' +
+      '<li>Ábrela desde el ícono nuevo: ya funciona sin internet.</li></ol>';
+    return '<p>Esta página ya quedó guardada y funciona sin internet en este navegador.</p>' +
+      (prompt ? '<button class="pwa-go" type="button" data-go>Instalar app</button>' : '') +
+      '<p>Para el celular, ábrela en <b>Safari</b> (iPhone) o <b>Chrome</b> (Android) y sigue los pasos que aparecen.</p>';
+  }
+
+  function render() {
+    var html = '';
+    if (nueva) {
+      html = '<div class="pwa-h">' + ICON + '<span>Hay una versión nueva del manual</span>' + X + '</div>' +
+        '<button class="pwa-go" type="button" data-reload>Actualizar</button>';
+    } else if (!listo && (instalada() || abierto || (!cerrado && enPortada()))) {
+      var p = Math.round(frac * 100);
+      html = '<div class="pwa-h">' + ICON + '<span>' + (instalada() ? 'Preparando la app' : 'Guardando para usar sin internet') + ' · ' + p + ' %</span>' + (instalada() ? '' : X) + '</div>' +
+        '<div class="pwa-bar"><i style="width:' + p + '%"></i></div>' +
+        '<p>Déjala abierta con internet hasta que diga <b>«Lista»</b>. Son unos ' + MB + ' MB.</p>';
+    } else if (listo && instalada()) {
+      if (store.get('pwa-ok') !== CACHE && !okVisto) {
+        okVisto = true;
+        html = '<div class="pwa-ok">' + CHECK + '<span>Lista: ya funciona sin internet</span></div>';
+        store.set('pwa-ok', CACHE);
+        setTimeout(function () { box.hidden = true; }, 5000);
+      } else if (okVisto && !box.hidden) {
+        return;
+      }
+    } else if (listo && (abierto || (!cerrado && enPortada()))) {
+      html = '<div class="pwa-h">' + ICON + '<span>Instálala en ' + tuEquipo + '</span>' + X + '</div>' + pasos();
+    }
+    if (idxBtn) idxBtn.hidden = instalada();
+    if (!html) { box.hidden = true; return; }
+    box.innerHTML = html;
+    var nav = document.querySelector('nav.nav');
+    box.style.bottom = ((nav && nav.getBoundingClientRect().height) || 0) + 12 + 'px';
+    box.hidden = false;
+  }
+
+  box.addEventListener('click', function (e) {
+    var t = e.target.closest('button');
+    if (!t) return;
+    if (t.hasAttribute('data-x')) {
+      box.hidden = true;
+      if (nueva) { nueva = false; return; }
+      abierto = false; cerrado = true; store.set('pwa-cerrado', '1');
+    }
+    if (t.hasAttribute('data-reload')) location.reload();
+    if (t.hasAttribute('data-go') && prompt) {
+      prompt.prompt();
+      prompt.userChoice.then(function () { prompt = null; render(); });
+    }
+  });
+  if (idxBtn) idxBtn.addEventListener('click', function () {
+    var c = document.getElementById('closeIdx');
+    if (c) c.click();
+    abierto = true;
+    render();
+  });
+  window.addEventListener('resize', function () { if (!box.hidden) render(); });
+  vigilar();
+})();
+</script>
