@@ -47,6 +47,8 @@ ICON = {
     'zoom': '<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>',
     'cel': '<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/>',
     'chev': '<path d="m9 6 6 6-6 6"/>',
+    'luna': '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
+    'sol': '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
     'atras': '<path d="m15 6-6 6 6 6"/>',
 }
 
@@ -275,7 +277,7 @@ def antes_html():
       <div class="card pad"><h3>Cómo se mide todo</h3>
         <p>Todas las posiciones se dan como <b>(x, y)</b> en centímetros, desde la <b>esquina trasera izquierda</b> de la tapa: x crece hacia la derecha y y hacia el frente, donde está el público. El centro del ciclo, donde va la perilla, está en (30, 30).</p>
         <p style="margin-top:8px">El vagón se detiene en <b>8 paradas numeradas</b> (0 a 7) impresas en la orilla de la pista. La perilla siempre se gira en <b>sentido horario</b>, como las manecillas del reloj.</p>
-        <p style="margin-top:8px">Las alturas se miden desde la mesa, salvo cuando dice "sobre la tapa".</p>
+        <p style="margin-top:8px">Las alturas de lo que va encima (torres, tarjetas, rampa) se miden <b>desde la tapa</b>, no desde la mesa. Por dentro de la caja, réstale 0.6 cm (el grueso de la pared) a las coordenadas: así lo indica el Paso 1.</p>
         <div class="gact"><button class="btn" type="button" data-go="plano">{icon("regla")}Ver el plano de la tapa</button></div></div>
       <div class="card pad"><h3>Cómo repartir el trabajo (equipo de 3 o 4)</h3>
         <ul class="dots">
@@ -286,16 +288,16 @@ def antes_html():
         </ul>
         <p class="small muted" style="margin-top:8px">Tiempo total: unas 8 horas de trabajo. La impresión del vinil y el secado del pegamento toman días: empiecen por ahí.</p></div>
       <div class="card pad"><h3>El PDF de 7 páginas</h3>
-        <ol class="plainol">
-          <li><b>Tablero 60 × 60 cm</b>: se imprime en plotter, en vinil.</li>
-          <li><b>Tarjetas</b> de ATP, ADP, NADPH y NADP⁺.</li>
-          <li><b>Letreros</b> y la solapa "¿Dónde ocurre?".</li>
-          <li>Solapa <b>"¿Por qué le dicen fase oscura?"</b>, fondo de la <b>caja de glucosa</b> y calcomanía de la <b>perilla</b>.</li>
-          <li><b>Plantillas</b>: discos, brazo, pinza, compuerta y torres.</li>
-          <li><b>Rampa</b>: piezas y vista de lado a tamaño real.</li>
-          <li><b>Mapas de bloques</b> de cada placa, a tamaño real.</li>
-        </ol>
-        <p class="small muted" style="margin-top:8px">Las páginas 2 a 7 van en hojas tamaño carta, siempre al 100 % (tamaño real).</p>
+        <div class="tw"><table class="hojas"><thead><tr><th>Página</th><th>La hoja dice</th><th>Qué trae</th></tr></thead><tbody>
+          <tr><td class="n">1</td><td>—</td><td><b>Tablero 60 × 60 cm</b>: se imprime en plotter, en vinil.</td></tr>
+          <tr><td class="n">2</td><td>hoja 1 de 6</td><td><b>Tarjetas</b> de ATP, ADP, NADPH y NADP⁺.</td></tr>
+          <tr><td class="n">3</td><td>hoja 2 de 6</td><td><b>Letreros</b> y la solapa "¿Dónde ocurre?".</td></tr>
+          <tr><td class="n">4</td><td>hoja 3 de 6</td><td>Solapa <b>"¿Por qué le dicen fase oscura?"</b>, fondo de la <b>caja de glucosa</b> y calcomanía de la <b>perilla</b>.</td></tr>
+          <tr><td class="n">5</td><td>hoja 4 de 6</td><td><b>Plantillas</b>: discos, brazo, pinza, compuerta y torres.</td></tr>
+          <tr><td class="n">6</td><td>hoja 5 de 6</td><td><b>Rampa</b> de la compuerta: piezas y vista de lado a tamaño real.</td></tr>
+          <tr><td class="n">7</td><td>hoja 6 de 6</td><td><b>Dónde va cada bloque</b>: mapas de cada placa.</td></tr>
+        </tbody></table></div>
+        <p class="small muted" style="margin-top:8px">Las páginas 2 a 7 van en hojas tamaño carta, siempre al 100 % (tamaño real). En los pasos se nombran por su número de página del PDF y su título; abajo de cada hoja impresa dice «hoja 1 de 6» a «hoja 6 de 6».</p>
         <div class="gact">{PDF_BTN}</div></div>
     </div>
     <div class="stack">

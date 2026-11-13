@@ -45,6 +45,18 @@ try {
     }
     ok(bienTabs, 'las 5 pestañas abren su pantalla, sin botón de regresar');
 
+    // 1b. botón de modo claro / oscuro
+    const tema = () => pg.evaluate(() => [document.documentElement.getAttribute('data-theme'), getComputedStyle(document.body).backgroundColor]);
+    const [m0, bg0] = await tema();
+    await pg.tap('#tema'); await espera(200);
+    const [m1, bg1] = await tema();
+    await pg.reload({ waitUntil: 'load' }); await espera(400);
+    const [m2] = await tema();
+    await pg.tap('#tema'); await espera(200);
+    const [m3, bg3] = await tema();
+    ok(m0 === null && m1 === 'dark' && bg1 !== bg0 && m2 === 'dark' && m3 === 'light' && bg3 === bg0,
+      `botón de tema: claro → ${m1} (fondo ${bg1}), se queda al recargar, y regresa a ${m3}`);
+
     // 2. Armar → Paso 3 → regresar
     await pg.tap('.tb[data-tabbtn="armar"]'); await espera(350);
     await pg.tap('[data-card="paso3"]'); await espera(450);

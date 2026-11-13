@@ -413,12 +413,12 @@
   "washerT": 0.2
  },
  "arm": {
-  "len": 30.0,
+  "len": 31.0,
   "w": 2.5,
   "magR": 14.4,
   "pad": 0.2,
   "padSize": 2.0,
-  "padC": 14.0
+  "padC": 14.5
  },
  "ramp": {
   "top": [

@@ -291,7 +291,7 @@
   // ---------------------------------------------------------------- plano interactivo
   const INFO = {
     tapa: ['Tapa de MDF de 6 mm', '60 × 60 cm', 'Apoya en paredes, esquineros y 4 postes. 4 tornillos, uno por esquina, a 1.6 cm de cada orilla. Lleva encima el vinil impreso y un agujero de ⅝″ al centro.'],
-    giro: ['Giro del brazo (bajo la tapa)', 'r 15.3 cm', 'Por aquí gira el brazo con imanes. Dentro de este círculo no puede haber nada bajo la tapa.'],
+    giro: ['Giro del brazo (bajo la tapa)', 'r 15.6 cm', 'Por aquí gira el brazo con imanes. Dentro de este círculo no puede haber nada bajo la tapa.'],
     postes: ['Postes de apoyo (bajo la tapa)', '(14, 15) · (46, 15) · (15, 45) · (44, 46)', 'Listón de 2 × 2 × 5 cm, pegado y atornillado al fondo. Evitan que la tapa se hunda. Quedan fuera del giro del brazo.'],
     pista: ['Pista', 'r 12.4 a 16.4 cm', 'Impresa en el vinil. Verde: fijación. Morado: reducción. Rosa: regeneración. Nada se pega encima.'],
     paradas: ['Paradas numeradas', 'r 17.45 cm', '0 RuBP · 1 fijación · 2 3-PGA · 3 ATP · 4 NADPH · 5 G3P · 6 regeneración · 7 ATP de regeneración. Ahí se detiene el vagón.'],
@@ -306,7 +306,7 @@
     ct_nadph: ['Tarjeta NADPH · parada 4', 'torre en (47.2, 44.5)', 'Igual que la de ATP. Muestra NADPH (cargada) o NADP⁺ (gastada).'],
     ct_atp3: ['Tarjeta ATP de regeneración · parada 7', 'torre en (8.9, 22.3)', 'Igual que la de ATP. Muestra 3 ATP o 3 ADP.'],
     ct_gate: ['Compuerta · parada 5', 'torre en (22.9, 50.3)', 'Torre de 2 × 2 × 7 cm. El abatelenguas de 8 cm gira en un tornillo y cruza el canal 5 mm arriba del piso.'],
-    rampa: ['Rampa', '(26.5, 54) → (11, 54)', 'Canal de 15.5 cm, piso de 3 cm y bordes de 1 cm. Baja de 8 a 2 cm. Pilares de 7.1 y 1.9 cm.'],
+    rampa: ['Rampa', '(26.5, 54) → (11, 54)', 'Canal de 15.5 cm, piso de 3 cm y bordes de 1 cm. Baja de 8 a 2 cm sobre la tapa. Pilares de 7.1 y 1.9 cm.'],
     glucosa: ['Caja de glucosa', '(2, 50) → (11, 58)', '9 × 8 cm con paredes de 1.5 cm.'],
     titulo: ['Letrero del título', '(2, 2) → (19, 8)', 'Foamboard con la impresión de la página 3.'],
     fase: ['Letrero de la fase luminosa', '(41, 2) → (58, 8)', 'Recuerda de dónde viene la energía.'],
@@ -329,6 +329,25 @@
     g.addEventListener('click', act);
     g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { act(); e.preventDefault(); } });
   });
+
+  // ---------------------------------------------------------------- modo claro / oscuro (sigue al equipo hasta que lo cambies)
+  const temaBtn = $('#tema');
+  const oscuroSistema = matchMedia('(prefers-color-scheme: dark)');
+  const temaActual = () => document.documentElement.getAttribute('data-theme') || (oscuroSistema.matches ? 'dark' : 'light');
+  function pintarTema() {
+    const osc = temaActual() === 'dark';
+    temaBtn.setAttribute('aria-label', osc ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+    const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+    $$('meta[name="theme-color"]').forEach((m) => m.setAttribute('content', bg));
+  }
+  temaBtn.addEventListener('click', () => {
+    const nuevo = temaActual() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', nuevo);
+    try { localStorage.setItem('calvin-tema', nuevo); } catch (e) { /* nada */ }
+    pintarTema();
+  });
+  if (oscuroSistema.addEventListener) oscuroSistema.addEventListener('change', pintarTema);
+  pintarTema();
 
   // ---------------------------------------------------------------- inicio
   progreso();

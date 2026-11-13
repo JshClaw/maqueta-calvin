@@ -152,6 +152,8 @@ python contenido/drawings.py    # solo si cambias 3d/layout.json (regenera los p
   - Todos los colores son tokens en `:root`: `--bg`, `--surface`, `--ink`, `--accent #2D5DA6` (azul; hasta 2026-11-12 era verde #2A7663), `--stage` y otros.
   - Se redefinen en `@media (prefers-color-scheme: dark)` (con `:root:not([data-theme="light"])`) y en `:root[data-theme="dark"]`.
   - **Mantén siempre los dos temas.**
+  - Botón discreto `#tema` (luna/sol) en la esquina de la barra de arriba: pone `data-theme` en `<html>` y lo guarda en `localStorage` como `calvin-tema`.
+    Mientras nadie lo toque, la app sigue el modo del equipo. Un script al inicio de `body.html` lo aplica antes de pintar.
 - **Diseño responsive:** debe verse bien desde 390 px (teléfono) hasta un iPad en horizontal.
 - **Descargas:** se hacen con un enlace normal (`<a download>`) a `dl/…`.
 
@@ -283,6 +285,20 @@ El proyecto se hizo con Claude, con un sistema más grande en Python (skia para 
   y "Puntos para verificar" pasó a "Compara con tu maqueta (opcional)": la pantalla gris de "Siguiente" se confundía con un candado.
   En la app instalada, el aviso de descarga ya tiene botón para cerrarlo.
   `npm test`, `npm run test:tactil` y `npm run test:app` pasan en iPhone 13, Pixel 7, iPad (gen 11) e iPad Pro 11 en horizontal.
+- 2026-11-13: **revisión de los pasos contra el PDF y el modelo 3D** (coordenadas, alturas, torres, bloques, rampa: todo coincide). Se corrigió:
+  - Las 5 torres (también la de la compuerta) se atornillan en el Paso 6, con la tapa fuera, y luego se regresa la tapa a la caja. Antes la tapa nunca volvía y la torre de la compuerta obligaba a quitarla otra vez en el Paso 7.
+  - Agujero guía de 2 mm arriba de las torres de la pinza y la compuerta (los tornillos de eje rajaban el listón).
+  - Postes del Paso 1: también en medidas desde la cara de adentro de las paredes (coordenada − 0.6 cm).
+  - El PDF numera sus hojas carta «hoja 1 de 6» a «hoja 6 de 6» (página 2 = hoja 1). Los pasos nombran la página y el título de la hoja; Antes de empezar trae la tabla.
+  - Las alturas de arriba (torres, rampa de 8 y 2 cm) son **sobre la tapa**, como en el PDF; antes decía «desde la mesa».
+  - La caja de glucosa va con cinta doble cara **delgada**: con la de espuma su orilla queda más alta que la punta de la rampa (2 cm) y la pieza G3P se atora.
+  - Solo los 5 cuadritos con crucecita llevan agujero; los de los pilares de la rampa no.
+  - Herramientas que faltaban en la lista (prensa, madera de sacrificio, tijeras, plumón, clavo, alfiler, tarjeta, pincel, libros).
+- **El brazo mide 31 cm** (antes 30): con 30, el agujero de 12 mm de los imanes (centro a 14.4 cm) llegaba justo a la punta, sin madera. Con 31 quedan 5 mm.
+  Los imanes siguen a 14.4 cm, así que vagón, pista y pinza no cambian; la punta gira a 15.6 cm (dentro de los 16 cm libres).
+  **El PDF ya impreso dice 30 cm** en la plantilla del brazo y no se puede regenerar aquí: el Paso 3 explica que se alinea por la raya roja del centro
+  y que la plantilla se queda 5 mm antes de la punta. Cambiaron `layout.json` (`arm.len` 31, `arm.padC` 14.5) y se regeneraron los SVG con `drawings.py`.
+  Los renders de `public/img` siguen con el brazo de 30 (5 mm por lado, no se nota).
 - `dist/` está construida y lista para subir.
 - **Publicada** el 2026-11-12 en GitHub Pages: **https://jshclaw.github.io/maqueta-calvin/** (repo público `JshClaw/maqueta-calvin`).
   - Cada push a `main` que cambie `dist/` la vuelve a publicar. El primer push, el que creó la rama, no disparó el flujo: se lanzó a mano con `gh workflow run pages.yml`.

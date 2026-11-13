@@ -1,3 +1,4 @@
+<script>/* tema elegido a mano (antes de pintar, para que no parpadee) */try{var t=localStorage.getItem("calvin-tema");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" id="defs-ah"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z"/></marker></defs></svg>
 
 <header class="top">
@@ -10,7 +11,7 @@
       </div>
     </div>
     <div class="top-title" id="topTitle" aria-live="polite"></div>
-    <div class="top-r"></div>
+    <div class="top-r"><button class="tema" id="tema" type="button" aria-label="Cambiar a modo oscuro" title="Modo claro u oscuro">{{ICON:luna.luna}}{{ICON:sol.sol}}</button></div>
   </div>
 </header>
 
@@ -110,7 +111,7 @@
   <div class="card pad" style="margin-bottom:22px">
     <h3>Corte por el centro, a escala</h3>
     <div class="plano-wrap">{{SVG:corte}}</div>
-    <ol class="nlist"><li><span>1</span><div>Perilla: 2 discos de MDF de 4.5 cm, pegados al palo.</div></li><li><span>2</span><div>Rondana de ½″: la perilla gira suave sobre ella.</div></li><li><span>3</span><div>Tapa de MDF de 6 mm con el vinil; agujero de ⅝″ al centro.</div></li><li><span>4</span><div>Palo redondo de ½″ y 4 cm: une la perilla con el brazo.</div></li><li><span>5</span><div>Brazo: tira de MDF de 30 × 2.5 cm.</div></li><li><span>6</span><div>2 imanes de 12 × 3 mm encimados, a 14.4 cm del centro, justo bajo el vagón.</div></li><li><span>7</span><div>Fieltro de 2 mm en las dos puntas del brazo: roza la tapa sin rayarla.</div></li><li><span>8</span><div>Vagón: disco de MDF con 2 imanes de 10 × 3 mm, placa 4 × 4 y el bloque verde.</div></li><li><span>9</span><div>Tarjeta ATP sobre su torre de 3 cm, con un palito de brocheta como eje.</div></li><li><span>10</span><div>Postes de apoyo de 2 × 2 × 5 cm, fuera del giro del brazo (proyectados).</div></li><li><span>11</span><div>Fondo de MDF de 6 mm; las paredes miden 5 cm de alto.</div></li></ol>
+    <ol class="nlist"><li><span>1</span><div>Perilla: 2 discos de MDF de 4.5 cm, pegados al palo.</div></li><li><span>2</span><div>Rondana de ½″: la perilla gira suave sobre ella.</div></li><li><span>3</span><div>Tapa de MDF de 6 mm con el vinil; agujero de ⅝″ al centro.</div></li><li><span>4</span><div>Palo redondo de ½″ y 4 cm: une la perilla con el brazo.</div></li><li><span>5</span><div>Brazo: tira de MDF de 31 × 2.5 cm.</div></li><li><span>6</span><div>2 imanes de 12 × 3 mm encimados, a 14.4 cm del centro, justo bajo el vagón.</div></li><li><span>7</span><div>Fieltro de 2 mm en las dos puntas del brazo: roza la tapa sin rayarla.</div></li><li><span>8</span><div>Vagón: disco de MDF con 2 imanes de 10 × 3 mm, placa 4 × 4 y el bloque verde.</div></li><li><span>9</span><div>Tarjeta ATP sobre su torre de 3 cm, con un palito de brocheta como eje.</div></li><li><span>10</span><div>Postes de apoyo de 2 × 2 × 5 cm, fuera del giro del brazo (proyectados).</div></li><li><span>11</span><div>Fondo de MDF de 6 mm; las paredes miden 5 cm de alto.</div></li></ol>
     <p class="cap-t">Medidas en centímetros. Los postes no están en el plano del corte: se dibujan proyectados.</p>
   </div>
   <div class="grid2 even">

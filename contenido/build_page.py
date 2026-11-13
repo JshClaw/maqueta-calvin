@@ -36,7 +36,7 @@ def main():
     }
     for k, v in rep.items():
         body = body.replace('{{%s}}' % k, v)
-    body = re.sub(r'\{\{ICON:(\w+)\}\}', lambda m: P.icon(m.group(1)), body)
+    body = re.sub(r'\{\{ICON:(\w+)(?:\.(\w+))?\}\}', lambda m: P.icon(m.group(1), 'i ' + (m.group(2) or '')), body)
     body = re.sub(r'\{\{SVG:(\w+)\}\}', lambda m: leer('svg', f'{m.group(1)}.svg'), body)
     falta = re.findall(r'\{\{[^}]+\}\}', body)
     assert not falta, f'marcadores sin llenar: {falta}'

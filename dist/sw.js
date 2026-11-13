@@ -1,5 +1,5 @@
 // Guarda todo el manual en el celular para que funcione sin internet.
-const CACHE = 'calvin-f3cd25f099';
+const CACHE = 'calvin-0d3aa661df';
 const FILES = [
  "index.html",
  "dl/tablero_60x60.pdf",

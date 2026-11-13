@@ -22,11 +22,11 @@ PASOS = [
             ('h', '1. Prepara las piezas'),
             ('ol', [
                 'Pide en la maderería los cortes de MDF de 6 mm de la lista ([Cortes para la maderería](#materiales), en Materiales). Lija los cantos con lija 120 para quitar las rebabas.',
-                ('Corta el listón de 2 × 2 cm con la escuadra, para que los cortes queden rectos, y escribe con lápiz en cada pieza para qué es. Compáralas con la página 5 del PDF:', [
+                ('Corta el listón de 2 × 2 cm con la escuadra, para que los cortes queden rectos, y escribe con lápiz en cada pieza para qué es. Compáralas con los dibujos de la página 5 del PDF (la hoja de **Plantillas**):', [
                     '**8 de 5 cm**: 4 esquineros y 4 postes de apoyo de la tapa.',
                     '**3 de 3 cm**: torres de las 3 tarjetas (Paso 6).',
                     '**1 de 2.5 cm**: torre de la pinza (Paso 6).',
-                    '**1 de 7 cm**: torre de la compuerta (Paso 7).',
+                    '**1 de 7 cm**: torre de la compuerta (se atornilla en el Paso 6; la compuerta se arma en el 7).',
                     '**1 de 7.1 cm y 1 de 1.9 cm**: pilares de la rampa (Paso 7).']),
                 'Escribe con lápiz en la cara de adentro de cada pared: FRENTE, ATRÁS, IZQ o DER.',
             ]),
@@ -39,7 +39,7 @@ PASOS = [
             ]),
             ('h', '3. Postes de apoyo de la tapa'),
             ('ol', [
-                'Mide desde la esquina trasera izquierda (x hacia la derecha, y hacia el frente) y marca en el fondo los centros de los 4 postes: **(14, 15), (46, 15), (15, 45) y (44, 46)**.',
+                'Marca en el fondo los centros de los 4 postes. En el plano están en (14, 15), (46, 15), (15, 45) y (44, 46), medidos desde la esquina de afuera; por dentro de la caja mide desde la cara de adentro de la pared izquierda (x) y de la de atrás (y), y réstale 0.6 cm a cada número (el grueso de la pared): **(13.4, 14.4), (45.4, 14.4), (14.4, 44.4) y (43.4, 45.4)**.',
                 'En cada marca, haz un agujero de 3.5 mm que atraviese el fondo.',
                 'Pega cada poste de 5 cm parado sobre su marca y deja secar.',
                 'Voltea la caja. Por cada agujero, perfora 2 cm dentro del poste con broca de 2 mm (si no, la madera se raja), avellana el agujero del fondo y pon un tornillo. La cabeza debe quedar al ras para que la caja no cojee.',
@@ -72,11 +72,11 @@ PASOS = [
             ('ol', [
                 'Lleva el PDF a un local de impresión de gran formato (plotter). Pide la **página 1** a escala **100 %** (tamaño real, sin "ajustar a la página") en **vinil adherible mate**: el brillante refleja la luz y el vagón resbala distinto.',
                 'Comprueba la escala con la regla impresa abajo a la derecha: debe medir **10 cm exactos**. Si no, pide que la reimpriman.',
-                'Imprime tú las páginas 2 a 7 en hojas tamaño carta, también al **100 %** (en el cuadro de impresión elige "tamaño real"). Comprueba: el disco del vagón de la página 5 debe medir 4.5 cm.',
-                'Limpia la tapa con un trapo seco. Ponla boca arriba, con la marca "FRENTE ↓" hacia ti, y el vinil con la regla de 10 cm abajo a la derecha: la palabra FIJACIÓN queda hacia atrás.',
+                'Imprime tú las páginas 2 a 7 en hojas tamaño carta, también al **100 %** (en el cuadro de impresión elige "tamaño real"). Abajo de cada hoja dice «hoja 1 de 6» a «hoja 6 de 6»: la hoja 1 es la página 2 del PDF, y así. Comprueba: el disco del vagón de la hoja de **Plantillas** debe medir 4.5 cm.',
+                'Limpia la tapa con un trapo seco. Ponla boca arriba, con el lado del frente hacia ti (la marca "FRENTE ↓" que escribiste queda abajo, en esa orilla). El vinil va con la regla de 10 cm abajo a la derecha: la palabra FIJACIÓN queda hacia atrás.',
                 'Despega solo 10 cm del papel protector, alinea dos esquinas con las de la tapa y pégalas. Ve quitando el resto del protector mientras alisas con una tarjeta de plástico, del centro hacia afuera. Si queda una burbuja, pícala con un alfiler y alísala.',
-                'Agujero del centro: corta el vinil en cruz sobre la cruz del centro y perfora con broca de paleta de **⅝″** (16 mm), con una madera debajo. Por aquí pasará el palo de la perilla: es más ancho que el palo para que gire suelto.',
-                'Agujeros de las torres: en cada cuadrito punteado de 2 × 2 cm hay una crucecita. Perfora ahí con **3.5 mm** de lado a lado (son 5: pinza, ATP, NADPH, ATP de regeneración y compuerta). Por ellos entran los tornillos que sujetan las torres desde abajo.',
+                'Agujero del centro: corta el vinil en cruz sobre la cruz del centro. Si la maderería no te hizo el agujero, perfora ahí con broca de paleta de **⅝″** (16 mm), con una madera debajo. Por aquí pasará el palo de la perilla: es más ancho que el palo para que gire suelto.',
+                'Agujeros de las torres: busca los **5 cuadritos punteados de 2 × 2 cm que tienen una crucecita** (pinza, ATP, NADPH, ATP de regeneración y compuerta) y perfora en la crucecita con **3.5 mm**, de lado a lado. Por ellos entran los tornillos que sujetan las torres desde abajo. Los 2 cuadritos de la rampa no llevan crucecita ni agujero: ahí solo se pegan los pilares.',
                 'Corta el vinil en cruz sobre los 4 agujeros de las esquinas y vuelve a atornillar la tapa.',
             ]),
             ('note', 'idea', '**Sin vinil también funciona:** imprime la página 1 en hojas carta con la opción "póster" de tu lector de PDF al 100 %, une las hojas con cinta por detrás y pégalas con adhesivo en aerosol. Revisa que la regla mida 10 cm.'),
@@ -90,7 +90,7 @@ PASOS = [
         result='La perilla, el palo y el brazo unidos en una sola pieza que gira sin raspar.',
         time='≈ 1.5 h (incluye secado)',
         tools='Taladro con broca de paleta de ½″ y broca de 12 mm, sierra de copa de 44 mm (o caladora), segueta, lija 120, escuadra, 2 pilas de libros',
-        needs=['Tira de MDF de 6 mm de 30 × 2.5 cm (brazo)', 'Retazo de MDF de 6 mm para 2 discos de 4.5 cm (perilla)',
+        needs=['Tira de MDF de 6 mm de 31 × 2.5 cm (brazo)', 'Retazo de MDF de 6 mm para 2 discos de 4.5 cm (perilla)',
                'Palo redondo de madera de ½″, 4 cm', '2 imanes de neodimio de 12 × 3 mm', '2 cuadros de fieltro adhesivo de 2 × 2 cm, de 2 mm de grueso',
                'Rondana plana de ½″', 'Epóxico de 5 minutos', 'Los 2 imanes de 10 × 3 mm del vagón, sueltos (sostienen el brazo mientras seca)',
                'Calcomanía de la perilla (página 4, opcional)'],
@@ -102,9 +102,9 @@ PASOS = [
         blocks=[
             ('h', '1. El brazo'),
             ('ol', [
-                'Pon la plantilla de la página 5 sobre la tira de 30 × 2.5 cm, con su raya roja en el centro (a 15 cm de cada punta). Marca con un clavo el centro y el agujero de los imanes, a **14.4 cm** del centro.',
-                'Pon la tira sobre una madera de sacrificio y perfora: al centro con broca de paleta de **½″** (ahí entra el palo) y en la marca de los imanes con broca de **12 mm**. Que atraviesen.',
-                'Encima los 2 imanes de 12 × 3 mm (se pegan solos) y mete la pila en su agujero: debe quedar **al ras** por las dos caras (3 + 3 = 6 mm, lo mismo que el MDF). Fíjala con epóxico alrededor y no la muevas en 10 minutos.',
+                'Marca con un clavo el **centro** de la tira de 31 × 2.5 cm (a **15.5 cm** de cada punta) y el centro del agujero de los imanes, a **14.4 cm** del centro (1.1 cm antes de una punta). Puedes usar el brazo de la hoja de **Plantillas** (página 5): pon su raya roja sobre el centro de la tira. La plantilla dice 30 cm y se queda 5 mm antes de la punta: es correcto, la tira es más larga para que quede madera alrededor de los imanes.',
+                'Si la maderería no te hizo los agujeros, prensa la tira sobre una madera de sacrificio y perfora: al centro con broca de paleta de **½″** (ahí entra el palo) y en la marca de los imanes con broca de **12 mm**. Que atraviesen. Entre el agujero de los imanes y la punta quedan 5 mm de madera.',
+                'Junta los 2 imanes de 12 × 3 mm uno sobre otro (se pegan solos) y mete la pila en su agujero: debe quedar **al ras** por las dos caras (3 + 3 = 6 mm, lo mismo que el MDF). Antes de meterla, unta un poco de epóxico en la pared del agujero; no la muevas en 10 minutos.',
                 'Escoge la cara de **arriba** (la que mirará a la tapa) y escribe "ARRIBA" con lápiz. Pega ahí un cuadro de fieltro en cada punta, al ras de la orilla: uno queda encima de los imanes.',
             ]),
             ('h', '2. El palo'),
@@ -115,17 +115,17 @@ PASOS = [
             ]),
             ('h', '3. La perilla'),
             ('ol', [
-                'Corta 2 discos de MDF de 4.5 cm con la plantilla de la página 5 (caladora), o sácalos con la sierra de copa de 44 mm (salen de unos 4.1 cm y también sirven). Lija la orilla.',
+                'Corta 2 discos de MDF de 4.5 cm con la plantilla de la perilla (página 5) y la caladora, o sácalos con la sierra de copa de 44 mm (salen de unos 4.1 cm y también sirven). Lija la orilla.',
                 'Agranda el agujero del centro de cada disco con la broca de paleta de ½″. Prueba que el palo entre justo.',
                 'Pega los 2 discos uno sobre otro con pegamento blanco. Para alinear los agujeros, mete el palo **sin pegamento** y sácalo cuando estén alineados. Deja secar.',
                 'Opcional: pega arriba la calcomanía de la página 4, con la flecha en sentido horario.',
             ]),
             ('h', '4. Montaje en la tapa'),
             ('ol', [
-                'Quita la tapa de la caja y ponla **boca arriba** sobre 2 pilas de libros, con el centro al aire.',
+                'Quita la tapa de la caja y ponla **boca arriba** sobre 2 pilas de libros, una bajo cada orilla, para que el centro quede al aire: el brazo necesita girar unos 16 cm alrededor del centro sin tocar nada.',
                 'Mete el palo del brazo **desde abajo** por el agujero del centro, con los fieltros hacia la tapa.',
                 'Pon los 2 imanes de 10 × 3 mm sueltos sobre la pista, justo encima de los imanes del brazo: se jalan a través de la madera y **sostienen el brazo** pegado a la tapa. Ya tienes las manos libres.',
-                'Arriba, mete la rondana en el palo y luego la perilla. Empújala hasta que toque la rondana. Pon epóxico entre la perilla y el palo y deja secar 10 minutos sin moverla.',
+                'Arriba, mete la rondana en el palo y luego la perilla. Empújala hasta que toque la rondana: el palo sobresale como 1 cm arriba de la perilla, así debe quedar. Pon epóxico entre la perilla y el palo y deja secar 10 minutos sin moverla.',
                 'Quita los imanes sueltos y gira la perilla una vuelta completa: el brazo gira con ella, los fieltros rozan la tapa y nada raspa. Ahora la tapa, el palo, el brazo y la perilla son una sola pieza.',
                 'Pon la tapa en la caja y atorníllala.',
             ]),
@@ -139,7 +139,7 @@ PASOS = [
         result='Un vagón que sigue a la perilla por toda la pista sin quedarse atrás.',
         time='≈ 30 min',
         tools='Sierra de copa de 44 mm (o caladora), taladro con broca de 10 mm, lija, cúter, plumón',
-        needs=['Retazo de MDF de 6 mm (6 × 6 cm)', '2 imanes de neodimio de 10 × 3 mm', 'Cinta de teflón adhesiva (o fieltro adhesivo delgado)',
+        needs=['Lo que quedó del retazo de MDF de 15 × 6 cm (alcanza para el disco)', '2 imanes de neodimio de 10 × 3 mm', 'Cinta de teflón adhesiva (o fieltro adhesivo delgado)',
                'Placa 4 × 4 y un bloque 1 × 1 verde', 'Epóxico de 5 minutos y pegamento de contacto'],
         media=[('img', 'Vagón', 'img/vagon_det.jpg', 'Vagón sobre la pista con la placa 4 por 4 y el bloque verde'),
                ('svg', 'Capas', 'vagon'),
@@ -147,7 +147,7 @@ PASOS = [
         ver3d={'punto': 'vagon'},
         blocks=[
             ('ol', [
-                'Traza el disco con la plantilla de la página 5 (Ø 4.5 cm) y córtalo con caladora, o sácalo con la sierra de copa de 44 mm (el agujero de la broca guía te marca el centro). Lija la orilla.',
+                'Traza el disco con la plantilla del vagón (página 5, Ø 4.5 cm) y córtalo con caladora, o sácalo con la sierra de copa de 44 mm (el agujero de la broca guía te marca el centro). Lija la orilla.',
                 'Haz un agujero de 10 mm justo al centro, que atraviese el disco.',
                 'Busca qué cara va abajo: junta los 2 imanes de 10 × 3 en una pila, ponla sobre la pista y muévela despacio alrededor. En un punto se quedará pegada sola: ahí abajo están los imanes del brazo. Marca con plumón la cara de la pila que quedó **hacia arriba**. Si en vez de pegarse se voltea o se aleja, voltea la pila y vuelve a probar.',
                 'Mete la pila en el agujero con la cara marcada **hacia arriba**, al ras por los dos lados, y fíjala con epóxico. Deja secar 10 minutos.',
@@ -183,7 +183,7 @@ PASOS = [
                 ['**Vagón**', 'sobre la pista', '1 verde', 'Fila 2, columna 2 de la placa 4 × 4.'],
             ]),
             ('ol', [
-                'Pon cada placa encima de su mapa de la página 7 y coloca un bloque en cada cuadro negro. Presiónalos hasta que hagan clic.',
+                'Pon cada placa encima de su mapa de la página 7 (la hoja **Dónde va cada bloque**) y coloca un bloque en cada cuadro negro. Presiónalos hasta que hagan clic.',
                 'Cuenta: cada grupo de bloques juntos es una molécula (5 bloques = RuBP; 3 bloques = 3-PGA o G3P). Entre molécula y molécula queda libre una fila o columna de pivotes.',
                 'Pieza de salida: pon 3 bloques sobre la placa 1 × 3 y pégalos con una gota de pegamento instantáneo: esta pieza baja por la rampa y no se debe desarmar.',
                 'Pega 4 cuadritos de cinta doble cara de espuma en las esquinas de abajo de cada placa y pégala centrada sobre su cuadro punteado del vinil. **La fila 1 va hacia la pared de atrás.**',
@@ -194,14 +194,14 @@ PASOS = [
     # ------------------------------------------------------------------ 6
     dict(
         id='paso6', n=6, tag='Piezas a mano', title='Tarjetas giratorias y pinza RuBisCO',
-        lead='Cada pieza que se mueve con la mano va sobre una torre de listón atornillada por debajo de la tapa. '
+        lead='Cada pieza que se mueve con la mano va sobre una torre de listón atornillada por debajo de la tapa: aquí se atornillan las 5, también la de la compuerta del Paso 7. '
              'Las tarjetas giran sobre un palito de brocheta y la pinza sobre un tornillo.',
         result='3 tarjetas que giran y se quedan donde las dejas, y la pinza que llega sobre el vagón en la parada 1.',
         time='≈ 1.5 h',
         tools='Taladro con brocas de 2 y 3.5 mm, desarmador de cruz, cúter, tijeras, regla, pistola de silicón de baja temperatura, pincel',
-        needs=['Las 3 torres de 3 cm y la de 2.5 cm del Paso 1', 'Cartón gris de 2 mm (o cartulina gruesa): 6 rectángulos de 6 × 8 cm', '3 palitos de brocheta',
+        needs=['Las 5 torres del Paso 1: 3 de 3 cm, 1 de 2.5 cm y 1 de 7 cm', 'Cartón gris de 2 mm (o cartulina gruesa): 6 rectángulos de 6 × 8 cm', '3 palitos de brocheta',
                'Caras de las tarjetas (página 2 del PDF)', 'Palito de paleta, pinza de ropa de madera y pintura acrílica amarilla',
-               '4 tornillos de 6 × ¾″, 1 tornillo de 6 × ½″ y 1 rondana chica', 'Lápiz adhesivo, silicón de baja temperatura y masking'],
+               '5 tornillos de 6 × ¾″, 1 tornillo de 6 × ½″ y 1 rondana chica', 'Lápiz adhesivo, silicón de baja temperatura y masking'],
         media=[('img', 'Tarjetas', 'img/tarjetas.jpg', 'La tarjeta ATP a media vuelta, mostrando su cara gastada'),
                ('svg', 'La tarjeta por dentro', 'tarjeta'),
                ('img', 'Pinza', 'img/pinza_det.jpg', 'Pinza RuBisCO amarilla sobre su palito y su torre'),
@@ -210,14 +210,17 @@ PASOS = [
         blocks=[
             ('h', '1. Las torres'),
             ('ol', [
-                'En la cara de abajo de cada torre, marca el centro cruzando las diagonales y haz un agujero de **2 mm**, 1.5 cm de hondo: ahí entrará el tornillo que viene de abajo.',
+                'En la cara de abajo de las 5 torres, marca el centro cruzando las diagonales y haz un agujero de **2 mm**, 1.5 cm de hondo: ahí entrará el tornillo que viene de abajo.',
                 'En las 3 de 3 cm (las de las tarjetas), haz arriba al centro un agujero de **3.5 mm** y 1.2 cm de hondo: ahí girará el palito. Marca la broca con un pedazo de cinta para saber hasta dónde meterla.',
+                'En la de 2.5 cm (pinza) y la de 7 cm (compuerta), haz arriba al centro un agujero de **2 mm** y 1 cm de hondo: ahí entrará el tornillo que hace de eje. Sin él, el listón se raja.',
                 'Quita la tapa (sale junto con la perilla y el brazo) y ponla boca arriba sobre las 2 pilas de libros.',
                 ('Pon cada torre sobre su cuadro punteado y atorníllala desde abajo por el agujero que hiciste en el Paso 2:', [
                     '**Pinza:** (30, 7.5), arriba de la pista.',
                     '**ATP:** (52.5, 30), a la derecha.',
                     '**NADPH:** (47.2, 44.5), abajo a la derecha.',
-                    '**ATP de regeneración:** (8.9, 22.3), a la izquierda.']),
+                    '**ATP de regeneración:** (8.9, 22.3), a la izquierda.',
+                    '**Compuerta (la de 7 cm):** (22.9, 50.3), abajo a la izquierda, junto a donde irá la rampa.']),
+                'Regresa la tapa a la caja y atorníllala.',
             ]),
             ('h', '2. Tarjetas giratorias (haz 3)'),
             ('ol', [
@@ -232,7 +235,7 @@ PASOS = [
             ('h', '3. Pinza RuBisCO'),
             ('ol', [
                 'Pinta la pinza de ropa de amarillo y deja secar 20 minutos.',
-                'Con la plantilla de la página 5, haz en el palito de paleta un agujero de **3.5 mm** a 6 mm de una punta.',
+                'Con la plantilla del brazo de la pinza (página 5), haz en el palito de paleta un agujero de **3.5 mm** a 6 mm de una punta.',
                 'Pega la pinza **acostada** sobre el palito con silicón, con la boca hacia la punta sin agujero: la boca queda a **8 cm** del agujero (marca de la plantilla).',
                 'Atornilla el palito encima de su torre con el tornillo de 6 × ½″ (el corto, para que no choque con el de abajo) y una rondana chica entre el palito y la torre. No lo aprietes de más: debe girar con un dedo y quedarse quieto.',
                 'Déjala en reposo apuntando a la **izquierda**, paralela a la pista. Prueba: gira la perilla hasta la parada 1 y lleva la pinza con la mano: su boca debe quedar encima del bloque verde.',
@@ -247,8 +250,8 @@ PASOS = [
         result='La rampa con su compuerta, la caja de glucosa, los 2 letreros y las 2 solapas.',
         time='≈ 1.5 h',
         tools='Cúter, regla metálica, tijeras, taladro con broca de 3.5 mm, desarmador, pistola de silicón de baja temperatura',
-        needs=['Foamboard de 5 mm', 'Acetato o mica de 20 × 5 cm', 'La torre de 7 cm y los pilares de 7.1 y 1.9 cm del Paso 1',
-               'Abatelenguas, 1 tornillo de 6 × ¾″, 1 de 6 × ½″ y 1 rondana chica', 'Páginas 3, 4, 5 y 6 impresas',
+        needs=['Foamboard de 5 mm', 'Acetato o mica de 20 × 5 cm', 'Los pilares de 7.1 y 1.9 cm del Paso 1 (la torre de 7 cm ya quedó atornillada en el Paso 6)',
+               'Abatelenguas, 1 tornillo de 6 × ½″ y 1 rondana chica', 'Páginas 3, 4, 5 y 6 impresas',
                'Silicón de baja temperatura, cinta doble cara delgada y de espuma, cinta transparente ancha, lápiz adhesivo'],
         media=[('svg', 'Rampa de lado', 'rampa'),
                ('img', 'Compuerta abierta', 'img/compuerta.jpg', 'Compuerta girada: la pieza G3P baja por la rampa'),
@@ -257,7 +260,7 @@ PASOS = [
         blocks=[
             ('h', '1. El canal'),
             ('ol', [
-                'Con la plantilla de la página 6 corta en foamboard: el **piso de 15.5 × 3 cm**, **2 paredes de 15.5 × 1 cm** y un **tope de 2 × 1 cm**.',
+                'Con la plantilla de la página 6 (la hoja **Rampa de la compuerta**) corta en foamboard: el **piso de 15.5 × 3 cm**, **2 paredes de 15.5 × 1 cm** y un **tope de 2 × 1 cm**.',
                 'En las 2 paredes, entre 2.5 y 6.5 cm desde la punta de arriba, recorta la pared dejándola de **3 mm de alto** (la zona gris de la plantilla). Ahí pasará el abatelenguas.',
                 'Pega las paredes **encima** de las orillas largas del piso (queda un canal de 2 cm) y el tope cerrando la punta de arriba, con silicón de baja temperatura.',
                 'Pega dentro del canal una tira de acetato de 15 × 2 cm con cinta doble cara delgada, lisa y sin burbujas: es el tobogán.',
@@ -266,19 +269,19 @@ PASOS = [
             ('ol', [
                 'Corta en foamboard la base de 9 × 8 cm y pégale encima, con lápiz adhesivo, el hexágono de "½ glucosa" de la página 4.',
                 'Corta 2 paredes de 9 × 1.5 cm y 2 de 7 × 1.5 cm y pégalas paradas **encima** de las orillas de la base, las cortas entre las largas.',
-                'Pega la caja en su rectángulo, de (2, 50) a (11, 58), con cinta doble cara de espuma.',
+                'Pega la caja en su rectángulo, de (2, 50) a (11, 58), con cinta doble cara **delgada**: así su orilla queda a 2 cm, a la altura de la punta de la rampa. Con cinta de espuma quedaría más alta y la pieza G3P se atoraría.',
             ]),
             ('h', '3. Pilares y rampa'),
             ('ol', [
                 'Pega los pilares de pino parados, con silicón, sobre sus cuadritos punteados: el de **7.1 cm en (25.5, 54)** y el de **1.9 cm en (12, 54)**.',
-                'Pon el canal encima, con el tope arriba. La punta de arriba queda en x = 26.5 (a 3 mm de la placa G3P) y la de abajo en x = 11, tocando por fuera la pared de la caja de glucosa. Compara con la vista de lado de la página 6: la superficie queda a 8 cm de alto arriba y a 2 cm abajo.',
+                'Pon el canal encima, con el tope arriba. La punta de arriba queda en x = 26.5 (a 3 mm de la placa G3P) y la de abajo en x = 11, tocando por fuera la pared de la caja de glucosa. Compara con la vista de lado de la página 6: la superficie del piso queda a **8 cm sobre la tapa** arriba y a **2 cm** abajo, a la altura de la orilla de la caja.',
                 'Pega el canal a los pilares rellenando con silicón la cuña entre el pilar y el piso inclinado.',
-                'Prueba: suelta la pieza G3P desde arriba. Debe bajar sola y caer en la caja. Si se atora, revisa que el acetato esté liso y que nada roce.',
+                'Prueba: suelta la pieza G3P desde arriba. Debe bajar sola y caer en la caja. Si se atora, revisa que el acetato esté liso, que nada roce y que la orilla de la caja no quede más alta que la punta de la rampa.',
             ]),
             ('h', '4. La compuerta'),
             ('ol', [
-                'Atornilla la torre de **7 cm** desde abajo en **(22.9, 50.3)**, como las del Paso 6 (agujero de 2 mm en su base).',
-                'Corta un abatelenguas a **8 cm** y haz un agujero de **3.5 mm** a 1 cm de una punta (plantilla de la página 5).',
+                'Revisa que la torre de **7 cm** ya esté atornillada en **(22.9, 50.3)**, junto a la parte de arriba de la rampa (Paso 6). Si no, quita la tapa y atorníllala desde abajo como las demás.',
+                'Corta un abatelenguas a **8 cm** y haz un agujero de **3.5 mm** a 1 cm de una punta (plantilla de la compuerta, página 5).',
                 'Atorníllalo encima de la torre con el tornillo de 6 × ½″ y una rondana chica en medio, sin apretar de más. En reposo, la punta larga cruza el canal por el tramo recortado, unos **5 mm arriba del piso**, sin tocarlo.',
                 'Pon la pieza G3P arriba de la rampa: debe quedarse detenida por el abatelenguas. Gíralo hacia la caja de glucosa: la pieza baja sola y cae en la caja.',
             ]),
@@ -390,7 +393,7 @@ COORDS = [
     ['Torre de la tarjeta NADPH', '(47.2, 44.5)', '2 × 2 × 3 cm'],
     ['Torre de la tarjeta ATP de regeneración', '(8.9, 22.3)', '2 × 2 × 3 cm'],
     ['Torre de la compuerta', '(22.9, 50.3)', '2 × 2 × 7 cm'],
-    ['Rampa', '(26.5, 54) → (11, 54)', '15.5 cm; baja de 8 a 2 cm'],
+    ['Rampa', '(26.5, 54) → (11, 54)', '15.5 cm; baja de 8 a 2 cm sobre la tapa'],
     ['Pilares de la rampa', '(25.5, 54) y (12, 54)', '7.1 cm y 1.9 cm de alto'],
     ['Caja de glucosa', '(2, 50) → (11, 58)', '9 × 8 cm'],
     ['Letrero del título', '(2, 2) → (19, 8)', 'Foamboard'],
@@ -399,7 +402,7 @@ COORDS = [
     ['Solapa "¿Por qué le dicen fase oscura?"', '(2, 43.5) → (12, 48.5)', 'Bisagra de cinta'],
     ['Tornillos de la tapa', 'a 1.6 cm de cada orilla', '4 esquinas'],
     ['Postes de apoyo (abajo)', '(14, 15), (46, 15), (15, 45), (44, 46)', '2 × 2 × 5 cm'],
-    ['Brazo con imanes (abajo)', 'gira en el centro', '30 × 2.5 cm; imanes a 14.4 cm del centro'],
+    ['Brazo con imanes (abajo)', 'gira en el centro', '31 × 2.5 cm; imanes a 14.4 cm del centro'],
 ]
 
 # ------------------------------------------------------------------ materiales
@@ -408,10 +411,10 @@ MATERIALES = [
         ('MDF de 6 mm', '2', '60 × 60 cm', 'Fondo y tapa'),
         ('MDF de 6 mm', '2', '60 × 5 cm', 'Paredes frontal y trasera'),
         ('MDF de 6 mm', '2', '58.8 × 5 cm', 'Paredes laterales'),
-        ('MDF de 6 mm', '1', '30 × 2.5 cm', 'Brazo de los imanes'),
+        ('MDF de 6 mm', '1', '31 × 2.5 cm', 'Brazo de los imanes'),
         ('MDF de 6 mm', '1', 'Retazo de 15 × 6 cm', '3 discos de 4.5 cm: vagón y perilla'),
         ('Agujero en la tapa (si te lo hacen)', '1', '⅝″ (16 mm) al centro, en (30, 30)', 'Paso del palo de la perilla'),
-        ('Agujeros en el brazo (si te los hacen)', '2', '½″ al centro y 12 mm a 14.4 cm del centro', 'Palo e imanes'),
+        ('Agujeros en el brazo (si te los hacen)', '2', '½″ al centro y 12 mm a 14.4 cm del centro (1.1 cm antes de una punta)', 'Palo e imanes'),
     ]),
     ('Estructura', [
         ('Listón de pino de 2 × 2 cm', '1', '1 m', 'Esquineros, postes, torres y pilares'),
@@ -450,8 +453,8 @@ MATERIALES = [
         ('Pegamento de contacto o instantáneo', '1', 'Tubo chico', 'Placa del vagón y pieza G3P'),
         ('Pistola y barras de silicón de baja temperatura', '1', '—', 'Foamboard, tarjetas, pinza y pilares'),
         ('Lápiz adhesivo', '1', '—', 'Papel impreso sobre foamboard o cartón'),
-        ('Cinta doble cara de espuma (de montaje)', '1', 'Rollo', 'Placas, caja de glucosa y letreros'),
-        ('Cinta doble cara delgada', '1', 'Rollo', 'Acetato de la rampa'),
+        ('Cinta doble cara de espuma (de montaje)', '1', 'Rollo', 'Placas y letreros'),
+        ('Cinta doble cara delgada', '1', 'Rollo', 'Acetato de la rampa y caja de glucosa'),
         ('Cinta transparente ancha y masking', '1 c/u', '—', 'Bisagras y rótulos'),
     ]),
     ('Herramientas', [
@@ -463,6 +466,8 @@ MATERIALES = [
         ('Desarmador de cruz', '', '', 'Tornillos'),
         ('Pistola de silicón de baja temperatura', '', '', 'Foamboard y cartón'),
         ('Lentes de seguridad y guantes', '', '', 'Taladro y epóxico'),
+        ('Prensa (sargento) y un retazo de madera de sacrificio', '', '', 'Sujetar la pieza y perforar encima sin dañar la mesa'),
+        ('Lápiz, plumón, tijeras, un clavo, un alfiler, una tarjeta de plástico, un pincel y 2 pilas de libros', '', '', 'Marcar, recortar, alisar el vinil, pintar la pinza y apoyar la tapa'),
     ]),
 ]
 
@@ -470,8 +475,9 @@ PEGAMENTOS = [
     ['MDF con MDF o con pino (caja, esquineros, postes, discos de la perilla)', 'Pegamento blanco de carpintero', 'Sujeta con masking o peso 1 h. Endurece del todo en 24 h.'],
     ['Imanes en el brazo y en el vagón; palo en el brazo; perilla al palo', 'Epóxico de 5 minutos', 'Partes iguales, mezcla 1 min, no lo muevas en 10 min. Usa guantes.'],
     ['Placa 4 × 4 al vagón; pieza G3P de salida', 'Pegamento de contacto o instantáneo', 'Una gota basta.'],
-    ['Placas de bloques, caja de glucosa y letreros sobre el vinil', 'Cinta doble cara de espuma', 'Se despega si te equivocas.'],
-    ['Torres sobre la tapa', 'Un tornillo por debajo', 'Agujero de 3.5 mm en la tapa y de 2 mm en la torre.'],
+    ['Placas de bloques y letreros sobre el vinil', 'Cinta doble cara de espuma', 'Se despega si te equivocas.'],
+    ['Caja de glucosa sobre el vinil', 'Cinta doble cara delgada', 'Así su orilla queda a la altura de la punta de la rampa.'],
+    ['Torres sobre la tapa', 'Un tornillo por debajo', 'Agujero de 3.5 mm en la tapa y de 2 mm en la torre. La pinza y la compuerta llevan otro de 2 mm arriba, para su eje.'],
     ['Pilares de la rampa', 'Silicón de baja temperatura', 'Rellena la cuña con el piso inclinado.'],
     ['Foamboard con foamboard (rampa, caja)', 'Silicón de baja temperatura', 'El de alta temperatura derrite el foamboard.'],
     ['Palito entre los cartones de las tarjetas; pinza al palito', 'Silicón de baja temperatura', 'Aprieta 30 segundos.'],

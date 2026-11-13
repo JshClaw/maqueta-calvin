@@ -100,7 +100,8 @@ def cross(cx, cy, r, cls='axisx'):
 b = []
 b.append(item('tapa', rect_cm(0, 0, 60, 60, 'board') + ''.join(circ(x, y, 0.3, 'screw') for x, y in L['screws'])))
 b.append('<g class="under">')
-b.append(item('giro', f'<circle cx="{f(30 * S)}" cy="{f(30 * S)}" r="{f(15.3 * S)}" class="sweep"/>'))
+GIRO = round(((AR['len'] / 2) ** 2 + (AR['w'] / 2) ** 2) ** 0.5 + 0.05, 1)   # hasta la esquina de la punta del brazo
+b.append(item('giro', f'<circle cx="{f(30 * S)}" cy="{f(30 * S)}" r="{f(GIRO * S)}" class="sweep"/>'))
 b.append(item('postes', ''.join(rect_c(px, py, 2, 2, 'hid') for px, py in L['posts'])))
 b.append('</g>')
 stage_rng = [(0, 90, 'st1'), (90, 225, 'st2'), (225, 360, 'st3')]
@@ -268,22 +269,25 @@ A = 26.0
 ox, oy = 30, 74
 
 
+HL = AR['len'] / 2   # media tira
+
+
 def AX(x):
-    return ox + (x + 15) * A
+    return ox + (x + HL) * A
 
 
 d = []
 aw = AR['w']
-d.append(f'<rect x="{f(AX(-15))}" y="{oy}" width="{f(30 * A)}" height="{f(aw * A)}" rx="3" class="mdf"/>')
+d.append(f'<rect x="{f(AX(-HL))}" y="{oy}" width="{f(AR['len'] * A)}" height="{f(aw * A)}" rx="3" class="mdf"/>')
 d.append(f'<line x1="{f(AX(0))}" y1="{oy - 14}" x2="{f(AX(0))}" y2="{f(oy + aw * A + 14)}" class="axis"/>')
 d.append(f'<circle cx="{f(AX(0))}" cy="{f(oy + aw / 2 * A)}" r="{f(0.635 * A)}" class="shaft"/>')
 d.append(f'<circle cx="{f(AX(14.4))}" cy="{f(oy + aw / 2 * A)}" r="{f(0.6 * A)}" class="magnet"/>')
 for sx in (-1, 1):
     d.append(f'<rect x="{f(AX(sx * AR["padC"] - 1))}" y="{f(oy + (aw / 2 - 1) * A)}" width="{f(2 * A)}" height="{f(2 * A)}" class="felt dashed"/>')
-d.append(dim_h(AX(-15), AX(15), oy - 34, '30 cm · tira de MDF de 6 mm, 2.5 cm de ancho', size=12))
+d.append(dim_h(AX(-HL), AX(HL), oy - 34, f"{AR['len']:g} cm · tira de MDF de 6 mm, 2.5 cm de ancho", size=12))
 d.append(dim_h(AX(0), AX(14.4), oy + aw * A + 34, '14.4 cm al centro de los imanes', above=False, size=11.5))
-d.append(T(AX(15), oy + aw * A + 78, 'Derecha: 2 imanes de 12 × 3 mm encimados, al ras', 'tl', anchor='end', size=11))
-d.append(T(AX(-15), oy + aw * A + 78, 'Sombreado: fieltro de 2 × 2 cm arriba, en las dos puntas', 'tl', anchor='start', size=11))
+d.append(T(AX(HL), oy + aw * A + 78, 'Derecha: 2 imanes de 12 × 3 mm encimados, al ras', 'tl', anchor='end', size=11))
+d.append(T(AX(-HL), oy + aw * A + 78, 'Sombreado: fieltro de 2 × 2 cm arriba, en las dos puntas', 'tl', anchor='start', size=11))
 d.append(T(AX(0), oy + aw * A + 100, 'Al centro: agujero de ½″ donde entra el palo, al ras por abajo', 'tl', size=11))
 # vista de lado (apilado)
 sy = oy + aw * A + 150
@@ -294,12 +298,12 @@ def SY(h):
     return sy + (ARM0 + KN['dowelLen'] + 0.3 - h) * sk
 
 
-d.append(T(AX(-15), sy - 6, 'De lado: así se apila', 'tb', anchor='start', size=12))
-d.append(f'<rect x="{f(AX(-15))}" y="{f(SY(ARM0 + 0.6))}" width="{f(30 * A)}" height="{f(0.6 * sk)}" class="mdf"/>')
+d.append(T(AX(-HL), sy - 6, 'De lado: así se apila', 'tb', anchor='start', size=12))
+d.append(f'<rect x="{f(AX(-HL))}" y="{f(SY(ARM0 + 0.6))}" width="{f(AR['len'] * A)}" height="{f(0.6 * sk)}" class="mdf"/>')
 d.append(f'<rect x="{f(AX(13.8))}" y="{f(SY(ARM0 + 0.6))}" width="{f(1.2 * A)}" height="{f(0.6 * sk)}" class="magnet"/>')
 for sx in (-1, 1):
     d.append(f'<rect x="{f(AX(sx * AR["padC"] - 1))}" y="{f(SY(UND))}" width="{f(2 * A)}" height="{f(AR["pad"] * sk)}" class="felt"/>')
-d.append(f'<rect x="{f(AX(-15))}" y="{f(SY(TOPc))}" width="{f(30 * A)}" height="{f(0.6 * sk)}" class="mdf ghost"/>')
+d.append(f'<rect x="{f(AX(-HL))}" y="{f(SY(TOPc))}" width="{f(AR['len'] * A)}" height="{f(0.6 * sk)}" class="mdf ghost"/>')
 d.append(f'<rect x="{f(AX(-KN["washerR"]))}" y="{f(SY(TOPc + KN["washerT"]))}" width="{f(2 * KN["washerR"] * A)}" height="{f(KN["washerT"] * sk)}" class="metal2"/>')
 for i in range(KN['discs']):
     yb_ = TOPc + KN['washerT'] + (i + 1) * 0.6
@@ -308,7 +312,7 @@ d.append(f'<rect x="{f(AX(-0.635))}" y="{f(SY(ARM0 + KN["dowelLen"]))}" width="{
 lbls = [(0.3, ARM0 + KN['dowelLen'] - 0.4, 'palo de ½″, 4 cm (sobresale 1.2 cm)'), (KN['r'] - 0.4, TOPc + KN['washerT'] + 0.9, f'perilla: 2 discos de Ø {KN["r"] * 2:g} cm'),
         (KN['washerR'] - 0.3, TOPc + KN['washerT'] / 2, 'rondana de ½″ sobre la tapa'), (9.0, TOPc - 0.3, 'tapa de 6 mm (agujero de ⅝″)'),
         (AR['padC'], UND - AR['pad'] / 2, 'fieltro de 2 mm: toca la tapa'), (9.0, ARM0 + 0.3, 'brazo de MDF, imanes al ras')]
-LX = AX(15) + 34
+LX = AX(HL) + 34
 n_ = len(lbls)
 for k, (hx, h, s_) in enumerate(lbls):
     yy = SY(h)
@@ -316,7 +320,7 @@ for k, (hx, h, s_) in enumerate(lbls):
     d.append(f'<path d="M{f(AX(hx))},{f(yy)} L{f(LX - 14)},{f(ly)} H{f(LX - 4)}" class="lead"/><circle cx="{f(AX(hx))}" cy="{f(yy)}" r="2.4" class="leaddot"/>')
     d.append(T(LX, ly + 4, s_, 'tl', anchor='start', size=11.5))
 d.append(T(AX(14.4), SY(ARM0) + 18, 'imanes', 'tl', size=11))
-save('brazo', f'0 -10 {f(AX(15) + 270)} {f(SY(ARM0) + 40)}', ''.join(d), 'Brazo, palo y perilla vistos desde arriba y de lado')
+save('brazo', f'0 -10 {f(AX(HL) + 270)} {f(SY(ARM0) + 40)}', ''.join(d), 'Brazo, palo y perilla vistos desde arriba y de lado')
 
 # ================================================================== 4. vagón en capas
 V = 46.0
