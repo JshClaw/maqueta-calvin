@@ -36,7 +36,7 @@
   var tablet = ipad || (android && !/Mobile/i.test(ua));
   var aqui = ipad ? 'este iPad' : (tablet ? 'esta tableta' : 'este teléfono');
   var tuEquipo = ipad ? 'tu iPad' : (tablet ? 'tu tableta' : 'tu celular');
-  var prompt = null, frac = 0, listo = false, nueva = false, abierto = false, okVisto = false;
+  var prompt = null, frac = 0, listo = false, nueva = false, abierto = false, okVisto = false, calla = false;
   var cerrado = store.get('pwa-cerrado') === '1';
   var want = FILES.map(function (f) { return new URL(f, location.href).href; });
   var total = SIZES.reduce(function (a, b) { return a + b; }, 0);
@@ -48,10 +48,11 @@
   window.addEventListener('appinstalled', function () { prompt = null; render(); });
   if (mq.addEventListener) mq.addEventListener('change', render);
 
-  // el aviso para instalar sale en la portada (o cuando lo piden desde el índice), para no tapar los pasos ni el 3D
-  var portada = document.getElementById('portada');
+  // el aviso para instalar sale en Inicio (o cuando lo piden desde Ayuda), para no tapar los pasos ni el 3D
+  var portada = document.getElementById('inicio');
   function enPortada() { return !portada || !portada.hidden; }
-  if (portada && window.MutationObserver) new MutationObserver(function () { abierto = false; render(); }).observe(portada, { attributes: true, attributeFilter: ['hidden'] });
+  var desde = null;
+  document.addEventListener('pantalla', function (e) { if (abierto && e.detail !== desde) abierto = false; render(); });
 
   function medir() {
     return caches.has(CACHE).then(function (si) {
@@ -101,9 +102,9 @@
     if (nueva) {
       html = '<div class="pwa-h">' + ICON + '<span>Hay una versión nueva del manual</span>' + X + '</div>' +
         '<button class="pwa-go" type="button" data-reload>Actualizar</button>';
-    } else if (!listo && (instalada() || abierto || (!cerrado && enPortada()))) {
+    } else if (!listo && ((instalada() && !calla) || abierto || (!cerrado && enPortada()))) {
       var p = Math.round(frac * 100);
-      html = '<div class="pwa-h">' + ICON + '<span>' + (instalada() ? 'Preparando la app' : 'Guardando para usar sin internet') + ' · ' + p + ' %</span>' + (instalada() ? '' : X) + '</div>' +
+      html = '<div class="pwa-h">' + ICON + '<span>' + (instalada() ? 'Preparando la app' : 'Guardando para usar sin internet') + ' · ' + p + ' %</span>' + X + '</div>' +
         '<div class="pwa-bar"><i style="width:' + p + '%"></i></div>' +
         '<p>Déjala abierta con internet hasta que diga <b>«Lista»</b>. Son unos ' + MB + ' MB.</p>';
     } else if (listo && instalada()) {
@@ -121,8 +122,9 @@
     if (idxBtn) idxBtn.hidden = instalada();
     if (!html) { box.hidden = true; return; }
     box.innerHTML = html;
-    var nav = document.querySelector('nav.nav');
-    box.style.bottom = ((nav && nav.getBoundingClientRect().height) || 0) + 12 + 'px';
+    // arriba de la barra de pestañas cuando está abajo; en el iPad acostado la barra va a un lado
+    var nav = document.getElementById('tabbar'), r = nav && nav.getBoundingClientRect();
+    box.style.bottom = ((r && r.top > innerHeight / 2) ? r.height : 0) + 12 + 'px';
     box.hidden = false;
   }
 
@@ -132,6 +134,8 @@
     if (t.hasAttribute('data-x')) {
       box.hidden = true;
       if (nueva) { nueva = false; return; }
+      // en la app instalada solo se esconde por ahora: la descarga sigue y vuelve a avisar al abrirla
+      if (instalada() && !listo) { calla = true; return; }
       abierto = false; cerrado = true; store.set('pwa-cerrado', '1');
     }
     if (t.hasAttribute('data-reload')) location.reload();
@@ -141,9 +145,7 @@
     }
   });
   if (idxBtn) idxBtn.addEventListener('click', function () {
-    var c = document.getElementById('closeIdx');
-    if (c) c.click();
-    abierto = true;
+    abierto = true; calla = false; desde = 'problemas';
     render();
   });
   window.addEventListener('resize', function () { if (!box.hidden) render(); });

@@ -1,82 +1,212 @@
-// ===================================================================== presentación: navegación, casillas, plano, descargas
+// ===================================================================== la app: pestañas, pantallas, casillas, galerías, plano
 (function () {
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  const slides = $$('.slide');
-  const ids = slides.map((s) => s.id);
-  let cur = 0;
-  const vistos = new Set();
   const store = {
     get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* sin almacenamiento */ } },
   };
+  const screens = $$('.screen');
+  const byId = Object.fromEntries(screens.map((s) => [s.id, s]));
+  // cada pestaña de la barra y la pantalla con la que empieza
+  const RAIZ = { inicio: 'inicio', armar: 'armar', presentar: 'clase', ver3d: 'maqueta3d', ayuda: 'problemas' };
+  const ALIAS = { portada: 'inicio' };   // enlaces viejos
+  const tabDe = (id) => byId[id].dataset.tab;
+  const esRaiz = (id) => RAIZ[tabDe(id)] === id;
+  const padre = (id) => byId[id].dataset.parent || RAIZ[tabDe(id)];
+  const corto = (id) => byId[id].dataset.short || byId[id].dataset.title;
+  const PASOS = screens.filter((s) => s.classList.contains('paso')).map((s) => s.id);
 
-  // ---------------------------------------------------------------- casillas de cada paso
+  // ---------------------------------------------------------------- casillas de cada paso (misma llave que antes: «paso3-4»)
   const checks = store.get('calvin-manual-pasos', {});
-  slides.forEach((s) => {
+  screens.forEach((s) => {
     $$('.check > li', s).forEach((li, i) => {
       const id = `${s.id}-${i}`;
       const cb = $('input[type="checkbox"]', li);
       if (!cb) return;
       cb.checked = !!checks[id];
       li.classList.toggle('done', cb.checked);
-      cb.addEventListener('change', () => { checks[id] = cb.checked; li.classList.toggle('done', cb.checked); store.set('calvin-manual-pasos', checks); pintarIndice(); });
-    });
-  });
-  // tablas de materiales con casilla
-  const mats = store.get('calvin-manual-materiales', {});
-  let nMat = 0;
-  $$('table.mat').forEach((t, ti) => {
-    $$('tbody tr', t).forEach((tr, i) => {
-      const id = `${ti}-${i}`;
-      const td = document.createElement('td');
-      td.className = 'ck';
-      const cb = document.createElement('input');
-      cb.type = 'checkbox';
-      cb.setAttribute('aria-label', 'Ya lo tengo: ' + tr.cells[0].textContent);
-      cb.checked = !!mats[id];
-      tr.classList.toggle('done', cb.checked);
-      cb.addEventListener('change', () => { mats[id] = cb.checked; tr.classList.toggle('done', cb.checked); store.set('calvin-manual-materiales', mats); totalMat(); });
-      td.appendChild(cb);
-      tr.prepend(td);
-      nMat++;
-    });
-  });
-  function totalMat() {
-    const n = Object.values(mats).filter(Boolean).length;
-    const el = $('#matTotal');
-    if (el) el.textContent = `Tienes ${n} de ${nMat} cosas de la lista.`;
-  }
-  totalMat();
-
-  // ---------------------------------------------------------------- pestañas
-  $$('.tabs').forEach((tabs) => {
-    const scope = tabs.closest('.media') || tabs.closest('.slide');
-    const btns = $$('.tab', tabs);
-    btns.forEach((b) => b.addEventListener('click', () => {
-      btns.forEach((x) => x.setAttribute('aria-selected', x === b ? 'true' : 'false'));
-      const ids_ = btns.map((x) => x.dataset.pane);
-      ids_.forEach((pid) => {
-        const p = scope.querySelector(`[data-id="${pid}"]`);
-        if (!p) return;
-        p.hidden = pid !== b.dataset.pane;
-        if (p.hidden) $$('video', p).forEach((v) => v.pause());
+      cb.addEventListener('change', () => {
+        checks[id] = cb.checked; li.classList.toggle('done', cb.checked);
+        store.set('calvin-manual-pasos', checks); progreso();
       });
-    }));
+    });
+  });
+  // un enlace dentro del texto de una casilla abre su pantalla, sin marcar la casilla
+  $$('.ck .lnk').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); ir(a.dataset.go); }));
+
+  // materiales (llave «grupo-fila», igual que antes)
+  const mats = store.get('calvin-manual-materiales', {});
+  const matCbs = $$('[data-mat]');
+  matCbs.forEach((cb) => {
+    const id = cb.dataset.mat;
+    cb.checked = !!mats[id];
+    cb.closest('li').classList.toggle('done', cb.checked);
+    cb.addEventListener('change', () => { mats[id] = cb.checked; cb.closest('li').classList.toggle('done', cb.checked); store.set('calvin-manual-materiales', mats); progreso(); });
   });
 
-  // ---------------------------------------------------------------- navegación
-  const prog = $('#prog');
-  slides.forEach((s, i) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.setAttribute('aria-label', s.dataset.title);
-    b.title = s.dataset.title;
-    b.addEventListener('click', () => ir(i));
-    prog.appendChild(b);
+  // ---------------------------------------------------------------- avance: barra de cada paso, lista de Armar, inicio
+  const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0) + '%';
+  function cuenta(id) {
+    const items = $$('.check > li', byId[id]);
+    return [items.filter((li) => li.classList.contains('done')).length, items.length];
+  }
+  function progreso() {
+    let hechas = 0, total = 0, siguiente = null;
+    PASOS.forEach((id) => {
+      const s = byId[id];
+      const [n, t] = cuenta(id);
+      hechas += n; total += t;
+      if (!siguiente && n < t) siguiente = id;
+      const lleno = t && n === t;
+      $('.phead .bar i', s).style.width = pct(n, t);
+      $('[data-prog-t]', s).textContent = lleno ? `Listo: ${t} de ${t} hechas` : `${n} de ${t} hechas`;
+      s.classList.toggle('completo', !!lleno);
+      $$('.block', s).forEach((b) => {
+        const lis = $$('.check > li', b);
+        const k = lis.filter((li) => li.classList.contains('done')).length;
+        $('.scnt', b).textContent = `${k}/${lis.length}`;
+        b.classList.toggle('completo', k === lis.length);
+      });
+      const card = $(`[data-card="${id}"]`);
+      if (card) {
+        $('.bar i', card).style.width = pct(n, t);
+        $('em', card).textContent = lleno ? 'Listo' : `${n}/${t}`;
+        card.classList.toggle('completo', !!lleno);
+      }
+    });
+    // materiales
+    const nm = matCbs.filter((c) => c.checked).length;
+    $$('[data-mat-total]').forEach((el) => { el.textContent = `${nm} de ${matCbs.length}`; });
+    const mb = $('#materiales .pstat .bar i'); if (mb) mb.style.width = pct(nm, matCbs.length);
+    $$('[data-matcnt]').forEach((el) => {
+      const g = el.dataset.matcnt;
+      const cbs = matCbs.filter((c) => c.dataset.mat.startsWith(g + '-'));
+      el.textContent = `${cbs.filter((c) => c.checked).length}/${cbs.length}`;
+    });
+    // resumen en Armar e Inicio
+    const empezo = hechas > 0;
+    const dest = siguiente || 'clase';
+    const txt = !empezo ? 'Todavía no marcan nada. Empiecen por «Antes de empezar».'
+      : siguiente ? `Llevan ${hechas} de ${total} cosas. Sigue: ${byId[siguiente].dataset.title}.`
+        : `¡Terminaron los 8 pasos! Ahora a ensayar la presentación.`;
+    $('#resTxt').textContent = txt;
+    $('#resumen .bar i').style.width = pct(hechas, total);
+    const rg = $('#resGo');
+    rg.dataset.go = empezo ? dest : 'antes';
+    rg.firstChild.textContent = !empezo ? 'Empezar' : siguiente ? `Seguir con el ${corto(siguiente)}` : 'Ir a Presentar';
+    const ip = $('#inicioProg');
+    ip.hidden = !empezo;
+    if (empezo) {
+      $('#inicioTxt').textContent = txt;
+      $('.bar i', ip).style.width = pct(hechas, total);
+      const ig = $('#inicioGo');
+      ig.dataset.abrir = dest;
+      ig.firstChild.textContent = siguiente ? `Seguir con el ${corto(siguiente)}` : 'Ir a Presentar';
+    }
+    $('#continuar').firstChild.textContent = empezo ? 'Ver mi avance' : 'Empezar a armar';
+  }
+
+  // ---------------------------------------------------------------- navegación tipo app
+  let cur = null;
+  let pila = [];                 // de dónde venías, para el botón «‹»
+  const ultimaDe = {};           // última pantalla abierta en cada pestaña
+  const scrollDe = {};           // dónde ibas en cada pantalla
+  const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const tabbar = $('#tabbar');
+
+  function mostrar(id, op = {}) {
+    id = ALIAS[id] || id;
+    if (!byId[id]) id = 'inicio';
+    if (cur && cur !== id) {
+      scrollDe[cur] = window.scrollY;
+      byId[cur].hidden = true;
+      $$('video', byId[cur]).forEach((v) => v.pause());
+    }
+    const antes = cur;
+    cur = id;
+    const s = byId[id];
+    // una sola pantalla a la vista (Inicio viene visible en el HTML por si no corre el JavaScript)
+    screens.forEach((x) => { if (x !== s) x.hidden = true; });
+    s.hidden = false;
+    s.classList.remove('in-push', 'in-back');
+    if (op.anim && !reducido) { void s.offsetWidth; s.classList.add(op.anim); }
+    ultimaDe[tabDe(id)] = id;
+    $$('.tb', tabbar).forEach((b) => b.setAttribute('aria-current', b.dataset.tabbtn === tabDe(id) ? 'page' : 'false'));
+    // barra de arriba
+    const atras = pila.length ? pila[pila.length - 1] : (esRaiz(id) ? null : padre(id));
+    $('#back').hidden = !atras;
+    if (atras) $('#backLbl').textContent = corto(atras);
+    $('#brand').hidden = !!atras;
+    $('#topTitle').textContent = id === 'inicio' ? '' : s.dataset.title;
+    document.title = id === 'inicio' ? 'Ciclo de Calvin · maqueta' : `${s.dataset.title} · Ciclo de Calvin`;
+    // galerías: recoloca la imagen elegida (las pantallas ocultas no tienen ancho)
+    $$('[data-gal]', s).forEach((g) => g._sync && g._sync());
+    window.scrollTo(0, op.y || 0);
+    try { history.replaceState(null, '', '#' + id); } catch (e) { /* nada */ }
+    // visor 3D: solo vive mientras su pantalla está abierta
+    if (id === 'maqueta3d') {
+      cargarVisor().then((m) => { if (m && cur === 'maqueta3d') { m.activar(true); if (op.preset) m.preset(op.preset); } });
+    } else if (visor && antes === 'maqueta3d') {
+      visor.then((m) => m && m.activar(false));
+    }
+    document.dispatchEvent(new CustomEvent('pantalla', { detail: id }));
+  }
+  // abrir otra pantalla «encima» (con botón para volver a esta)
+  function ir(id, op = {}) {
+    id = ALIAS[id] || id;
+    if (!byId[id] || id === cur) { if (op.preset && id === 'maqueta3d' && visor) visor.then((m) => m && m.preset(op.preset)); return; }
+    // la lista de tu misma pestaña: es regresar, no abrir algo nuevo
+    if (esRaiz(id) && tabDe(id) === tabDe(cur)) { pila = []; mostrar(id, { anim: 'in-back', y: scrollDe[id] || 0 }); return; }
+    // de un paso al siguiente (o al anterior): se cambia el paso, el botón «‹» sigue llevando a donde estabas antes
+    const entrePasos = PASOS.includes(id) && PASOS.includes(cur);
+    if (!entrePasos) pila.push(cur);
+    mostrar(id, { anim: entrePasos ? (PASOS.indexOf(id) > PASOS.indexOf(cur) ? 'in-push' : 'in-back') : 'in-push', ...op });
+  }
+  // abrir una pantalla dentro de su propia pestaña (al volver, llegas a la lista de esa pestaña)
+  function abrir(id) {
+    id = ALIAS[id] || id;
+    if (!byId[id]) return;
+    pila = esRaiz(id) ? [] : [RAIZ[tabDe(id)]];
+    mostrar(id, { anim: 'in-push' });
+  }
+  function volver() {
+    const dest = pila.length ? pila.pop() : padre(cur);
+    mostrar(dest, { anim: 'in-back', y: scrollDe[dest] || 0 });
+  }
+  function pestana(t) {
+    const raiz = RAIZ[t];
+    pila = [];
+    // tocar la pestaña en la que ya estás te regresa a su inicio; cambiar de pestaña te deja donde ibas
+    const dest = tabDe(cur) === t ? raiz : (ultimaDe[t] || raiz);
+    mostrar(dest, { y: dest === cur ? 0 : (scrollDe[dest] || 0) });
+  }
+  $('#back').addEventListener('click', volver);
+  $$('.tb', tabbar).forEach((b) => b.addEventListener('click', () => pestana(b.dataset.tabbtn)));
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-go],[data-abrir],[data-tabgo],[data-ver3d],[data-jump]');
+    if (!t || t.classList.contains('tb')) return;
+    if (t.tagName === 'A') e.preventDefault();
+    if (t.dataset.ver3d) {
+      let p = {};
+      try { p = JSON.parse(t.dataset.ver3d); } catch (err) { p = {}; }
+      ir('maqueta3d', { preset: p });
+    } else if (t.dataset.jump) {
+      const el = document.getElementById(t.dataset.jump);
+      if (el) el.scrollIntoView({ behavior: reducido ? 'auto' : 'smooth', block: 'start' });
+    } else if (t.dataset.go) ir(t.dataset.go);
+    else if (t.dataset.abrir) abrir(t.dataset.abrir);
+    else if (t.dataset.tabgo) pestana(t.dataset.tabgo);
   });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || e.defaultPrevented) return;
+    if (!$('#viewer').hidden) cerrarVisorImg();
+    else if (!$('#back').hidden && !/INPUT|TEXTAREA|SELECT/.test((e.target && e.target.tagName) || '')) volver();
+  });
+
+  // ---------------------------------------------------------------- visor 3D
   let visor = null;
-  // El visor 3D va en un <script> que está DESPUÉS de este. Si la página se abre o se recarga ya en #maqueta3d,
+  // El visor 3D va en un <script> que está DESPUÉS de este. Si la app se abre o se recarga ya en #maqueta3d,
   // este código corre antes de que exista window.Visor: hay que esperar a que el navegador termine de leer la página.
   function esperarVisor() {
     if (window.Visor) return Promise.resolve(window.Visor);
@@ -86,11 +216,11 @@
       else listo();
     });
   }
-  async function cargarVisor() {
+  function cargarVisor() {
     if (!visor) {
       visor = esperarVisor().then(async (m) => { await m.iniciar(); $('#v3d').classList.remove('sin3d'); return m; }).catch((e) => {
         const st = $('#v3d-status');
-        if (st) { st.hidden = false; st.textContent = 'No se pudo cargar el visor 3D en esta vista. Los renders y videos de cada paso muestran lo mismo.'; }
+        if (st) { st.hidden = false; st.textContent = 'No se pudo cargar el visor 3D en esta vista. Las fotos y videos de cada paso muestran lo mismo.'; }
         $('#v3d').classList.add('sin3d');
         console.error(e);
         visor = null;          // la próxima vez que entres al 3D lo vuelve a intentar
@@ -99,92 +229,64 @@
     }
     return visor;
   }
-  function ir(i, opts = {}) {
-    i = Math.max(0, Math.min(slides.length - 1, i));
-    const prev = cur;
-    slides[prev].hidden = true;
-    $$('video', slides[prev]).forEach((v) => v.pause());
-    cur = i;
-    vistos.add(i);
-    const s = slides[i];
-    s.hidden = false;
-    $('#topTitle').innerHTML = '';
-    const b = document.createElement('b');
-    b.textContent = s.dataset.title;
-    $('#topTitle').append(b);
-    $('#count').textContent = `${i + 1} / ${slides.length}`;
-    $$('#prog button').forEach((x, k) => { x.classList.toggle('cur', k === i); x.classList.toggle('seen', vistos.has(k)); });
-    $('#prev').disabled = i === 0;
-    $('#next').disabled = i === slides.length - 1;
-    if (!opts.noScroll) window.scrollTo(0, 0);
-    try { history.replaceState(null, '', '#' + s.id); } catch (e) { /* nada */ }
-    if (s.id === 'maqueta3d') {
-      cargarVisor().then((m) => { if (m && slides[cur].id === 'maqueta3d') { m.activar(true); if (opts.preset) m.preset(opts.preset); } });
-    } else if (visor) {
-      visor.then((m) => m && m.activar(false));
-    }
-    pintarIndice();
-  }
-  $('#prev').addEventListener('click', () => ir(cur - 1));
-  $('#next').addEventListener('click', () => ir(cur + 1));
-  $$('[data-go]').forEach((b) => b.addEventListener('click', () => ir(ids.indexOf(b.dataset.go))));
-  $$('[data-ver3d]').forEach((b) => b.addEventListener('click', () => {
-    let p = {};
-    try { p = JSON.parse(b.dataset.ver3d); } catch (e) { p = {}; }
-    ir(ids.indexOf('maqueta3d'), { preset: p });
-  }));
-  document.addEventListener('keydown', (e) => {
-    if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
-    const t = e.target;
-    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) return;
-    if (!$('#idx').hidden) { if (e.key === 'Escape') cerrarIndice(); return; }
-    if (e.key === 'ArrowRight' || e.key === 'PageDown') { ir(cur + 1); e.preventDefault(); }
-    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { ir(cur - 1); e.preventDefault(); }
+
+  // ---------------------------------------------------------------- galerías: deslizar, flechas, miniaturas
+  $$('[data-gal]').forEach((g) => {
+    const track = $('.gtrack', g), figs = $$('.gs', track), thumbs = $$('.gt', g);
+    const prev = $('.gnav.prev', g), next = $('.gnav.next', g), cnt = $('.gcount', g), cap = $('.gcap', g);
+    let i = 0;
+    const marcar = (k) => {
+      i = k;
+      thumbs.forEach((t, j) => t.setAttribute('aria-current', j === k ? 'true' : 'false'));
+      if (thumbs[k]) { const box = thumbs[k].parentNode; box.scrollTo({ left: thumbs[k].offsetLeft - box.clientWidth / 2 + thumbs[k].clientWidth / 2, behavior: 'smooth' }); }
+      if (cnt) cnt.textContent = `${k + 1} / ${figs.length}`;
+      if (prev) prev.disabled = k === 0;
+      if (next) next.disabled = k === figs.length - 1;
+      cap.innerHTML = '';
+      const b = document.createElement('b'); b.textContent = figs[k].dataset.t;
+      cap.append(b, ' · ' + figs[k].dataset.d);
+    };
+    const irA = (k, suave = true) => {
+      k = Math.max(0, Math.min(figs.length - 1, k));
+      track.scrollTo({ left: figs[k].offsetLeft, behavior: suave && !reducido ? 'smooth' : 'auto' });
+      marcar(k);
+    };
+    let tm = 0;
+    track.addEventListener('scroll', () => {
+      clearTimeout(tm);
+      tm = setTimeout(() => { if (!track.clientWidth) return; const k = Math.round(track.scrollLeft / track.clientWidth); if (k !== i) marcar(k); }, 60);
+    }, { passive: true });
+    thumbs.forEach((t, k) => t.addEventListener('click', () => irA(k)));
+    if (prev) prev.addEventListener('click', () => irA(i - 1));
+    if (next) next.addEventListener('click', () => irA(i + 1));
+    $('.gzoom', g).addEventListener('click', () => abrirVisorImg(figs[i]));
+    figs.forEach((f) => f.addEventListener('click', () => abrirVisorImg(f)));
+    g._sync = () => { track.scrollLeft = figs[i].offsetLeft; };
   });
 
-  // ---------------------------------------------------------------- índice
-  function avance(s) {
-    const items = $$('.check > li', s);
-    if (!items.length) return '';
-    const n = items.filter((li) => li.classList.contains('done')).length;
-    return `${n}/${items.length}`;
+  // ---------------------------------------------------------------- imagen en grande
+  const viewer = $('#viewer'), vIn = $('#viewerIn');
+  let regresoFoco = null;
+  function abrirVisorImg(fig) {
+    regresoFoco = document.activeElement;
+    vIn.innerHTML = fig.innerHTML;
+    vIn.classList.remove('z2');
+    $('#viewerZ').textContent = 'Acercar';
+    $('#viewerT').textContent = fig.dataset.t;
+    viewer.hidden = false;
+    document.documentElement.classList.add('sin-scroll');
+    $('#viewerX').focus();
   }
-  function pintarIndice() {
-    const box = $('#idxList');
-    box.innerHTML = '';
-    let grupo = null, ol = null;
-    slides.forEach((s, i) => {
-      if (s.dataset.grupo !== grupo) {
-        grupo = s.dataset.grupo;
-        const h = document.createElement('h5');
-        h.textContent = grupo;
-        ol = document.createElement('ol');
-        box.append(h, ol);
-      }
-      const li = document.createElement('li');
-      const b = document.createElement('button');
-      b.type = 'button';
-      if (i === cur) b.classList.add('cur');
-      const k = document.createElement('span'); k.className = 'k'; k.textContent = String(i + 1).padStart(2, '0');
-      const t = document.createElement('span'); t.textContent = s.dataset.title;
-      b.append(k, t);
-      const a = avance(s);
-      if (a) {
-        const pr = document.createElement('span'); pr.className = 'pr'; pr.textContent = a;
-        const [x, y] = a.split('/');
-        if (x === y) pr.classList.add('full');
-        b.append(pr);
-      }
-      b.addEventListener('click', () => { cerrarIndice(); ir(i); });
-      li.append(b);
-      ol.append(li);
-    });
+  function cerrarVisorImg() {
+    viewer.hidden = true; vIn.innerHTML = '';
+    document.documentElement.classList.remove('sin-scroll');
+    if (regresoFoco) regresoFoco.focus();
   }
-  function abrirIndice() { pintarIndice(); $('#idx').hidden = false; $('#closeIdx').focus(); }
-  function cerrarIndice() { $('#idx').hidden = true; $('#openIdx').focus(); }
-  $('#openIdx').addEventListener('click', abrirIndice);
-  $('#closeIdx').addEventListener('click', cerrarIndice);
-  $('#idx').addEventListener('click', (e) => { if (e.target.id === 'idx') cerrarIndice(); });
+  $('#viewerX').addEventListener('click', cerrarVisorImg);
+  $('#viewerZ').addEventListener('click', () => {
+    const z = vIn.classList.toggle('z2');
+    $('#viewerZ').textContent = z ? 'Alejar' : 'Acercar';
+  });
 
   // ---------------------------------------------------------------- plano interactivo
   const INFO = {
@@ -228,36 +330,9 @@
     g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { act(); e.preventDefault(); } });
   });
 
-  // ---------------------------------------------------------------- descargas (PDF)
-  let dlApi;
-  const getDl = () => {
-    if (dlApi === undefined) dlApi = Promise.resolve({ save: async ({ filename, data, href }) => {
-      const a = document.createElement('a'); const url = href || URL.createObjectURL(data);
-      a.href = url; a.download = filename; if (href) { a.target = '_blank'; a.rel = 'noopener'; } document.body.appendChild(a); a.click(); a.remove();
-      if (!href) setTimeout(() => URL.revokeObjectURL(url), 4000);
-    } });
-    return dlApi;
-  };
-  $$('[data-dl]').forEach((b) => b.addEventListener('click', async () => {
-    const toast = b.closest('.card, .media, .slide').querySelector('[data-toast]');
-    const say = (s) => { if (toast) toast.textContent = s; };
-    say('Preparando…');
-    try {
-      const api = await getDl();
-      if (!api) { say('No se pudo descargar. Vuelve a intentarlo.'); return; }
-      await api.save({ filename: b.dataset.name, href: b.dataset.dl });
-      say('Listo: ' + b.dataset.name);
-    } catch (e) {
-      const c = e && e.code;
-      say(c === 'declined' ? 'Descarga cancelada.' : c === 'rate_limited' ? 'Espera un momento y vuelve a intentar.' : 'No se pudo descargar en esta vista.');
-    }
-  }));
-
   // ---------------------------------------------------------------- inicio
-  window.addEventListener('hashchange', () => { const k = ids.indexOf(location.hash.slice(1)); if (k >= 0 && k !== cur) ir(k); });
-  const h = (location.hash || '').slice(1);
-  const start = ids.indexOf(h);
-  ir(start >= 0 ? start : 0, { noScroll: true });
+  progreso();
+  window.addEventListener('hashchange', () => { const id = ALIAS[location.hash.slice(1)] || location.hash.slice(1); if (byId[id] && id !== cur) abrir(id); });
+  mostrar((location.hash || '').slice(1) || 'inicio');
   requestAnimationFrame(() => window.scrollTo(0, 0));
-  setTimeout(() => window.scrollTo(0, 0), 60);
 })();

@@ -9,6 +9,7 @@ PASOS = [
         id='paso1', n=1, tag='Estructura', title='La caja',
         lead='Una caja de 60 × 60 cm y 6.2 cm de alto. Por dentro solo gira un brazo de madera, así que bastan 5 cm libres. '
              'La tapa va atornillada, no pegada, porque la quitarás varias veces.',
+        result='Una caja firme con 4 postes adentro y una tapa que se pone y se quita con 4 tornillos.',
         time='≈ 1.5 h + 1 h de secado',
         tools='Serrucho o segueta para madera, lija 120, escuadra, regla, taladro con brocas de 2 y 3.5 mm y broca avellanadora',
         needs=['MDF de 6 mm cortado: fondo y tapa de 60 × 60 cm, 2 paredes de 60 × 5 cm y 2 de 58.8 × 5 cm',
@@ -20,7 +21,7 @@ PASOS = [
         blocks=[
             ('h', '1. Prepara las piezas'),
             ('ol', [
-                'Pide en la maderería los cortes de MDF de 6 mm de la lista (pestaña **Cortes para la maderería** de Materiales). Lija los cantos con lija 120 para quitar las rebabas.',
+                'Pide en la maderería los cortes de MDF de 6 mm de la lista ([Cortes para la maderería](#materiales), en Materiales). Lija los cantos con lija 120 para quitar las rebabas.',
                 ('Corta el listón de 2 × 2 cm con la escuadra, para que los cortes queden rectos, y escribe con lápiz en cada pieza para qué es. Compáralas con la página 5 del PDF:', [
                     '**8 de 5 cm**: 4 esquineros y 4 postes de apoyo de la tapa.',
                     '**3 de 3 cm**: torres de las 3 tarjetas (Paso 6).',
@@ -58,6 +59,7 @@ PASOS = [
         id='paso2', n=2, tag='Tapa', title='La impresión del ciclo',
         lead='La página 1 del PDF se imprime a tamaño real (60 × 60 cm) en vinil adherible mate y se pega sobre la tapa. '
              'Trae la pista, las 8 paradas numeradas y una marca para cada pieza, agujero y tornillo.',
+        result='La tapa forrada con el vinil, con el agujero del centro y los 5 agujeros de las torres, y las páginas 2 a 7 impresas.',
         time='≈ 45 min + la impresión',
         tools='Tarjeta de plástico, cúter, alfiler, taladro con broca de 3.5 mm y broca de paleta de ⅝″, madera de sacrificio',
         needs=['Página 1 del PDF impresa en vinil adherible mate de 60 × 60 cm', 'Páginas 2 a 7 impresas en hojas tamaño carta', 'La tapa del Paso 1'],
@@ -85,6 +87,7 @@ PASOS = [
         id='paso3', n=3, tag='Mecanismo', title='El brazo con imanes y la perilla',
         lead='Es el corazón de la maqueta: una sola pieza que gira. Arriba de la tapa va la perilla; un palo la atraviesa por el centro '
              'y abajo sostiene el brazo con imanes. Al girar la perilla, los imanes jalan al vagón a través de la madera, como si se moviera solo.',
+        result='La perilla, el palo y el brazo unidos en una sola pieza que gira sin raspar.',
         time='≈ 1.5 h (incluye secado)',
         tools='Taladro con broca de paleta de ½″ y broca de 12 mm, sierra de copa de 44 mm (o caladora), segueta, lija 120, escuadra, 2 pilas de libros',
         needs=['Tira de MDF de 6 mm de 30 × 2.5 cm (brazo)', 'Retazo de MDF de 6 mm para 2 discos de 4.5 cm (perilla)',
@@ -133,6 +136,7 @@ PASOS = [
     dict(
         id='paso4', n=4, tag='Mecanismo', title='El vagón',
         lead='Un disco de MDF con dos imanes al centro, cinta de teflón abajo para que resbale y una placa 4 × 4 arriba con el bloque verde: el carbono del CO₂. Pesa unos 15 g.',
+        result='Un vagón que sigue a la perilla por toda la pista sin quedarse atrás.',
         time='≈ 30 min',
         tools='Sierra de copa de 44 mm (o caladora), taladro con broca de 10 mm, lija, cúter, plumón',
         needs=['Retazo de MDF de 6 mm (6 × 6 cm)', '2 imanes de neodimio de 10 × 3 mm', 'Cinta de teflón adhesiva (o fieltro adhesivo delgado)',
@@ -145,7 +149,7 @@ PASOS = [
             ('ol', [
                 'Traza el disco con la plantilla de la página 5 (Ø 4.5 cm) y córtalo con caladora, o sácalo con la sierra de copa de 44 mm (el agujero de la broca guía te marca el centro). Lija la orilla.',
                 'Haz un agujero de 10 mm justo al centro, que atraviese el disco.',
-                'Busca qué cara va abajo: junta los 2 imanes de 10 × 3 en una pila, ponla sobre la pista y muévela despacio alrededor. En un punto se quedará pegada sola: ahí abajo están los imanes del brazo. Marca con plumón la cara que quedó **hacia arriba**. Si en vez de pegarse se voltea o se aleja, voltéala.',
+                'Busca qué cara va abajo: junta los 2 imanes de 10 × 3 en una pila, ponla sobre la pista y muévela despacio alrededor. En un punto se quedará pegada sola: ahí abajo están los imanes del brazo. Marca con plumón la cara de la pila que quedó **hacia arriba**. Si en vez de pegarse se voltea o se aleja, voltea la pila y vuelve a probar.',
                 'Mete la pila en el agujero con la cara marcada **hacia arriba**, al ras por los dos lados, y fíjala con epóxico. Deja secar 10 minutos.',
                 'Pega la cinta de teflón (o el fieltro delgado) en toda la cara de abajo y recórtala a la orilla con el cúter. Debe quedar lisa, sin arrugas.',
                 'Pega la placa 4 × 4 centrada en la cara de arriba con pegamento de contacto.',
@@ -158,6 +162,7 @@ PASOS = [
     dict(
         id='paso5', n=5, tag='Moléculas', title='Las estaciones con bloques',
         lead='Cada bloque 1 × 1 es un átomo de carbono. Las moléculas se arman una vez y se quedan en su estación: usas 81 bloques negros y 1 verde, y las cuentas de carbonos cuadran en cada paso del ciclo.',
+        result='Las 5 placas con sus bloques pegadas en su lugar y la pieza de salida armada.',
         time='≈ 45 min',
         tools='Tijeras',
         needs=['5 placas 8 × 8 (6.4 × 6.4 cm)', '81 bloques 1 × 1 negros o gris oscuro (compra 90)', '1 placa 1 × 3',
@@ -191,6 +196,7 @@ PASOS = [
         id='paso6', n=6, tag='Piezas a mano', title='Tarjetas giratorias y pinza RuBisCO',
         lead='Cada pieza que se mueve con la mano va sobre una torre de listón atornillada por debajo de la tapa. '
              'Las tarjetas giran sobre un palito de brocheta y la pinza sobre un tornillo.',
+        result='3 tarjetas que giran y se quedan donde las dejas, y la pinza que llega sobre el vagón en la parada 1.',
         time='≈ 1.5 h',
         tools='Taladro con brocas de 2 y 3.5 mm, desarmador de cruz, cúter, tijeras, regla, pistola de silicón de baja temperatura, pincel',
         needs=['Las 3 torres de 3 cm y la de 2.5 cm del Paso 1', 'Cartón gris de 2 mm (o cartulina gruesa): 6 rectángulos de 6 × 8 cm', '3 palitos de brocheta',
@@ -238,6 +244,7 @@ PASOS = [
         id='paso7', n=7, tag='Piezas a mano', title='Rampa, compuerta, glucosa, letreros y solapas',
         lead='En la parada 5 se abre la compuerta y una pieza de 3 bloques baja por la rampa hasta la caja de glucosa. '
              'La compuerta es un abatelenguas que gira en un tornillo y cruza el canal por un tramo donde las paredes están recortadas.',
+        result='La rampa con su compuerta, la caja de glucosa, los 2 letreros y las 2 solapas.',
         time='≈ 1.5 h',
         tools='Cúter, regla metálica, tijeras, taladro con broca de 3.5 mm, desarmador, pistola de silicón de baja temperatura',
         needs=['Foamboard de 5 mm', 'Acetato o mica de 20 × 5 cm', 'La torre de 7 cm y los pilares de 7.1 y 1.9 cm del Paso 1',
@@ -287,6 +294,7 @@ PASOS = [
     dict(
         id='paso8', n=8, tag='Prueba', title='Probar y ensayar',
         lead='Antes de presentarla, dale varias vueltas completas. Cada parada debe funcionar a la primera y cada quien debe saber qué le toca.',
+        result='Una vuelta completa que sale bien a la primera, y cada quien sabe qué le toca.',
         time='≈ 30 min',
         tools='Desarmador (por si hay que ajustar un tornillo)',
         needs=[],
@@ -313,11 +321,11 @@ PASOS = [
             ]),
             ('h', '3. Ensayo con papeles'),
             ('ol', [
-                'Repartan los 4 papeles de la diapositiva **Presentarla en clase**: conductor, RuBisCO, energía y salida.',
+                'Repartan los 4 papeles de [Presentar](#clase): conductor, RuBisCO, energía y salida.',
                 'Den una vuelta completa diciendo cada quien su parte en voz alta. Con explicación, una vuelta dura de 2 a 3 minutos.',
                 'Cambien de papel y repitan: así todos entienden el ciclo completo, no solo su parte.',
             ]),
-            ('note', 'idea', '**Si algo falla**, la diapositiva **Problemas comunes** tiene la solución de lo más frecuente.'),
+            ('note', 'idea', '**Si algo falla**, en [Ayuda](#problemas) está la solución de lo más frecuente.'),
         ]),
 ]
 

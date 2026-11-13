@@ -13,7 +13,7 @@ Contexto completo para trabajar en este proyecto. Léelo antes de cambiar algo.
   - **No tiene electrónica, motores ni pilas.** Por eso se le llama "versión con perilla" o "manual".
   - En cada parada, un integrante del equipo hace su parte con la mano.
 - **Esta app** es el **manual de construcción y presentación**, para que los alumnos lo consulten en su celular **sin internet**. Tiene:
-  - 17 diapositivas.
+  - Una app con 5 pestañas (Inicio, Armar, Presentar, 3D, Ayuda), pensada primero para iPad.
   - Los 8 pasos de armado, con renders.
   - Planos con medidas.
   - Videos.
@@ -65,9 +65,9 @@ Paradas de la pista. Coordenadas del plano en cm, con el origen en la esquina su
 contenido/            Fuente del manual (Python 3, solo librería estándar)
   content.py          TODOS los textos y datos: pasos, materiales, guion, problemas, coordenadas, glosario
   pagegen.py          Convierte content.py en fragmentos HTML
-  body.html           Esqueleto de las 17 diapositivas con marcadores {{...}}
+  body.html           Esqueleto de la app (barras y pantallas) con marcadores {{...}}
   style.css           Estilos (tokens de color, tema claro y oscuro)
-  app.js              Navegación, índice, casillas, pestañas, descargas, arranque del visor 3D
+  app.js              Navegación tipo app (pestañas + regresar), casillas y avance, galerías, plano, arranque del visor 3D
   svg/*.svg           Planos con medidas (los genera drawings.py desde 3d/layout.json)
   drawings.py         Regenera svg/ (correr si cambia layout.json)
   build_page.py       Arma build/page.html (lo llama npm run build)
@@ -91,6 +91,7 @@ scripts/
   serve.mjs           npm run serve → http://localhost:8080 (con Range; https opcional)
   test-offline.mjs    npm test → prueba sin internet en iPhone, Android y iPad simulados
   test-tactil.mjs     npm run test:tactil → gestos de dedo en el visor 3D
+  test-app.mjs        npm run test:app → recorre la app con el dedo: pestañas, regresar, galería, casillas, «Ver en 3D»
 dist/                 LA APP LISTA PARA SUBIR (generada; no se edita a mano)
 .github/workflows/pages.yml   Publica dist/ en GitHub Pages (opcional)
 ```
@@ -107,6 +108,7 @@ npm run dev                     # build + serve
 npx playwright install chromium # una vez, para las pruebas
 npm test                        # prueba sin internet (iPhone 13, Pixel 7, iPad gen 11)
 npm run test:tactil             # prueba el 3D con gestos de dedo (girar, pellizcar, doble toque, botones)
+npm run test:app                # prueba la navegación de la app (iPad vertical, iPad horizontal, iPhone)
 python contenido/drawings.py    # solo si cambias 3d/layout.json (regenera los planos)
 ```
 
@@ -116,23 +118,36 @@ python contenido/drawings.py    # solo si cambias 3d/layout.json (regenera los p
   - `CHROME_ARGS="--use-angle=gl-egl"`: da WebGL en Linux sin GPU.
 - Si el navegador de prueba no tiene WebGL, la prueba lo avisa y no cuenta como falla.
 - Si ya tienes un Chromium de Playwright descargado (en `%LOCALAPPDATA%\ms-playwright\`), pásalo con `CHROME_PATH` y no hace falta `npx playwright install`.
-- `npm run test:tactil` acepta las mismas variables (`DEVICES`, `CHROME_PATH`, `CHROME_ARGS`).
-- **Flujo normal después de cualquier cambio:** `npm run build` → `npm test`. Luego abre la app en un celular real en **modo avión** para confirmar.
+- `npm run test:tactil` y `npm run test:app` aceptan las mismas variables (`DEVICES`, `CHROME_PATH`, `CHROME_ARGS`).
+- **Flujo normal después de cualquier cambio:** `npm run build` → `npm test` → `npm run test:app`. Luego abre la app en un celular real en **modo avión** para confirmar.
 
 ## 5. Cómo está hecha
 
 ### Página (`contenido/` → `build/page.html` → `dist/index.html`)
 
-- Hay 17 diapositivas, cada una es `<section class="slide" id="…" data-title="…" data-grupo="…">`. Sus ids, en orden:
-  - `portada`, `funciona`, `dentro`, `antes`, `materiales`, `plano`.
-  - `paso1` a `paso8`.
-  - `clase`, `problemas`, `maqueta3d`.
-- **Navegación:** se usa el hash (`#paso3`), los botones Anterior/Siguiente de la barra inferior (`nav.nav`) y el diálogo **Índice** (`#idx`, botón `#openIdx`).
-- Cada paso trae:
-  - Una lista "Necesitas".
-  - Casillas de avance, que se guardan en `localStorage` con las llaves `calvin-manual-pasos` y `calvin-manual-materiales`.
-  - Pestañas de imágenes (`.tab` / `.pane`).
-  - Botones `data-ver3d` que abren el 3D en un estado dado, por ejemplo `{"armado": 2}`.
+- **Es una app, no diapositivas** (rediseño del 2026-11-13). Se usa **sobre todo en iPad**; el celular es secundario.
+- **Barra de pestañas** `#tabbar` con 5 botones (`.tb[data-tabbtn]`): Inicio · Armar · Presentar · 3D · Ayuda.
+  Abajo en pantallas de menos de 1024 px; **a la izquierda** (barra lateral) de 1024 px en adelante (iPad acostado).
+- Cada pantalla es `<section class="screen" id="…" data-tab="…" [data-parent="…"] data-title="…" [data-short="…"]>`.
+  - Raíz de cada pestaña: `inicio`, `armar` (lista), `clase` (Presentar), `maqueta3d`, `problemas` (Ayuda).
+  - Dentro de Armar: `antes`, `materiales`, `plano`, `dentro`, `paso1` a `paso8`. Dentro de Inicio: `funciona`.
+  - `#portada` (enlace viejo) se manda a `inicio`.
+- **Navegación** (`app.js`): botón **‹ Regresar** `#back` en la barra de arriba, con el nombre de a dónde vuelve.
+  - `data-go="id"`: abre esa pantalla encima (el ‹ regresa a donde estabas). Así funciona «Ver en 3D» desde un paso: ‹ vuelve al paso.
+  - `data-abrir="id"`: la abre dentro de su pestaña (el ‹ lleva a la lista de esa pestaña).
+  - `data-tabgo="pestaña"`: cambia de pestaña. **No uses `data-tab` para botones:** ese atributo es de las pantallas.
+  - De un paso al siguiente no se apila el ‹: sigue diciendo «Armar».
+  - Cambiar de pestaña te deja donde ibas en ella; tocar la pestaña en la que ya estás regresa a su lista.
+  - El hash (`#paso3`) se actualiza con `replaceState`; abrir la app con un hash abre esa pantalla.
+- **Nada obliga a marcar casillas para avanzar.** Las casillas solo muestran el avance.
+- Cada paso trae, en este orden: qué se logra al terminarlo (`result` en `content.py`), barra de avance, galería,
+  "Necesitas" y "Herramientas" a la vista, instrucciones por secciones con casillas grandes, y al final «‹ Paso anterior» / «Siguiente: Paso N».
+- **Galería** (`[data-gal]`, en lugar de pestañas): se desliza con el dedo, con flechas, contador «2 / 4», miniaturas con nombre
+  y botón para ver la imagen en grande (`#viewer`, con «Acercar»).
+- Casillas en `localStorage`: `calvin-manual-pasos` (llave `paso3-4`: pantalla y número de casilla dentro del paso)
+  y `calvin-manual-materiales` (llave `grupo-fila`). Son las mismas llaves de antes: el avance guardado se conserva.
+- Materiales es **una sola lista** por grupos, con botones arriba para brincar a cada grupo.
+- En el texto de `content.py`, `[texto](#pantalla)` se vuelve un enlace a esa pantalla (también dentro de una casilla, sin marcarla).
 - **Temas claro y oscuro:**
   - Todos los colores son tokens en `:root`: `--bg`, `--surface`, `--ink`, `--accent #2D5DA6` (azul; hasta 2026-11-12 era verde #2A7663), `--stage` y otros.
   - Se redefinen en `@media (prefers-color-scheme: dark)` (con `:root:not([data-theme="light"])`) y en `:root[data-theme="dark"]`.
@@ -176,7 +191,7 @@ python contenido/drawings.py    # solo si cambias 3d/layout.json (regenera los p
     - iPhone/iPad: Safari, Compartir, "Agregar a Inicio".
     - Android con `beforeinstallprompt`: botón "Instalar app".
     - Android sin ese evento: menú ⋮.
-  - El aviso **solo sale en la portada**, o cuando se pide desde Índice → "Usar sin internet en el celular" (`#pwaIdx`). Así no tapa los pasos ni el 3D.
+  - El aviso **solo sale en Inicio**, o cuando se pide desde Ayuda → "Ver cómo instalarla" (`#pwaIdx`). Así no tapa los pasos ni el 3D. Se acomoda arriba de la barra de pestañas.
   - Dentro de la app instalada: muestra el progreso y luego "Lista: ya funciona sin internet".
   - Llaves de `localStorage`: `pwa-cerrado` y `pwa-ok`. Pide `navigator.storage.persist()`.
 - El iPad se detecta por "iPad" en el agente de usuario, o por `MacIntel` + pantalla táctil, porque Safari en iPadOS se presenta como Mac.
@@ -263,6 +278,11 @@ El proyecto se hizo con Claude, con un sistema más grande en Python (skia para 
   El visor ahora pinta solo cuando algo cambia (antes 60 cuadros/s sin parar). Los controles del 3D quedan encima de los números.
   En pantallas táctiles todo lo que se toca mide 40 px o más. Materiales sale en tarjetas en el teléfono.
   `npm test` y `npm run test:tactil` pasan en iPhone 13, Pixel 7, iPad (gen 11) e iPad Pro 11 en horizontal.
+- 2026-11-13: **rediseño como app** (ver sección 5). Se quitaron las diapositivas, el Índice, las pestañas de imágenes y de materiales.
+  El 3D ahora ocupa ~54 % de la pantalla en vertical (antes 68 %) para que se pueda bajar deslizando fuera del modelo,
+  y "Puntos para verificar" pasó a "Compara con tu maqueta (opcional)": la pantalla gris de "Siguiente" se confundía con un candado.
+  En la app instalada, el aviso de descarga ya tiene botón para cerrarlo.
+  `npm test`, `npm run test:tactil` y `npm run test:app` pasan en iPhone 13, Pixel 7, iPad (gen 11) e iPad Pro 11 en horizontal.
 - `dist/` está construida y lista para subir.
 - **Publicada** el 2026-11-12 en GitHub Pages: **https://jshclaw.github.io/maqueta-calvin/** (repo público `JshClaw/maqueta-calvin`).
   - Cada push a `main` que cambie `dist/` la vuelve a publicar. El primer push, el que creó la rama, no disparó el flujo: se lanzó a mano con `gh workflow run pages.yml`.

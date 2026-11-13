@@ -185,7 +185,7 @@ for (const nombre of EQUIPOS) {
   // 11. tamaños táctiles dentro del 3D
   const chicos = await pg.evaluate(() => {
     const out = [];
-    document.querySelectorAll('#v3d button, #v3d .seg label, #v3d .mk, .nav .btn').forEach((el) => {
+    document.querySelectorAll('#v3d button, #v3d .seg label, #v3d .mk, .tabbar .tb, #back').forEach((el) => {
       if (el.closest('[hidden]') || el.offsetParent === null) return;
       const r = el.getBoundingClientRect();
       let h = r.height, w = r.width;
