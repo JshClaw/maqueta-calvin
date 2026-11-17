@@ -301,7 +301,7 @@ El proyecto se hizo con Claude, con un sistema más grande en Python (skia para 
   Los renders de `public/img` siguen con el brazo de 30 (5 mm por lado, no se nota).
 - 2026-11-16: **materiales igualados con la lista en PDF** (fuera del repo). Cambios:
   - El teflón del vagón es **tela para selladora, casi siempre sin adhesivo**: se forra el disco como tambor, con un círculo de **7 cm** (con 6 cm la pestaña de arriba quedaba de 1.5 mm, porque 6 mm se van en el canto). Las pestañas van lijadas y con pegamento de contacto, y la cara de abajo queda sin pegamento.
-  - Se usa **Plastiacero** en lugar de «epóxico de 5 minutos». Es negro: los pasos piden limpiar lo que se salga, sobre todo en la perilla. Tiempos: «lo que diga el empaque».
+  - Se usa **Plastiacero** en lugar de «epóxico de 5 minutos». Es negro: los pasos piden limpiar lo que se salga, sobre todo en la perilla. Fija en 5 minutos y cura en 1 hora (dato del empaque que consiguió el equipo).
   - El listón pasa a «listón o moldura cuadrada de pino de ¾ × ¾″» y los tornillos a «pija #6».
   - Ahora la caladora es la opción recomendada para los discos: la sierra de copa saca discos más chicos que su medida.
   - Para no recorrer el avance guardado (`paso3-4`…), **no se agregaron casillas**: lo nuevo va en sub-viñetas o en notas.

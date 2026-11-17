@@ -91,7 +91,7 @@ PASOS = [
         lead='Es el corazón de la maqueta: una sola pieza que gira. Arriba de la tapa va la perilla; un palo la atraviesa por el centro '
              'y abajo sostiene el brazo con imanes. Al girar la perilla, los imanes jalan al vagón a través de la madera, como si se moviera solo.',
         result='La perilla, el palo y el brazo unidos en una sola pieza que gira sin raspar.',
-        time='≈ 1.5 h (incluye secado)',
+        time='≈ 2 h (incluye 1 h de curado)',
         tools='Taladro con broca de paleta de ½″ y broca de 12 mm, caladora (recomendada) o sierra de copa, segueta, lija 120, escuadra, desarmador de cruz, guantes, 2 pilas de libros',
         needs=['Tira de MDF de 6 mm de 31 × 2.5 cm (brazo)', 'Retazo de MDF de 6 mm para 2 discos de 4.5 cm (perilla)',
                'Palo redondo de madera de ½″, 4 cm', '2 imanes de neodimio de 12 × 3 mm', '2 cuadros de fieltro adhesivo de 2 × 2 cm, de 2 mm de grueso',
@@ -107,7 +107,7 @@ PASOS = [
             ('ol', [
                 'Marca con un clavo el **centro** de la tira de 31 × 2.5 cm (a **15.5 cm** de cada punta) y el centro del agujero de los imanes, a **14.4 cm** del centro (1.1 cm antes de una punta). Puedes usar el brazo de la hoja de **Plantillas** (página 5): pon su raya roja sobre el centro de la tira. La plantilla dice 30 cm y se queda 5 mm antes de la punta: es correcto, la tira es más larga para que quede madera alrededor de los imanes.',
                 'Si la maderería no te hizo los agujeros, prensa la tira sobre una madera de sacrificio y perfora: al centro con broca de paleta de **½″** (ahí entra el palo) y en la marca de los imanes con broca de **12 mm**. Que atraviesen. Entre el agujero de los imanes y la punta quedan 5 mm de madera.',
-                'Junta los 2 imanes de 12 × 3 mm uno sobre otro (se pegan solos) y mete los imanes encimados en su agujero: deben quedar **al ras** por las dos caras (3 + 3 = 6 mm, lo mismo que el MDF). Antes de meterlos, unta una capa delgada de Plastiacero en la pared del agujero. Limpia lo que se salga y no los muevas hasta que endurezca (el tiempo que diga el empaque).',
+                'Junta los 2 imanes de 12 × 3 mm uno sobre otro (se pegan solos) y mete los imanes encimados en su agujero: deben quedar **al ras** por las dos caras (3 + 3 = 6 mm, lo mismo que el MDF). Antes de meterlos, unta una capa delgada de Plastiacero en la pared del agujero. Limpia lo que se salga y no los muevas en 5 minutos, que es lo que tarda en fijar.',
                 'Escoge la cara de **arriba** (la que mirará a la tapa) y escribe "ARRIBA" con lápiz. Pega ahí un cuadro de fieltro en cada punta, al ras de la orilla: uno queda encima de los imanes.',
             ]),
             ('h', '2. El palo'),
@@ -129,8 +129,8 @@ PASOS = [
                 'Quita la tapa de la caja y ponla **boca arriba** sobre 2 pilas de libros, una bajo cada orilla, para que el centro quede al aire: el brazo necesita girar unos 16 cm alrededor del centro sin tocar nada.',
                 'Mete el palo del brazo **desde abajo** por el agujero del centro, con los fieltros hacia la tapa.',
                 'Pon los 2 imanes de 10 × 3 mm sueltos sobre la pista, justo encima de los imanes del brazo: se jalan a través de la madera y **sostienen el brazo** pegado a la tapa. Ya tienes las manos libres.',
-                'Arriba, mete la rondana en el palo. Unta una capa delgada de Plastiacero alrededor del palo, solo en el tramo que quedará dentro de la perilla, sin llegar a la rondana. Mete la perilla y empújala hasta que toque la rondana: el palo sobresale como 1 cm arriba de la perilla, así debe quedar. Limpia con un trapo lo que se salga por arriba antes de que endurezca: es negro y ahí se ve. Deja que endurezca sin moverla (el tiempo que diga el empaque).',
-                'Quita los imanes sueltos y gira la perilla una vuelta completa: el brazo gira con ella, los fieltros rozan la tapa y nada raspa. Ahora la tapa, el palo, el brazo y la perilla son una sola pieza.',
+                'Arriba, mete la rondana en el palo. Unta una capa delgada de Plastiacero alrededor del palo, solo en el tramo que quedará dentro de la perilla, sin llegar a la rondana. Mete la perilla y empújala hasta que toque la rondana: el palo sobresale como 1 cm arriba de la perilla, así debe quedar. Limpia con un trapo lo que se salga por arriba antes de que endurezca: es negro y ahí se ve. No la muevas en 5 minutos, que es lo que tarda en fijar.',
+                'Espera 1 hora a que cure. Luego quita los imanes sueltos y gira la perilla una vuelta completa: el brazo gira con ella, los fieltros rozan la tapa y nada raspa. Ahora la tapa, el palo, el brazo y la perilla son una sola pieza.',
                 'Pon la tapa en la caja y atorníllala.',
             ]),
             ('note', 'idea', '**¿Por qué el vagón se mueve solo?** Los imanes de neodimio son tan fuertes que su atracción atraviesa la tapa de 6 mm. Los del brazo jalan a los del vagón: al girar la perilla mueves el brazo escondido y el vagón lo sigue por encima.'),
@@ -141,7 +141,7 @@ PASOS = [
         id='paso4', n=4, tag='Mecanismo', title='El vagón',
         lead='Un disco de MDF con dos imanes al centro, forrado abajo con tela de teflón para que resbale, y una placa 4 × 4 arriba con el bloque verde: el carbono del CO₂. Pesa unos 15 g.',
         result='Un vagón que sigue a la perilla por toda la pista sin quedarse atrás.',
-        time='≈ 45 min + el secado del Plastiacero',
+        time='≈ 45 min + 1 h de curado',
         tools='Caladora (recomendada) o sierra de copa, taladro con broca de 10 mm, lija 120, cúter, tijeras, plumón, guantes',
         needs=['Lo que quedó del retazo de MDF de 15 × 6 cm (alcanza para el disco)', '2 imanes de neodimio de 10 × 3 mm',
                'Tela o cinta de teflón para selladora, 7 × 7 cm (o fieltro adhesivo delgado)',
@@ -155,7 +155,7 @@ PASOS = [
                 'Traza el disco con la plantilla del vagón (página 5, Ø 4.5 cm) y córtalo con la caladora. Con sierra de copa también sirve (el agujero de la broca guía te marca el centro), pero el disco sale más chico: lee la nota de la perilla en el [Paso 3](#paso3). Lija la orilla.',
                 'Haz un agujero de 10 mm justo al centro, que atraviese el disco.',
                 'Busca qué cara va abajo: junta los 2 imanes de 10 × 3 uno sobre otro, ponlos sobre la pista y muévelos despacio alrededor. En un punto se quedarán pegados solos: ahí abajo están los imanes del brazo. Marca con plumón la cara que quedó **hacia arriba**. Si en vez de pegarse se voltean o se alejan, voltéalos y vuelve a probar.',
-                'Mete los imanes encimados en el agujero con la cara marcada **hacia arriba**, al ras por los dos lados, y fíjalos con poco Plastiacero. Limpia lo que se salga por las dos caras y deja que endurezca (el tiempo que diga el empaque).',
+                'Mete los imanes encimados en el agujero con la cara marcada **hacia arriba**, al ras por los dos lados, y fíjalos con poco Plastiacero. Limpia lo que se salga por las dos caras y no los muevas en 5 minutos. Antes de forrar, espera 1 hora a que cure.',
                 ('Forra la cara de abajo con la tela de teflón, como un tambor. Si tu tela sí trae adhesivo, solo pégala en la cara de abajo y recórtala a la orilla. Si no trae (lo más común):', [
                     'Si quedó Plastiacero salido en la cara de abajo, líjalo al ras: cualquier bulto se nota a través de la tela.',
                     'Corta un círculo de tela de **7 cm** (todo el cuadro de 7 × 7). El disco mide 4.5 cm: lo que sobra sube por el canto de 6 mm y se dobla sobre la cara de arriba.',
@@ -491,7 +491,7 @@ MATERIALES = [
 
 PEGAMENTOS = [
     ['MDF con MDF o con pino (caja, esquineros, postes, discos de la perilla)', 'Pegamento blanco de carpintero', 'Sujeta con masking o peso 1 h. Endurece del todo en 24 h.'],
-    ['Imanes en el brazo y en el vagón; palo en el brazo; perilla al palo', 'Plastiacero (epóxico de 2 partes)', 'Mezcla las 2 partes como diga el empaque y no lo muevas hasta que endurezca. Usa guantes. Es negro: pon poco y limpia lo que se salga antes de que endurezca, o se verá feo.'],
+    ['Imanes en el brazo y en el vagón; palo en el brazo; perilla al palo', 'Plastiacero (epóxico de 2 partes)', 'Mezcla las 2 partes como diga el empaque. Fija en 5 minutos: no lo muevas en ese tiempo. Cura en 1 hora: no le hagas fuerza antes. Usa guantes. Es negro: pon poco y limpia lo que se salga antes de que endurezca, o se verá feo.'],
     ['Placa 4 × 4 al vagón; pieza G3P de salida', 'Pegamento de contacto o instantáneo', 'Una gota basta.'],
     ['Placas de bloques, letreros y base de las solapas sobre el vinil', 'Cinta doble cara de espuma', 'Se despega si te equivocas.'],
     ['Caja de glucosa sobre el vinil', 'Cinta doble cara delgada', 'Así su orilla queda a la altura de la punta de la rampa.'],
