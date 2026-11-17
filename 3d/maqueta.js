@@ -400,7 +400,7 @@ export async function crearMaqueta(opts = {}) {
     solapas.push(hinge);
   });
 
-  // vagón: disco de MDF de 6 mm con 2 imanes, cinta de teflón abajo y placa 4 × 4 arriba
+  // vagón: disco de MDF de 6 mm con 2 imanes, forrado abajo con tela de teflón y placa 4 × 4 arriba
   const vagon = new THREE.Group();
   vagon.add(cast(cyl(2.25, 0.02, std('#EDEDE8', 0.3), 0, 0.01, 0, 40)));
   vagon.add(cast(cyl(2.25, 0.6, MDF, 0, 0.32, 0, 40)));
@@ -417,7 +417,7 @@ export async function crearMaqueta(opts = {}) {
   vp.position.y = 0.62;
   vagon.add(vp);
   root.add(vagon);
-  hs('vagon', 'Vagón con el CO₂', 'Disco de MDF de 4.5 cm con 2 imanes de 10 × 3 mm al centro, cinta de teflón abajo y una placa 4 × 4 con el bloque verde (el carbono del CO₂). Los imanes del brazo lo jalan a través de la tapa.', vagon, [0, 3, 0]);
+  hs('vagon', 'Vagón con el CO₂', 'Disco de MDF de 4.5 cm con 2 imanes de 10 × 3 mm al centro, forrado abajo con tela de teflón y una placa 4 × 4 con el bloque verde (el carbono del CO₂). Los imanes del brazo lo jalan a través de la tapa.', vagon, [0, 3, 0]);
 
   // ---------------- resalte: anillo que marca qué se mueve con la mano en cada momento
   const ringMat = new THREE.MeshBasicMaterial({ color: '#F2B23A', transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide });

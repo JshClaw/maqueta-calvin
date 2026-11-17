@@ -299,6 +299,12 @@ El proyecto se hizo con Claude, con un sistema más grande en Python (skia para 
   **El PDF ya impreso dice 30 cm** en la plantilla del brazo y no se puede regenerar aquí: el Paso 3 explica que se alinea por la raya roja del centro
   y que la plantilla se queda 5 mm antes de la punta. Cambiaron `layout.json` (`arm.len` 31, `arm.padC` 14.5) y se regeneraron los SVG con `drawings.py`.
   Los renders de `public/img` siguen con el brazo de 30 (5 mm por lado, no se nota).
+- 2026-11-16: **materiales igualados con la lista en PDF** (fuera del repo). Cambios:
+  - El teflón del vagón es **tela para selladora, casi siempre sin adhesivo**: se forra el disco como tambor, con un círculo de **7 cm** (con 6 cm la pestaña de arriba quedaba de 1.5 mm, porque 6 mm se van en el canto). Las pestañas van lijadas y con pegamento de contacto, y la cara de abajo queda sin pegamento.
+  - Se usa **Plastiacero** en lugar de «epóxico de 5 minutos». Es negro: los pasos piden limpiar lo que se salga, sobre todo en la perilla. Tiempos: «lo que diga el empaque».
+  - El listón pasa a «listón o moldura cuadrada de pino de ¾ × ¾″» y los tornillos a «pija #6».
+  - Ahora la caladora es la opción recomendada para los discos: la sierra de copa saca discos más chicos que su medida.
+  - Para no recorrer el avance guardado (`paso3-4`…), **no se agregaron casillas**: lo nuevo va en sub-viñetas o en notas.
 - `dist/` está construida y lista para subir.
 - **Publicada** el 2026-11-12 en GitHub Pages: **https://jshclaw.github.io/maqueta-calvin/** (repo público `JshClaw/maqueta-calvin`).
   - Cada push a `main` que cambie `dist/` la vuelve a publicar. El primer push, el que creó la rama, no disparó el flujo: se lanzó a mano con `gh workflow run pages.yml`.

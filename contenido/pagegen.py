@@ -254,7 +254,7 @@ def materiales_html():
   <header class="shead">
     <p class="eyebrow">Lista de compras</p>
     <h1 class="title">Materiales y herramientas</h1>
-    <p class="lead">Todo se consigue en maderería, ferretería y papelería; no lleva nada eléctrico. Pidan los cortes de MDF en la maderería: salen exactos, y si no hay taladro en la escuela, ahí mismo pueden hacer los agujeros grandes. Marquen cada cosa cuando ya la tengan.</p>
+    <p class="lead">Casi todo se consigue en maderería, ferretería y papelería; los imanes, los bloques y la tela de teflón son más fáciles de encontrar en tiendas en línea. La maqueta no lleva nada eléctrico. Pidan los cortes de MDF en la maderería: salen exactos, y si no hay taladro en la escuela, ahí mismo pueden hacer los agujeros grandes. Marquen cada cosa cuando ya la tengan.</p>
     <div class="pstat"><span class="bar"><i></i></span><span class="pstat-t" data-mat-total></span></div>
   </header>
   <nav class="jump" aria-label="Ir a un grupo">{"".join(jumps)}</nav>
@@ -304,7 +304,7 @@ def antes_html():
       <div class="callout warn">
         <p><b>Seguridad.</b></p>
         <p><b>Cúter:</b> corta siempre alejando la navaja de tu mano y sobre una tabla de corte. <b>Taladro y caladora:</b> con un adulto o el maestro de taller; sujeta la pieza con prensa, nunca con la mano, y usa lentes.</p>
-        <p><b>Silicón caliente:</b> aunque sea de baja temperatura, quema; no toques la punta ni la gota recién puesta. <b>Epóxico:</b> usa guantes y lávate las manos.</p>
+        <p><b>Silicón caliente:</b> aunque sea de baja temperatura, quema; no toques la punta ni la gota recién puesta. <b>Plastiacero:</b> usa guantes y lávate las manos.</p>
         <p><b>Imanes de neodimio:</b> se pegan muy fuerte, pellizcan y se rompen si chocan. Guárdalos separados, lejos de celulares y tarjetas, y nunca al alcance de niños pequeños.</p>
       </div>
       <button class="row card" type="button" data-go="problemas"><span class="ricon">{icon("ayuda")}</span><span class="rtext"><b>¿Una palabra que no conoces?</b><small>El vocabulario está en Ayuda: MDF, avellanar, rondana, pivote…</small></span>{icon("chev", "chev")}</button>

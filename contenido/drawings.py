@@ -343,10 +343,10 @@ v.append(f'<path d="M{f(cx0 - 0.4 * V + 0.39 * V + 8)},{f(y + 0.48 * V)} H{f(cx0
 v.append(T(cx0 + 166, y + 0.48 * V + 4, 'Bloque 1 × 1 verde', 'tb', anchor='start', size=12.5))
 v.append(T(cx0 + 166, y + 0.48 * V + 20, 'el CO₂; va en fila 2, columna 2', 'tl', anchor='start', size=11))
 y += 0.96 * V + 22
-v.append(lay(y, 3.2, 0.32, 'plate2', 'Placa 4 × 4', 'pegamento de contacto o epóxico')); y += 0.32 * V + 30
+v.append(lay(y, 3.2, 0.32, 'plate2', 'Placa 4 × 4', 'pegamento de contacto o instantáneo')); y += 0.32 * V + 30
 y0m = y
 v.append(lay(y, 4.5, 0.6, 'mdf', 'Disco de MDF de 6 mm, Ø 4.5 cm', 'agujero central de 10 mm')); y += 0.6 * V + 26
-v.append(lay(y, 4.5, 0.06, 'felt', 'Cinta de teflón adhesiva', 'para que resbale (o fieltro delgado)')); y += 0.1 * V + 30
+v.append(lay(y, 4.5, 0.06, 'felt', 'Tela de teflón, forrada como tambor', 'para que resbale (o fieltro delgado)')); y += 0.1 * V + 30
 mx = cx0 - 4.5 * V / 2 - 120
 v.append(f'<rect x="{f(mx)}" y="{f(y0m)}" width="{f(1.0 * V)}" height="{f(0.3 * V)}" class="magnet"/>')
 v.append(f'<rect x="{f(mx)}" y="{f(y0m + 0.3 * V + 2)}" width="{f(1.0 * V)}" height="{f(0.3 * V)}" class="magnet"/>')
