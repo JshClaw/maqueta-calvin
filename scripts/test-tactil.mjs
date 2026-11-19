@@ -124,6 +124,47 @@ for (const nombre of EQUIPOS) {
   b = await cam();
   ok(mov(a.target, b.target) > 2, `dos dedos mueven la vista (el centro se movió ${mov(a.target, b.target).toFixed(1)} cm)`);
 
+  // 4b. torcer dos dedos gira la maqueta sobre la mesa; pellizcar (aunque se tuerza un poquito) no la gira
+  const azim = (c) => Math.atan2(c.pos[0] - c.target[0], c.pos[2] - c.target[2]);
+  const difAng = (x, y) => { let d = y - x; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return d; };
+  const arco = (r, g) => [cx + r * Math.cos(g), cy + r * Math.sin(g)];
+  const torcer = async (r0, r1, g) => {   // dos dedos frente a frente; giran g radianes (positivo = como las manecillas)
+    const pasos = 14;
+    await toque('touchStart', [arco(r0, Math.PI), arco(r0, 0)]);
+    for (let k = 1; k <= pasos; k++) {
+      const u = k / pasos, r = r0 + (r1 - r0) * u;
+      await toque('touchMove', [arco(r, Math.PI + g * u), arco(r, g * u)]);
+      await espera(16);
+    }
+    await toque('touchEnd', []);
+    await espera(900);
+  };
+  const rt = Math.min(libreW, caja.height) * 0.22;
+  a = await cam();
+  await torcer(rt, rt, Math.PI / 4);
+  b = await cam();
+  const giro = difAng(azim(a), azim(b)) * 180 / Math.PI;   // 45° menos los 10° que hay que torcer para que arranque
+  ok(Math.abs(giro - 35) < 1.5, `torcer dos dedos 45° gira la maqueta 35° (los primeros 10° no cuentan, para que pellizcar no la gire): ${giro.toFixed(1)}°`);
+  a = await cam();
+  await torcer(rt * 0.7, rt * 1.4, 6 * Math.PI / 180);
+  b = await cam();
+  const giroP = Math.abs(difAng(azim(a), azim(b)) * 180 / Math.PI);
+  ok(giroP < 1 && dist(b) < dist(a) * 0.85, `un pellizco algo chueco (6°) acerca sin girar (giro ${giroP.toFixed(1)}°, distancia ${dist(a).toFixed(0)} → ${dist(b).toFixed(0)} cm)`);
+  await pg.locator('#v3d-centro').tap(); await espera(1300);
+
+  // 4c. inercia: un deslizón rápido sigue girando al soltarlo; uno lento se queda donde lo dejas
+  const deslizar = async (pasos) => {
+    const a0 = azim(await cam());
+    await gesto([[cx - caja.width * 0.12, cy]], [[cx + caja.width * 0.12, cy]], pasos);
+    await espera(1500);
+    return Math.abs(difAng(a0, azim(await cam())) * 180 / Math.PI);
+  };
+  const lento = await deslizar(70);
+  await pg.locator('#v3d-centro').tap(); await espera(1300);
+  const rapido = await deslizar(6);
+  ok(rapido > lento * 1.3, `al soltar un deslizón rápido sigue girando (lento ${lento.toFixed(0)}°, rápido ${rapido.toFixed(0)}° con la misma distancia)`);
+  await pg.locator('#v3d-centro').tap(); await espera(1300);
+
   // 5. botón Mover + un dedo
   await pg.locator('#v3d-mover').tap();
   a = await cam();
@@ -195,6 +236,32 @@ for (const nombre of EQUIPOS) {
     return out;
   });
   ok(chicos.length === 0, chicos.length ? `botones de menos de 40 px: ${chicos.join(', ')}` : 'todos los botones del 3D miden 40 px o más');
+
+  // 11b. pantalla completa: la maqueta tapa toda la pantalla, los controles siguen ahí, y se sale con el botón o con «atrás»
+  const pc = async () => pg.evaluate(() => {
+    const s = document.getElementById('v3d-stage').getBoundingClientRect();
+    const c = document.querySelector('#v3d-stage canvas').getBoundingClientRect();
+    const tapado = (el) => { const r = el.getBoundingClientRect(); const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return !el.contains(top); };
+    return { w: Math.round(s.width), h: Math.round(s.height), cw: Math.round(c.width), ch: Math.round(c.height), vw: innerWidth, vh: innerHeight,
+      boton: document.getElementById('v3d-full').textContent.trim(), tapados: ['#v3d-full', '#v3d-mas', '#v3d-centro'].filter((q) => tapado(document.querySelector(q))) };
+  });
+  await pg.locator('#v3d-full').tap(); await espera(700);
+  let f = await pc();
+  ok(f.w === f.vw && f.h === f.vh && f.cw === f.vw && f.ch === f.vh && f.tapados.length === 0,
+    `pantalla completa: la maqueta mide ${f.w}×${f.h} de ${f.vw}×${f.vh} (dibujo ${f.cw}×${f.ch})${f.tapados.length ? ', tapados: ' + f.tapados.join(' ') : ''}`);
+  ok(f.boton === 'Salir', `en pantalla completa el botón dice «Salir» («${f.boton}»)`);
+  const c1 = await pg.locator('#v3d-stage canvas').boundingBox();
+  const a1 = await pg.evaluate(() => Visor.camara().pos.join());
+  await gesto([[c1.x + c1.width * 0.4, c1.y + c1.height * 0.5]], [[c1.x + c1.width * 0.6, c1.y + c1.height * 0.5]], 10);
+  await espera(600);
+  ok(a1 !== await pg.evaluate(() => Visor.camara().pos.join()), 'en pantalla completa se sigue girando con el dedo');
+  await pg.locator('#v3d-full').tap(); await espera(700);
+  f = await pc();
+  ok(f.h < f.vh && f.boton === 'Pantalla completa', `«Salir» la regresa a su tamaño (${f.w}×${f.h})`);
+  await pg.locator('#v3d-full').tap(); await espera(500);
+  await pg.goBack(); await espera(700);
+  f = await pc();
+  ok(f.h < f.vh && (await pg.evaluate(() => location.hash)) === '#maqueta3d', `«atrás» sale de la pantalla completa sin salir de la app (${f.w}×${f.h}, ${await pg.evaluate(() => location.hash)})`);
 
   // 12. ¿se puede seguir bajando por la página?
   const lugar = await pg.evaluate(() => {

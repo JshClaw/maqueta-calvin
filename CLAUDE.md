@@ -171,6 +171,13 @@ python contenido/drawings.py    # solo si cambias 3d/layout.json (regenera los p
   - Anillo amarillo que marca qué se mueve.
   - Puntos de verificación numerados del 1 al 15, que se guardan en `calvin-manual-verificado`.
   - Reproducción de una vuelta en el tiempo ("4D").
+  - **Pantalla completa** (`#v3d-full`, arriba a la derecha del modelo; en el modo grande dice «Salir»). Usa la pantalla completa del navegador donde existe (Android, iPad, computadora). En iPhone no existe para algo que no sea video, así que ahí la maqueta crece con CSS (`.v3d-stage.full`, `position: fixed`) y tapa la app. Se sale con el botón, con Esc o con «atrás» de Android (se apila una entrada en el historial para que «atrás» no cierre la app).
+- **Tacto (pensado para iPad)**, con las constantes al inicio de `visor.js`:
+  - `GIRO_ANCHO` (240°): cuánto gira al deslizar el dedo de lado a lado del modelo, en cualquier tamaño de pantalla. Antes giraba 360° por cada alto del recuadro, unos 440–515° por ancho en iPad.
+  - `SUAVE`: el suavizado se calcula con el tiempo real, para que un iPad de 120 Hz se sienta igual que uno de 60 Hz. El ciclo sigue pintando mientras quede giro pendiente (`pendiente()`); sin eso se quedaba a medias.
+  - **Torcer dos dedos** gira la maqueta sobre la mesa. Los primeros 10° (`TORCER`) no cuentan, para que un pellizco no la gire. Mientras se tuerce, el zoom va al centro y no hacia los dedos.
+  - **Inercia** (`INERCIA`): al soltar un dedo que va rápido (más de 350 px/s), la maqueta sigue girando y frena sola. No la hay en modo Mover ni con «reducir movimiento».
+  - Para Safari: se bloquean `gesturestart` y `gesturechange` (que el pellizco no haga zoom a la página), y en el recuadro no se selecciona texto ni sale la lupa.
 - **En celular:** el pixel ratio máximo es 2 y el mapa de sombras es de 1024 cuando el ancho es menor a 700 px.
 
 ### PWA (`pwa/`, armada por `scripts/build.mjs`)
@@ -305,6 +312,8 @@ El proyecto se hizo con Claude, con un sistema más grande en Python (skia para 
   - El listón pasa a «listón o moldura cuadrada de pino de ¾ × ¾″» y los tornillos a «pija #6».
   - Ahora la caladora es la opción recomendada para los discos: la sierra de copa saca discos más chicos que su medida.
   - Para no recorrer el avance guardado (`paso3-4`…), **no se agregaron casillas**: lo nuevo va en sub-viñetas o en notas.
+- 2026-11-19: botón de **pantalla completa** en el visor 3D. `npm run test:tactil` lo prueba (tamaño, girar adentro, «Salir» y «atrás»). `npm test`, `npm run test:tactil` y `npm run test:app` pasan.
+- 2026-11-19: **mejor tacto en el 3D** (ver sección 5, «Tacto»). `npm run test:tactil` prueba torcer, el pellizco chueco y la inercia.
 - `dist/` está construida y lista para subir.
 - **Publicada** el 2026-11-12 en GitHub Pages: **https://jshclaw.github.io/maqueta-calvin/** (repo público `JshClaw/maqueta-calvin`).
   - Cada push a `main` que cambie `dist/` la vuelve a publicar. El primer push, el que creó la rama, no disparó el flujo: se lanzó a mano con `gh workflow run pages.yml`.

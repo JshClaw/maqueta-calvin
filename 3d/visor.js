@@ -11,12 +11,19 @@ const estado = $('#v3d-status');
 const INTERIOR = { brazo: 'transparente', postes: 'sinTapa' };
 const ETAPAS = ['Fijación', 'Reducción', 'Regeneración'];
 const CAM0 = [52, 58, 92], TGT0 = [0, 4, 2];
+// Sensación al tocar (ajustables):
+const GIRO_ANCHO = 240;    // grados que gira al deslizar el dedo de lado a lado del modelo, en cualquier pantalla
+const SUAVE = 0.2;         // qué tanto alcanza la cámara al dedo en cada cuadro de 60 Hz (1 = sin suavizar)
+const INERCIA = 0.28;      // segundos que tarda en frenar el giro al soltar un dedo en movimiento
+const TORCER = 10 * Math.PI / 180;   // cuánto hay que torcer dos dedos para que empiece a girar (así pellizcar no la gira)
+const reducirMov = matchMedia('(prefers-reduced-motion: reduce)');
 
 let M, S, R, controls, raf = 0, activo = false;
 let t = 0, playing = false, speed = 1, last = 0;
 let modo = 'completa';
 let armando = false;
 let vuelo = null;
+let impulso = null;        // giro que sigue solo después de soltar el dedo (rad/s)
 let sucio = true;          // hay que volver a pintar
 const marcadores = [];
 
@@ -52,7 +59,18 @@ export async function iniciar() {
   controls = new OrbitControls(S.camera, R.domElement);
   controls.target.set(...TGT0);
   controls.enableDamping = true;
-  controls.dampingFactor = 0.12;
+  // El suavizado de OrbitControls se aplica en cada llamada a update(), y la llama en cada movimiento del dedo y en
+  // cada cuadro: se sentía distinto con el dedo quieto o moviéndose, y en un iPad de 120 Hz que en uno de 60 Hz.
+  // Aquí se calcula con el tiempo real que pasó, así se siente igual en todos.
+  const updateOrig = controls.update.bind(controls);
+  let tUpd = performance.now();
+  controls.update = (d) => {
+    const now = performance.now();
+    const dt = Math.min(0.05, Math.max(0, (now - tUpd) / 1000));
+    tUpd = now;
+    controls.dampingFactor = 1 - Math.pow(1 - SUAVE, dt * 60);
+    return updateOrig(d);
+  };
   controls.minDistance = 3;
   controls.maxDistance = 230;
   controls.maxPolarAngle = Math.PI * 0.49;
@@ -60,9 +78,12 @@ export async function iniciar() {
   controls.screenSpacePanning = true;
   controls.zoomSpeed = 1.15;
   controls.update();
-  controls.addEventListener('start', () => { vuelo = null; ocultarAyuda(); });
+  controls.addEventListener('start', () => { vuelo = null; impulso = null; ocultarAyuda(); });
   controls.addEventListener('change', () => kick());   // al girar, mover o hacer zoom con el dedo o el mouse
   armarNavegacion();
+  armarDedos();
+  armarPantallaCompleta();
+  sensibilidad(w, h);
   estado.textContent = '';
   estado.hidden = true;
   armarUI();
@@ -80,9 +101,21 @@ function ajustar() {
   const w = stage.clientWidth, h = stage.clientHeight;
   if (!w || !h) return;      // diapositiva oculta
   R.setSize(w, h);
+  sensibilidad(w, h);
   S.camera.aspect = w / h;
   S.camera.updateProjectionMatrix();
   kick();
+}
+
+function pendiente() {
+  const d = controls._sphericalDelta, p = controls._panOffset;
+  return Math.abs(d.theta) > 1e-4 || Math.abs(d.phi) > 1e-4 || p.lengthSq() > 1e-6;
+}
+
+// OrbitControls gira 360° por cada alto del recuadro: en un recuadro chico (o ancho) giraba de más.
+// Así, deslizar de lado a lado del modelo gira siempre GIRO_ANCHO grados.
+function sensibilidad(w, h) {
+  if (controls && w && h) controls.rotateSpeed = (GIRO_ANCHO / 360) * (h / w);
 }
 
 export function camara() { return { pos: S.camera.position.toArray(), target: controls.target.toArray() }; }
@@ -90,7 +123,51 @@ export function camara() { return { pos: S.camera.position.toArray(), target: co
 export function activar(on) {
   activo = on;
   if (on && M) { last = performance.now(); sucio = true; loop(); }
-  if (!on) { cancelAnimationFrame(raf); raf = 0; playing = false; syncPlay(); }
+  if (!on) { cancelAnimationFrame(raf); raf = 0; playing = false; syncPlay(); pantallaCompleta(false); }
+}
+
+// ------------------------------------------------------------------ pantalla completa
+// Donde se puede (Android, iPad, computadora) se usa la pantalla completa del navegador; en iPhone no existe
+// para algo que no sea un video, así que ahí la maqueta solo crece y tapa la app (que es lo mismo, menos la barra de Safari).
+let grande = false, conHistoria = false;
+const fsEl = () => document.fullscreenElement || document.webkitFullscreenElement || null;
+const fsSePuede = () => !!(document.fullscreenEnabled || document.webkitFullscreenEnabled) && !!(stage.requestFullscreen || stage.webkitRequestFullscreen);
+
+async function pantallaCompleta(on, porAtras = false) {
+  if (on === grande) return;
+  grande = on;
+  stage.classList.toggle('full', on);
+  document.documentElement.classList.toggle('v3d-full', on);
+  const b = $('#v3d-full');
+  b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  b.setAttribute('aria-label', on ? 'Salir de pantalla completa' : 'Ver en pantalla completa');
+  b.title = on ? 'Salir de pantalla completa' : 'Pantalla completa';
+  b.querySelector('.t').textContent = on ? 'Salir' : 'Pantalla completa';
+  if (on) {
+    // el botón «atrás» de Android (o el gesto) sale de la pantalla completa en lugar de cerrar la app
+    try { history.pushState({ v3dFull: 1 }, ''); conHistoria = true; } catch (e) { conHistoria = false; }
+    if (fsSePuede() && !fsEl()) {
+      try { await (stage.requestFullscreen ? stage.requestFullscreen({ navigationUI: 'hide' }) : stage.webkitRequestFullscreen()); } catch (e) { /* se queda la versión que tapa la app */ }
+    }
+  } else {
+    if (fsEl() === stage) {
+      try { await (document.exitFullscreen ? document.exitFullscreen() : document.webkitExitFullscreen()); } catch (e) { /* nada */ }
+    }
+    if (conHistoria && !porAtras) { conHistoria = false; history.back(); }
+    conHistoria = false;
+  }
+  ajustar();
+  kick();
+}
+
+function armarPantallaCompleta() {
+  $('#v3d-full').addEventListener('click', () => pantallaCompleta(!grande));
+  const alSalirDelNavegador = () => { if (grande && fsEl() !== stage) pantallaCompleta(false); };
+  document.addEventListener('fullscreenchange', alSalirDelNavegador);
+  document.addEventListener('webkitfullscreenchange', alSalirDelNavegador);
+  window.addEventListener('popstate', () => { if (grande) pantallaCompleta(false, true); });
+  // Esc sale de la pantalla completa (antes de que la app lo use para regresar)
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && grande) { e.preventDefault(); pantallaCompleta(false); } }, true);
 }
 
 function loop() {
@@ -108,6 +185,13 @@ function loop() {
       syncArmado();
       if (M.view.armado >= M.partes.length) { armando = false; $('#v3d-armar').textContent = 'Armar pieza por pieza'; }
     }
+    if (impulso) {
+      controls._rotateLeft(impulso.x * dt);
+      controls._rotateUp(impulso.y * dt);
+      const f = Math.exp(-dt / INERCIA);
+      impulso.x *= f; impulso.y *= f;
+      if (Math.hypot(impulso.x, impulso.y) < 0.03) impulso = null;
+    }
     let enVuelo = false;
     if (vuelo) {
       enVuelo = true;
@@ -118,8 +202,10 @@ function loop() {
       if (vuelo.u >= 1) vuelo = null;
     }
     controls.target.clamp(LIM_MIN, LIM_MAX);  // que la maqueta nunca se pierda de vista
-    const movio = controls.update();          // true mientras la cámara sigue moviéndose (inercia)
-    const sigue = playing || armando || enVuelo || movio;
+    // true mientras la cámara sigue moviéndose (inercia). Si en este cuadro no avanzó (dos update() en el mismo
+    // milisegundo) pero todavía le falta giro o desplazamiento, también hay que seguir: si no, se quedaba a medias
+    const movio = controls.update() || pendiente();
+    const sigue = playing || armando || enVuelo || movio || !!impulso;
     // solo se pinta cuando algo cambió: quieta, la maqueta no gasta batería
     if (sucio || sigue) pintar();
     sucio = false;
@@ -311,7 +397,7 @@ function acercarA(cx, cy) {
 function armarNavegacion() {
   const help = $('#v3d-help');
   help.textContent = tactil
-    ? 'Un dedo: girar · dos dedos: mover y zoom · doble toque: acercarte ahí'
+    ? 'Un dedo: girar · dos dedos: mover, zoom o torcer para girar · doble toque: acercarte ahí'
     : 'Arrastra: girar · clic derecho o Shift + arrastrar: mover · rueda: zoom hacia el mouse · doble clic: acercarte ahí';
   $('#v3d-girar').addEventListener('click', () => setMover(false));
   $('#v3d-mover').addEventListener('click', () => setMover(true));
@@ -329,6 +415,72 @@ function armarNavegacion() {
     abajo = null;
   });
   setMover(false);
+}
+
+// ------------------------------------------------------------------ dedos: torcer para girar, e inercia al soltar
+function armarDedos() {
+  const el = R.domElement;
+  const dedos = new Map();      // pointerId → { x, y }
+  let ang = null, acum = 0, torciendo = false;
+  let huella = [];              // últimas posiciones de un solo dedo, para medir qué tan rápido iba al soltarlo
+  const angulo = () => { const [a, b] = [...dedos.values()]; return Math.atan2(b.y - a.y, b.x - a.x); };
+  const reiniciar = () => { ang = dedos.size === 2 ? angulo() : null; acum = 0; torciendo = false; huella = []; controls.zoomToCursor = true; };
+  el.addEventListener('pointerdown', (e) => {
+    dedos.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    impulso = null;
+    reiniciar();
+    if (dedos.size === 1) huella.push({ t: e.timeStamp, x: e.clientX, y: e.clientY });
+  });
+  el.addEventListener('pointermove', (e) => {
+    if (!dedos.has(e.pointerId)) return;
+    dedos.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (dedos.size === 1) {
+      huella.push({ t: e.timeStamp, x: e.clientX, y: e.clientY });
+      while (huella.length > 2 && e.timeStamp - huella[0].t > 100) huella.shift();
+      return;
+    }
+    if (dedos.size !== 2 || ang === null) return;
+    // torcer dos dedos, como en Mapas o Fotos: la maqueta gira sobre la mesa hacia donde giran los dedos
+    const a = angulo();
+    let d = a - ang;
+    ang = a;
+    if (d > Math.PI) d -= 2 * Math.PI; else if (d < -Math.PI) d += 2 * Math.PI;
+    if (!torciendo) {
+      acum += d;
+      if (Math.abs(acum) < TORCER) return;
+      torciendo = true;
+      // mientras se tuerce, el zoom va al centro: «acercar hacia los dedos» empujaba la vista de lado en cada
+      // movimiento de un solo dedo (Safari los manda por separado) y la maqueta se iba moviendo al girarla
+      controls.zoomToCursor = false;
+      d = acum - Math.sign(acum) * TORCER;
+    }
+    controls._rotateLeft(-d);
+    kick();
+  });
+  const soltar = (e) => {
+    if (!dedos.has(e.pointerId)) return;
+    const solo = dedos.size === 1 && e.type === 'pointerup';
+    dedos.delete(e.pointerId);
+    // se soltó el único dedo mientras iba girando (no en modo Mover): la maqueta sigue un poco y frena sola
+    if (solo && !mover && !reducirMov.matches && huella.length >= 2 && e.timeStamp - huella[huella.length - 1].t < 80) {
+      const p0 = huella[0], p1 = huella[huella.length - 1];
+      const dt = (p1.t - p0.t) / 1000;
+      if (dt >= 0.01) {
+        const vx = (p1.x - p0.x) / dt, vy = (p1.y - p0.y) / dt;
+        if (Math.hypot(vx, vy) > 350) {
+          // mismo cálculo que OrbitControls al arrastrar, pero por segundo
+          const k = (2 * Math.PI * controls.rotateSpeed) / el.clientHeight;
+          impulso = { x: vx * k, y: vy * k };
+          kick();
+        }
+      }
+    }
+    reiniciar();
+  };
+  el.addEventListener('pointerup', soltar);
+  el.addEventListener('pointercancel', soltar);
+  // Safari: que pellizcar sobre el modelo no haga zoom a toda la página
+  for (const g of ['gesturestart', 'gesturechange', 'gestureend']) stage.addEventListener(g, (e) => e.preventDefault(), { passive: false });
 }
 
 function volarA(p1, t1) {

@@ -404,6 +404,8 @@ dl.glos { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minm
 .v3d-stage { position: relative; height: clamp(360px, 64vh, 760px); border-radius: var(--r); overflow: hidden; border: 1px solid var(--line); background: var(--stage); touch-action: none; }
 @media (orientation: portrait) { .v3d-stage { height: clamp(340px, 54vh, 680px); } }
 .v3d-stage canvas { display: block; width: 100%; height: 100%; }
+/* tocar y dejar el dedo sobre el modelo no selecciona texto ni abre la lupa o el menú de iOS */
+.v3d-stage { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
 #v3d-status { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink-2); font-weight: 600; padding: 20px; text-align: center; }
 #v3d-marks { position: absolute; inset: 0; pointer-events: none; }
 .mk { position: absolute; left: -13px; top: -13px; width: 26px; height: 26px; border-radius: 50%; border: 2px solid #fff; background: var(--accent); color: var(--accent-ink); font-size: 12px; font-weight: 700; display: grid; place-items: center; cursor: pointer; pointer-events: auto; box-shadow: 0 2px 6px rgba(0, 0, 0, .3); padding: 0; }
@@ -460,7 +462,29 @@ input[type="range"] { width: 100%; accent-color: var(--accent); min-height: 32px
 .v3d.sin3d .hud, .v3d.sin3d .v3d-nav, .v3d.sin3d .v3d-help { display: none; }
 @media (pointer: coarse) { .mk::after { content: ""; position: absolute; inset: -7px; border-radius: 50%; } }
 /* los números sobre el modelo (z-index hasta 1000, según la distancia) nunca tapan los controles */
-.hud, .v3d-nav, .v3d-help, #v3d-card { z-index: 1100; }
+.hud, .v3d-nav, .v3d-help, #v3d-card, .v3d-fs { z-index: 1100; }
+
+/* pantalla completa: botón arriba a la derecha; los chips de arriba le dejan su lugar */
+.v3d-fs { position: absolute; right: 12px; top: 12px; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; min-width: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent); color: var(--ink); font: 600 13.5px/1 var(--sans); cursor: pointer; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); box-shadow: var(--shadow); }
+.v3d-fs:hover { background: var(--surface-2); }
+.v3d-fs svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.v3d-fs .ic-salir, .v3d-stage.full .v3d-fs .ic-abrir { display: none; }
+.v3d-stage.full .v3d-fs .ic-salir { display: block; }
+.v3d-stage .hud { right: 200px; }
+@media (max-width: 640px) { .v3d-fs .t { display: none; } .v3d-fs { padding: 0; justify-content: center; } .v3d-stage .hud { right: 64px; } }
+.v3d.sin3d .v3d-fs { display: none; }
+/* la maqueta tapa toda la pantalla (también donde el navegador no deja usar la pantalla completa de verdad, como iPhone) */
+.v3d-stage.full { position: fixed; inset: 0; z-index: 80; width: auto; height: auto; border: 0; border-radius: 0; }
+.v3d-stage.full:fullscreen { width: 100%; height: 100%; }
+.v3d-stage.full .hud { top: calc(12px + env(safe-area-inset-top, 0px)); left: max(12px, env(safe-area-inset-left, 0px)); right: calc(max(12px, env(safe-area-inset-right, 0px)) + 120px); }
+.v3d-stage.full .v3d-fs { top: calc(12px + env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); }
+.v3d-stage.full .v3d-nav { right: max(12px, env(safe-area-inset-right, 0px)); }
+.v3d-stage.full #v3d-card { left: max(12px, env(safe-area-inset-left, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+.v3d-stage.full .v3d-help { bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+@media (max-width: 640px) { .v3d-stage.full .v3d-fs .t { display: inline; } .v3d-stage.full .v3d-fs { padding: 0 12px; } }
+html.v3d-full, html.v3d-full body { overflow: hidden; }
+html.v3d-full .screen { animation: none; }
 @media (prefers-reduced-motion: reduce) { .screen.in-push, .screen.in-back { animation: none; } .bar > i { transition: none; } }
 
 /* ================================================================ SVG de los planos */
