@@ -131,7 +131,10 @@ const ui = UI.replaceAll('__CACHE__', () => cache).replaceAll('__FILES__', () =>
 if (page.split('</body>').length !== 2) throw new Error('se esperaba un solo </body>');
 page = page.replace('</body>', () => ui + '</body>');
 fs.writeFileSync(path.join(DIST, 'index.html'), page);
-fs.writeFileSync(path.join(DIST, 'sw.js'), SW.replaceAll('__CACHE__', () => cache).replaceAll('__FILES__', () => JSON.stringify(files, null, 1)));
+// huella de cada archivo: al actualizar, la app copia de su versión anterior los que no cambiaron y solo baja los nuevos
+const huellas = Object.fromEntries(files.map((f) => [f, createHash('sha256').update(fs.readFileSync(path.join(DIST, f))).digest('hex').slice(0, 16)]));
+fs.writeFileSync(path.join(DIST, 'sw.js'), SW.replaceAll('__CACHE__', () => cache).replaceAll('__FILES__', () => JSON.stringify(files, null, 1))
+  .replaceAll('__HUELLAS__', () => JSON.stringify(huellas, null, 1)));
 
 const total = files.reduce((a, f) => a + fs.statSync(path.join(DIST, f)).size, 0);
 console.log(`versión ${ver} · ${files.length} archivos · ${(total / 1e6).toFixed(1)} MB → dist/`);

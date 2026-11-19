@@ -41,7 +41,19 @@
   var want = FILES.map(function (f) { return new URL(f, location.href).href; });
   var total = SIZES.reduce(function (a, b) { return a + b; }, 0);
 
-  navigator.serviceWorker.register('sw.js').catch(function (err) { console.warn('No se pudo registrar el service worker', err); });
+  var reg = null, revisado = Date.now();
+  navigator.serviceWorker.register('sw.js').then(function (r) { reg = r; }).catch(function (err) { console.warn('No se pudo registrar el service worker', err); });
+  // El navegador solo busca una versión nueva al cargar la página. iPadOS casi nunca cierra las apps: al tocar el
+  // ícono solo la «despierta» y no revisaba nada. Por eso también se revisa al volver a ella y cada 30 minutos.
+  function revisar() {
+    if (!reg || navigator.onLine === false || Date.now() - revisado < 60000) return;
+    revisado = Date.now();
+    reg.update().catch(function () { /* sin internet o el sitio no contesta: la app sigue igual */ });
+  }
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') revisar(); });
+  window.addEventListener('pageshow', function (e) { if (e.persisted) revisar(); });
+  window.addEventListener('online', revisar);
+  setInterval(revisar, 30 * 60 * 1000);
   var habia = !!navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener('controllerchange', function () { if (habia) { nueva = true; render(); } habia = true; });
   window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); prompt = e; render(); });

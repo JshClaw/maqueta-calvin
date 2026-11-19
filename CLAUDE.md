@@ -193,6 +193,8 @@ python contenido/drawings.py    # solo si cambias 3d/layout.json (regenera los p
   - Contesta **peticiones con Range (206)** desde la caché. **iPhone lo necesita para reproducir video sin internet.**
   - "Limpia" las respuestas que vienen de una redirección, porque Safari las rechaza al navegar.
   - Borra las cachés `calvin-*` viejas y usa `skipWaiting` + `clients.claim`.
+  - **Al actualizar, solo baja lo que cambió.** El build pone en `sw.js` una huella (sha256) de cada archivo, y cada versión guarda las suyas en `calvin-huellas.json` dentro de su caché. Los archivos con la misma huella se copian de la caché anterior. Normalmente solo bajan `index.html` (~1.7 MB, trae el 3D) y `sw.js`, en lugar de los ~18 MB. Las versiones de antes del 2026-11-19 no tienen huellas: la primera actualización desde ellas baja todo una vez.
+- **Revisar si hay versión nueva:** el navegador solo lo hace al cargar la página, y **iPadOS casi nunca cierra las apps**: al tocar el ícono solo la «despierta». Por eso `ui.html` también llama a `registration.update()` al volver a la app (`visibilitychange`, `pageshow`, `online`) y cada 30 minutos, con al menos 1 minuto entre revisiones. Así se descubrió: en el iPhone salió «Actualizar» y en el iPad no.
 - **Versión:** el nombre de la caché es `calvin-<hash del contenido>`. Cualquier cambio da una versión nueva, y la app instalada se actualiza sola la siguiente vez que se abre con internet. Ahí aparece el aviso "Hay una versión nueva · Actualizar".
 - **`ui.html`:**
   - Registra el service worker.
@@ -315,6 +317,7 @@ El proyecto se hizo con Claude, con un sistema más grande en Python (skia para 
   - Para no recorrer el avance guardado (`paso3-4`…), **no se agregaron casillas**: lo nuevo va en sub-viñetas o en notas.
 - 2026-11-19: botón de **pantalla completa** en el visor 3D. `npm run test:tactil` lo prueba (tamaño, girar adentro, «Salir» y «atrás»). `npm test`, `npm run test:tactil` y `npm run test:app` pasan.
 - 2026-11-19: **mejor tacto en el 3D** (ver sección 5, «Tacto»). `npm run test:tactil` prueba torcer, el pellizco chueco y la inercia.
+- 2026-11-19: **la actualización ya avisa en iPad** y solo baja lo que cambió (ver sección 5, PWA). Probado con una versión A instalada y una B nueva en un iPad simulado: el aviso sale al volver a la app sin recargarla, solo bajan `index.html` y `sw.js`, la caché vieja se borra, y sin internet abren la versión B, el 3D y el video por pedazos.
 - `dist/` está construida y lista para subir.
 - **Publicada** el 2026-11-12 en GitHub Pages: **https://jshclaw.github.io/maqueta-calvin/** (repo público `JshClaw/maqueta-calvin`).
   - Cada push a `main` que cambie `dist/` la vuelve a publicar. El primer push, el que creó la rama, no disparó el flujo: se lanzó a mano con `gh workflow run pages.yml`.

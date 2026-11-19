@@ -38,7 +38,8 @@ try {
     await pg.goto(BASE, { waitUntil: 'load' });
     let n = 0;
     for (let i = 0; i < 240 && n < FILES.length; i++) {
-      n = await pg.evaluate((c) => caches.has(c).then((si) => (si ? caches.open(c).then((x) => x.keys()).then((k) => k.length) : 0)), CACHE);
+      // (sin contar calvin-huellas.json, que el service worker guarda al final para la siguiente actualización)
+      n = await pg.evaluate((c) => caches.has(c).then((si) => (si ? caches.open(c).then((x) => x.keys()).then((k) => k.filter((r) => !r.url.endsWith('/calvin-huellas.json')).length) : 0)), CACHE);
       if (n < FILES.length) await pg.waitForTimeout(500);
     }
     n === FILES.length ? bien(`guardó ${n} de ${FILES.length} archivos`) : mal(`solo guardó ${n} de ${FILES.length} archivos`);

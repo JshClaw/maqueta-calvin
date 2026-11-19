@@ -5930,7 +5930,7 @@ three/build/three.module.js:
 <div class="pwa" id="pwa" role="status" aria-live="polite" hidden></div>
 <script>
 (function () {
-  var CACHE = 'calvin-7e4dfecd67', FILES = ["index.html", "dl/tablero_60x60.pdf", "fonts/fonts.css", "fonts/inter-latin-400-normal.woff2", "fonts/inter-latin-500-normal.woff2", "fonts/inter-latin-600-normal.woff2", "fonts/inter-latin-700-normal.woff2", "fonts/inter-latin-ext-400-normal.woff2", "fonts/inter-latin-ext-500-normal.woff2", "fonts/inter-latin-ext-600-normal.woff2", "fonts/inter-latin-ext-700-normal.woff2", "fonts/jetbrains-mono-latin-400-normal.woff2", "fonts/jetbrains-mono-latin-500-normal.woff2", "fonts/jetbrains-mono-latin-ext-400-normal.woff2", "fonts/jetbrains-mono-latin-ext-500-normal.woff2", "fonts/lora-latin-500-italic.woff2", "fonts/lora-latin-600-italic.woff2", "fonts/lora-latin-ext-500-italic.woff2", "fonts/lora-latin-ext-600-italic.woff2", "icons/apple-touch-icon.png", "icons/favicon-32.png", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png", "img/arm_brazo.jpg", "img/arm_caja.jpg", "img/arm_mid.jpg", "img/arm_tapa.jpg", "img/brazo_det.jpg", "img/compuerta.jpg", "img/despiece.jpg", "img/estaciones.jpg", "img/hero.jpg", "img/interior.jpg", "img/perilla_det.jpg", "img/pinza_det.jpg", "img/rampa_det.jpg", "img/regen_det.jpg", "img/tarjetas.jpg", "img/top.jpg", "img/transparente.jpg", "img/vagon_det.jpg", "img/vagon_pinza.jpg", "img/vinil.jpg", "manifest.webmanifest", "vid/ciclo_2d.jpg", "vid/ciclo_2d.mp4", "vid/mecanismo.jpg", "vid/mecanismo.mp4"], SIZES = [1683400, 407013, 4760, 23692, 24368, 24304, 24352, 30676, 31760, 31968, 31792, 21088, 21820, 7076, 7232, 23368, 23448, 12560, 12696, 7400, 1419, 9678, 27054, 22402, 161990, 124343, 112043, 75278, 188439, 208667, 129872, 186514, 146763, 155288, 148106, 117497, 154101, 209757, 132319, 99743, 202898, 164179, 106371, 266648, 783, 84195, 3924847, 56667, 8440391], MB = '18';
+  var CACHE = 'calvin-c47df45ee3', FILES = ["index.html", "dl/tablero_60x60.pdf", "fonts/fonts.css", "fonts/inter-latin-400-normal.woff2", "fonts/inter-latin-500-normal.woff2", "fonts/inter-latin-600-normal.woff2", "fonts/inter-latin-700-normal.woff2", "fonts/inter-latin-ext-400-normal.woff2", "fonts/inter-latin-ext-500-normal.woff2", "fonts/inter-latin-ext-600-normal.woff2", "fonts/inter-latin-ext-700-normal.woff2", "fonts/jetbrains-mono-latin-400-normal.woff2", "fonts/jetbrains-mono-latin-500-normal.woff2", "fonts/jetbrains-mono-latin-ext-400-normal.woff2", "fonts/jetbrains-mono-latin-ext-500-normal.woff2", "fonts/lora-latin-500-italic.woff2", "fonts/lora-latin-600-italic.woff2", "fonts/lora-latin-ext-500-italic.woff2", "fonts/lora-latin-ext-600-italic.woff2", "icons/apple-touch-icon.png", "icons/favicon-32.png", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png", "img/arm_brazo.jpg", "img/arm_caja.jpg", "img/arm_mid.jpg", "img/arm_tapa.jpg", "img/brazo_det.jpg", "img/compuerta.jpg", "img/despiece.jpg", "img/estaciones.jpg", "img/hero.jpg", "img/interior.jpg", "img/perilla_det.jpg", "img/pinza_det.jpg", "img/rampa_det.jpg", "img/regen_det.jpg", "img/tarjetas.jpg", "img/top.jpg", "img/transparente.jpg", "img/vagon_det.jpg", "img/vagon_pinza.jpg", "img/vinil.jpg", "manifest.webmanifest", "vid/ciclo_2d.jpg", "vid/ciclo_2d.mp4", "vid/mecanismo.jpg", "vid/mecanismo.mp4"], SIZES = [1684241, 407013, 4760, 23692, 24368, 24304, 24352, 30676, 31760, 31968, 31792, 21088, 21820, 7076, 7232, 23368, 23448, 12560, 12696, 7400, 1419, 9678, 27054, 22402, 161990, 124343, 112043, 75278, 188439, 208667, 129872, 186514, 146763, 155288, 148106, 117497, 154101, 209757, 132319, 99743, 202898, 164179, 106371, 266648, 783, 84195, 3924847, 56667, 8440391], MB = '18';
   var box = document.getElementById('pwa'), idxBtn = document.getElementById('pwaIdx');
   if (!('serviceWorker' in navigator) || !window.caches || !window.isSecureContext) { if (idxBtn) idxBtn.hidden = true; return; }
 
@@ -5952,7 +5952,19 @@ three/build/three.module.js:
   var want = FILES.map(function (f) { return new URL(f, location.href).href; });
   var total = SIZES.reduce(function (a, b) { return a + b; }, 0);
 
-  navigator.serviceWorker.register('sw.js').catch(function (err) { console.warn('No se pudo registrar el service worker', err); });
+  var reg = null, revisado = Date.now();
+  navigator.serviceWorker.register('sw.js').then(function (r) { reg = r; }).catch(function (err) { console.warn('No se pudo registrar el service worker', err); });
+  // El navegador solo busca una versión nueva al cargar la página. iPadOS casi nunca cierra las apps: al tocar el
+  // ícono solo la «despierta» y no revisaba nada. Por eso también se revisa al volver a ella y cada 30 minutos.
+  function revisar() {
+    if (!reg || navigator.onLine === false || Date.now() - revisado < 60000) return;
+    revisado = Date.now();
+    reg.update().catch(function () { /* sin internet o el sitio no contesta: la app sigue igual */ });
+  }
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') revisar(); });
+  window.addEventListener('pageshow', function (e) { if (e.persisted) revisar(); });
+  window.addEventListener('online', revisar);
+  setInterval(revisar, 30 * 60 * 1000);
   var habia = !!navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener('controllerchange', function () { if (habia) { nueva = true; render(); } habia = true; });
   window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); prompt = e; render(); });

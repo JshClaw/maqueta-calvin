@@ -1,5 +1,5 @@
 // Guarda todo el manual en el celular para que funcione sin internet.
-const CACHE = 'calvin-7e4dfecd67';
+const CACHE = 'calvin-c47df45ee3';
 const FILES = [
  "index.html",
  "dl/tablero_60x60.pdf",
@@ -51,8 +51,78 @@ const FILES = [
  "vid/mecanismo.jpg",
  "vid/mecanismo.mp4"
 ];
+const HUELLAS = {
+ "index.html": "b59989e9e83fcbb6",
+ "dl/tablero_60x60.pdf": "20046f9747cc9a76",
+ "fonts/fonts.css": "f5d519683d66aac7",
+ "fonts/inter-latin-400-normal.woff2": "dd05e326cf8eac3b",
+ "fonts/inter-latin-500-normal.woff2": "b0e7558f4710a1e2",
+ "fonts/inter-latin-600-normal.woff2": "62553d159189834a",
+ "fonts/inter-latin-700-normal.woff2": "aac638f7503cebb0",
+ "fonts/inter-latin-ext-400-normal.woff2": "941e03c632d7b1d8",
+ "fonts/inter-latin-ext-500-normal.woff2": "f2a063e5054e5a44",
+ "fonts/inter-latin-ext-600-normal.woff2": "656a3e303ed0dc46",
+ "fonts/inter-latin-ext-700-normal.woff2": "bf1b9f734ed117e7",
+ "fonts/jetbrains-mono-latin-400-normal.woff2": "7c53386f55c866c1",
+ "fonts/jetbrains-mono-latin-500-normal.woff2": "4765dee1c0be507c",
+ "fonts/jetbrains-mono-latin-ext-400-normal.woff2": "a6e389bf81345633",
+ "fonts/jetbrains-mono-latin-ext-500-normal.woff2": "75a484756797e02d",
+ "fonts/lora-latin-500-italic.woff2": "fb04ddb44e3183be",
+ "fonts/lora-latin-600-italic.woff2": "fe04b59261d41534",
+ "fonts/lora-latin-ext-500-italic.woff2": "189299ec8938fcc5",
+ "fonts/lora-latin-ext-600-italic.woff2": "52f30c4de21c099d",
+ "icons/apple-touch-icon.png": "aae4973dade5d07c",
+ "icons/favicon-32.png": "7a025808e068d36f",
+ "icons/icon-192.png": "58f809e0439f6bcd",
+ "icons/icon-512.png": "80c35af21bda3747",
+ "icons/maskable-512.png": "316afc08298ff406",
+ "img/arm_brazo.jpg": "d75876e356c6e140",
+ "img/arm_caja.jpg": "17b8ac52246c2f1d",
+ "img/arm_mid.jpg": "e772f4a063c24580",
+ "img/arm_tapa.jpg": "56a87aeafd13f1dc",
+ "img/brazo_det.jpg": "adf23f95755fa889",
+ "img/compuerta.jpg": "a5b2af9e10a7e1a4",
+ "img/despiece.jpg": "34ccb73a6d46b48d",
+ "img/estaciones.jpg": "bc7228d9c03e36cf",
+ "img/hero.jpg": "405b69008188308a",
+ "img/interior.jpg": "dc38bd2334d118a7",
+ "img/perilla_det.jpg": "aa0f729b672b86c3",
+ "img/pinza_det.jpg": "79fc1d15ad27c556",
+ "img/rampa_det.jpg": "0dd600563b6fe38e",
+ "img/regen_det.jpg": "1426995ed7b56969",
+ "img/tarjetas.jpg": "816cb9e20c39bb67",
+ "img/top.jpg": "53dd28513b7ec318",
+ "img/transparente.jpg": "376c9f6ab565a361",
+ "img/vagon_det.jpg": "a2cf0970328d3a85",
+ "img/vagon_pinza.jpg": "aea685adaa181a6e",
+ "img/vinil.jpg": "88cdb7521899e795",
+ "manifest.webmanifest": "3e27bf02fa1292ff",
+ "vid/ciclo_2d.jpg": "643b7a7b3a179c7c",
+ "vid/ciclo_2d.mp4": "3936220fcabf2c27",
+ "vid/mecanismo.jpg": "52ec840bc9f5a25b",
+ "vid/mecanismo.mp4": "674f41f713d33dc1"
+};   // archivo → huella de su contenido
 const SCOPE = self.registration.scope;
 const abs = (f) => new URL(f, SCOPE).href;
+const META = abs('calvin-huellas.json');   // cada versión guarda aquí las huellas de lo que tiene
+
+// Archivos que ya están guardados de una versión anterior y no cambiaron: se copian en lugar de bajarlos otra vez.
+// Así una actualización baja unos cientos de KB y no los ~18 MB completos (en iPad, si la app se suspende a media
+// descarga, el aviso de «Actualizar» tardaba en salir).
+async function anteriores() {
+  const out = new Map();
+  for (const k of await caches.keys()) {
+    if (!k.startsWith('calvin-') || k === CACHE) continue;
+    try {
+      const c = await caches.open(k);
+      const m = await c.match(META);
+      if (!m) continue;
+      const h = await m.json();
+      for (const f of FILES) if (!out.has(f) && h[f] && h[f] === HUELLAS[f]) out.set(f, c);
+    } catch (err) { /* esa versión no sirve para copiar: se baja */ }
+  }
+  return out;
+}
 
 // Safari no acepta respuestas que vienen de una redirección (pasa en algunos hostings): se guardan "limpias".
 async function limpia(r) {
@@ -63,9 +133,14 @@ async function limpia(r) {
 self.addEventListener('install', (e) => {
   e.waitUntil((async () => {
     const c = await caches.open(CACHE);
+    const viejos = await anteriores();
     for (const f of FILES) {
       const url = abs(f);
       if (await c.match(url)) continue;            // si una instalación anterior se cortó, sigue donde se quedó
+      const v = viejos.get(f);
+      if (v) {
+        try { const r = await v.match(url); if (r) { await c.put(url, r); continue; } } catch (err) { /* se baja */ }
+      }
       for (let i = 0; ; i++) {
         try {
           const r = await fetch(url, { cache: 'reload' });
@@ -78,6 +153,7 @@ self.addEventListener('install', (e) => {
         }
       }
     }
+    await c.put(META, new Response(JSON.stringify(HUELLAS), { headers: { 'Content-Type': 'application/json' } }));
     await self.skipWaiting();
   })());
 });

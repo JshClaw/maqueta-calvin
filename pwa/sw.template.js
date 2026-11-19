@@ -1,8 +1,28 @@
 // Guarda todo el manual en el celular para que funcione sin internet.
 const CACHE = '__CACHE__';
 const FILES = __FILES__;
+const HUELLAS = __HUELLAS__;   // archivo → huella de su contenido
 const SCOPE = self.registration.scope;
 const abs = (f) => new URL(f, SCOPE).href;
+const META = abs('calvin-huellas.json');   // cada versión guarda aquí las huellas de lo que tiene
+
+// Archivos que ya están guardados de una versión anterior y no cambiaron: se copian en lugar de bajarlos otra vez.
+// Así una actualización baja unos cientos de KB y no los ~18 MB completos (en iPad, si la app se suspende a media
+// descarga, el aviso de «Actualizar» tardaba en salir).
+async function anteriores() {
+  const out = new Map();
+  for (const k of await caches.keys()) {
+    if (!k.startsWith('calvin-') || k === CACHE) continue;
+    try {
+      const c = await caches.open(k);
+      const m = await c.match(META);
+      if (!m) continue;
+      const h = await m.json();
+      for (const f of FILES) if (!out.has(f) && h[f] && h[f] === HUELLAS[f]) out.set(f, c);
+    } catch (err) { /* esa versión no sirve para copiar: se baja */ }
+  }
+  return out;
+}
 
 // Safari no acepta respuestas que vienen de una redirección (pasa en algunos hostings): se guardan "limpias".
 async function limpia(r) {
@@ -13,9 +33,14 @@ async function limpia(r) {
 self.addEventListener('install', (e) => {
   e.waitUntil((async () => {
     const c = await caches.open(CACHE);
+    const viejos = await anteriores();
     for (const f of FILES) {
       const url = abs(f);
       if (await c.match(url)) continue;            // si una instalación anterior se cortó, sigue donde se quedó
+      const v = viejos.get(f);
+      if (v) {
+        try { const r = await v.match(url); if (r) { await c.put(url, r); continue; } } catch (err) { /* se baja */ }
+      }
       for (let i = 0; ; i++) {
         try {
           const r = await fetch(url, { cache: 'reload' });
@@ -28,6 +53,7 @@ self.addEventListener('install', (e) => {
         }
       }
     }
+    await c.put(META, new Response(JSON.stringify(HUELLAS), { headers: { 'Content-Type': 'application/json' } }));
     await self.skipWaiting();
   })());
 });
