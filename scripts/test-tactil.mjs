@@ -11,7 +11,7 @@ import { chromium, devices } from 'playwright';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PORT = 8898;
-const BASE = `http://localhost:${PORT}/`;
+const BASE = process.env.BASE_URL || `http://localhost:${PORT}/`;   // BASE_URL=https://… prueba el sitio publicado
 const srv = spawn(process.execPath, [path.join(ROOT, 'scripts', 'serve.mjs')], { env: { ...process.env, PORT: String(PORT) }, stdio: 'ignore' });
 await new Promise((ok) => setTimeout(ok, 800));
 const EQUIPOS = (process.env.DEVICES || 'iPhone 13,Pixel 7,iPad (gen 11),iPad Pro 11 landscape').split(',');
@@ -161,7 +161,7 @@ for (const nombre of EQUIPOS) {
   };
   const lento = await deslizar(70);
   await pg.locator('#v3d-centro').tap(); await espera(1300);
-  const rapido = await deslizar(6);
+  const rapido = await deslizar(3);
   ok(rapido > lento * 1.3, `al soltar un deslizón rápido sigue girando (lento ${lento.toFixed(0)}°, rápido ${rapido.toFixed(0)}° con la misma distancia)`);
   await pg.locator('#v3d-centro').tap(); await espera(1300);
 

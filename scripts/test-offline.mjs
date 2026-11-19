@@ -12,7 +12,7 @@ import { chromium, devices } from 'playwright';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PORT = 8899;
-const BASE = `http://localhost:${PORT}/`;
+const BASE = process.env.BASE_URL || `http://localhost:${PORT}/`;   // BASE_URL=https://… prueba el sitio publicado
 const sw = fs.readFileSync(path.join(ROOT, 'dist', 'sw.js'), 'utf8');
 const CACHE = /const CACHE = '([^']+)'/.exec(sw)[1];
 const FILES = JSON.parse(/const FILES = (\[[\s\S]*?\]);/.exec(sw)[1]);

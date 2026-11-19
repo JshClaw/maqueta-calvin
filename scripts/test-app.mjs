@@ -12,7 +12,7 @@ import { chromium, devices } from 'playwright';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PORT = 8897;
-const BASE = `http://localhost:${PORT}/`;
+const BASE = process.env.BASE_URL || `http://localhost:${PORT}/`;   // BASE_URL=https://… prueba el sitio publicado
 const srv = spawn(process.execPath, [path.join(ROOT, 'scripts', 'serve.mjs')], { env: { ...process.env, PORT: String(PORT) }, stdio: 'ignore' });
 await new Promise((ok) => setTimeout(ok, 800));
 const EQUIPOS = (process.env.DEVICES || 'iPad (gen 11),iPad Pro 11 landscape,iPhone 13').split(',');

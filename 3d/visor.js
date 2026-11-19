@@ -109,6 +109,7 @@ function ajustar() {
 
 function pendiente() {
   const d = controls._sphericalDelta, p = controls._panOffset;
+  if (!d || !p) return false;   // (partes internas de OrbitControls 0.170; si cambiaran, solo se pierde esto)
   return Math.abs(d.theta) > 1e-4 || Math.abs(d.phi) > 1e-4 || p.lengthSq() > 1e-6;
 }
 
@@ -185,6 +186,7 @@ function loop() {
       syncArmado();
       if (M.view.armado >= M.partes.length) { armando = false; $('#v3d-armar').textContent = 'Armar pieza por pieza'; }
     }
+    if (impulso && !controls._rotateLeft) impulso = null;
     if (impulso) {
       controls._rotateLeft(impulso.x * dt);
       controls._rotateUp(impulso.y * dt);
@@ -454,7 +456,7 @@ function armarDedos() {
       controls.zoomToCursor = false;
       d = acum - Math.sign(acum) * TORCER;
     }
-    controls._rotateLeft(-d);
+    if (controls._rotateLeft) controls._rotateLeft(-d);
     kick();
   });
   const soltar = (e) => {
@@ -467,7 +469,7 @@ function armarDedos() {
       const dt = (p1.t - p0.t) / 1000;
       if (dt >= 0.01) {
         const vx = (p1.x - p0.x) / dt, vy = (p1.y - p0.y) / dt;
-        if (Math.hypot(vx, vy) > 350) {
+        if (Math.hypot(vx, vy) > 200) {   // px/s; arrastrar despacio para acomodarla va a ~100
           // mismo cálculo que OrbitControls al arrastrar, pero por segundo
           const k = (2 * Math.PI * controls.rotateSpeed) / el.clientHeight;
           impulso = { x: vx * k, y: vy * k };

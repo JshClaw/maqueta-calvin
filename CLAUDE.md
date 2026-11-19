@@ -113,6 +113,7 @@ python contenido/drawings.py    # solo si cambias 3d/layout.json (regenera los p
 ```
 
 - `npm test` acepta estas variables:
+  - `BASE_URL=https://jshclaw.github.io/maqueta-calvin/`: prueba el sitio publicado en lugar del servidor local (sirve en las tres pruebas).
   - `DEVICES="iPhone 13,iPad Pro 11 landscape"`: los equipos que simula.
   - `CHROME_PATH=...`: usa un Chrome instalado.
   - `CHROME_ARGS="--use-angle=gl-egl"`: da WebGL en Linux sin GPU.
@@ -176,7 +177,7 @@ python contenido/drawings.py    # solo si cambias 3d/layout.json (regenera los p
   - `GIRO_ANCHO` (240°): cuánto gira al deslizar el dedo de lado a lado del modelo, en cualquier tamaño de pantalla. Antes giraba 360° por cada alto del recuadro, unos 440–515° por ancho en iPad.
   - `SUAVE`: el suavizado se calcula con el tiempo real, para que un iPad de 120 Hz se sienta igual que uno de 60 Hz. El ciclo sigue pintando mientras quede giro pendiente (`pendiente()`); sin eso se quedaba a medias.
   - **Torcer dos dedos** gira la maqueta sobre la mesa. Los primeros 10° (`TORCER`) no cuentan, para que un pellizco no la gire. Mientras se tuerce, el zoom va al centro y no hacia los dedos.
-  - **Inercia** (`INERCIA`): al soltar un dedo que va rápido (más de 350 px/s), la maqueta sigue girando y frena sola. No la hay en modo Mover ni con «reducir movimiento».
+  - **Inercia** (`INERCIA`): al soltar un dedo que va rápido (más de 200 px/s), la maqueta sigue girando y frena sola. No la hay en modo Mover ni con «reducir movimiento».
   - Para Safari: se bloquean `gesturestart` y `gesturechange` (que el pellizco no haga zoom a la página), y en el recuadro no se selecciona texto ni sale la lupa.
 - **En celular:** el pixel ratio máximo es 2 y el mapa de sombras es de 1024 cuando el ancho es menor a 700 px.
 
